@@ -1,0 +1,1861 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <style>
+            .dash_heading {max-width: 600px; margin: 0 auto; margin-bottom: -15px;}
+            .dash_block {max-width: 600px; margin: 0 auto; border: 1px solid black; border-radius: 3px;}
+            .dash_smallblock {width: 114px; border: 1px solid black; border-radius: 3px; text-align: center; display: inline-block;margin-bottom: 10px;}
+            .small_block_text {font-size: 12px; margin-bottom: -18px;margin-top: 10px;}
+            .big_block_text {font-size: 22px;margin-bottom: 9px; font-weight: bold;}
+            .dash_block table {overflow-x: auto;max-width: 100%; border-collapse: collapse; font-size: 12px; margin-left: 10px;}
+            .dash_block td {padding: 5px 20px 5px 0px; vertical-align: top; text-align: center; height: 30px; vertical-align: middle;}
+            .dash_block tr:first-child {border-bottom: 2px solid black;font-weight: bold;text-align: center;}
+            /* .dash_block tr:nth-child(even) {background: #eeeeee} */
+            .dash_block .left {text-align: left;}
+            .dash_block .right {text-align: right;}
+            .dash_block .school {width: 41%;}
+            .dash_block tr {border-bottom: 1px solid #f5f5f5; font-size: 12px;}
+            .dash_block tbody{display:block;overflow: auto;}
+            .h4_button {background-color: #cecece; border: none;border-radius: 3px; color: black;padding: 2px 4px;text-align: center;text-decoration: none;font-size: 16px;}
+            .h4_button:hover{background-color: #eeeeee; cursor: pointer;}
+            .unselected {background-color: #eeeeee;}
+            .unselected:hover{background-color: #cecece; cursor: pointer;}
+            .dash_scrolling h4{ overflow-x: auto;}
+            .dash_desc {max-width: 600px; margin: 0 auto; font-size: 12px; color: #bdbdbd}
+        </style>
+    </head>
+    <body>
+        <div class="dash_block" style="border: 0px;">
+            <div class="dash_smallblock">
+                <p class="small_block_text">Финансирование 2020</p>
+                <p class="big_block_text">264,6 млрд</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Школ</p>
+                <p class="big_block_text">15 261</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Школьников</p>
+                <p class="big_block_text">3,9 млн</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Садиков</p>
+                <p class="big_block_text">16 743</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Учашихся в садиках</p>
+                <p class="big_block_text">1,3 млн</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">ПТУ</p>
+                <p class="big_block_text">1548</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Учашихся в ПТУ</p>
+                <p class="big_block_text">269 000</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Университетов</p>
+                <p class="big_block_text">1657</p>
+            </div>
+            <div class="dash_smallblock">
+                <p class="small_block_text">Студентов</p>
+                <p class="big_block_text">1,3 млн</p>
+            </div>
+            
+        </div>
+        
+        
+        <div class="dash_heading"><h4>ТОП школы по ВНО</h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                    <tr><td class='left school'></td><td>Город</td><td>Среднее ВНО</td><td>Динамика</td></tr>
+                        <tr><td class='left school'>Природничо-науковий ліцей №145</td><td>Киев</td><td>187.5</td><td><div id="sparklines0" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Львівський фізико-математичний ліцей-інтернат</td><td>Львов</td><td>186.5</td><td><div id="sparklines1" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Технічний ліцей Національного технічного університету України</td><td>Киев</td><td>186.5</td><td><div id="sparklines2" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Ліцей Інтелект</td><td>Киев</td><td>186.5</td><td><div id="sparklines3" class="sparkline"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dash_heading dash_scrolling"><h4>ТОП школы по <button class="h4_button" id="mathBall100">математике</button>, <button class="h4_button unselected" id="UkrBall100">укр. языку</button>, <button class="h4_button unselected" id="physBall100">физике</button></h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                    <tr><td class='left school'></td><td>Город</td><td>ВНО по математике</td><td>Динамика</td></tr>
+                        <tr><td class='left school'>Дніпропетровський обласний ліцей-інтернат</td><td>Днепр</td><td>196</td><td><div id="sparklines4" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Спеціалізована школа "Тріумф"</td><td>Киев</td><td>192</td><td><div id="sparklines5" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Український фізико-математичний ліцей</td><td>Киев</td><td>191</td><td><div id="sparklines6" class="sparkline"></div></td></tr>
+                        <tr><td class='left school'>Львівський фізико-математичний ліцей-інтернат</td><td>Львов</td><td>191</td><td><div id="sparklines7" class="sparkline"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dash_heading dash_scrolling"><h4>Тестирование PISA</h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                    <tr><td class='left school'>Направление</td><td>Балл Украины</td><td>Балл Польши</td><td>Среднее</td><td>Лидер: Китай</td></tr>
+                        <tr><td class='left school'>Читательская грамотность</td><td>466</td><td>512</td><td>487</td><td>555</td></tr>
+                        <tr><td class='left school'>Математическая грамотность</td><td>453</td><td>516</td><td>489</td><td>591</td></tr>
+                        <tr><td class='left school'>Естественнонаучная грамотность</td><td>469</td><td>511</td><td>489</td><td>590</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="dataNSI" style="max-width: 600px; margin: 0 auto;"></div>
+        <div class="dash_desc">Родившийся сегодня в Украине ребенок проучится в школе 13 лет на момент достижения им 18-летнего возраста. Если учесть качество образования, реальную длительность <a href="http://documents.worldbank.org/curated/en/790931568661644788/pdf/Overview.pdf">можно оценить</a> в 10,2 года. Это значит, что у среднего ученика 2,8 года обучения проходят неэффективно или просто не происходит обучения</div>
+        
+        <div class="dash_heading"><h4>ТОП университеты по версии Osvita.ua</h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                        <tr><td class="left school">Назва навчального закладу</td><td>Місце у загальному рейтингу</td><td>ТОП 200 Україна</td><td>Бал ЗНО на контракт</td><td>Scopus</td><td>Підсумковий бал ￬</td></tr>
+                        <tr><td class="left school">Київський національний університет імені Тараса Шевченка</td><td>1</td><td>1</td><td>4</td><td>1</td><td>6</td></tr>
+                        <tr><td class="left school">Київський політехнічний інститут імені Ігоря Сікорського</td><td>2</td><td>2</td><td>10</td><td>6</td><td>18</td></tr>
+                        <tr><td class="left school">Харківський національний університет імені В.Н. Каразіна</td><td>3</td><td>3</td><td>21</td><td>2</td><td>26</td></tr>
+                        <tr><td class="left school">Львівський національний університет імені Івана Франка</td><td>4</td><td>9</td><td>17</td><td>4</td><td>30</td></tr>
+                        <tr><td class="left school">Національний медичний університет імені О.О. Богомольця</td><td>5-6</td><td>11</td><td>5</td><td>18</td><td>34</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dash_heading"><h4>ТОП желаемых специальностей в университетах по результатам поступления 2019</h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                    <tr><td class='left'></td><td>Заявок по стране</td><td class="right">Поступило</td><td class="right">Популярный университет</td><td class="right">Количество заявок в университет</td></tr>
+                        <tr><td class='left'>Право</td><td>67922</td><td class="right">10235</td><td class="right">Національний юридичний університет імені Ярослава Мудрого</td><td class="right">6807</td></tr>
+                        <tr><td class='left'>Филология</td><td>67012</td><td class="right">8606</td><td class="right">Київський національний лінгвістичний університет</td><td class="right">6950</td></tr>
+                        <tr><td class='left'>Менеджмент</td><td>54396</td><td class="right">7365</td><td class="right">Київський національний торговельно-економічний університет</td><td class="right">3837</td></tr>
+                        <tr><td class='left'>Компьютерные науки</td><td>39908</td><td class="right">5346</td><td class="right">Київський політехнічний інститут імені Ігоря Сікорського</td><td class="right">3349</td></tr>
+                        <tr><td class='left'>Среднее образование</td><td>39042</td><td class="right">9094</td><td class="right">Національний педагогічний університет імені Михайла Драгоманова</td><td class="right">2727</td></tr>
+                        
+                </tbody>
+            </table>
+        </div>
+        <div id="grad" style="max-width: 600px; margin: 0 auto;"></div>
+        <div class="dash_heading"><h4>ТОП требуемых специальностей на рынке труда, work.ua</h4></div>
+        <div class="dash_block">
+            <table>
+                <tbody>
+                    <tr><td class='left school'>Сфера</td><td>Количество вакансий</td><td>Средняя зарплата по вакансиям</td><td></td></tr>
+                        <tr><td class='left school'>Продаж, закупівля</td><td>8 612</td><td>14578</td><td></td></tr>
+                        <tr><td class='left school'>Робочі спеціальності, виробництво</td><td>7 684</td><td>12504</td><td></td></tr>
+                        <tr><td class='left school'>Сфера обслуговування</td><td>5 876</td><td>10799</td><td></td></tr>
+                        <tr><td class='left school'>Роздрібна торгівля</td><td>4 675</td><td>10253</td><td></td></tr>
+                        <tr><td class='left school'>Адмiнiстрацiя, керівництво середньої ланки</td><td>4 665</td><td>14837</td><td></td></tr>
+                    </tbody>
+            </table>
+        </div>
+        <div id="finance" style="max-width: 600px; margin: 0 auto;"></div>
+        <div id="finance_parts" style="max-width: 600px; margin: 0 auto;"></div>
+        
+        
+        
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/dumbbell.js"></script>
+        <!-- <script src="schools_data.js"></script> -->
+    <script>
+        var schools_data = [{'EONAME': 'Природничо-науковий ліцей №145 Печерського району м. Києва',
+  'UkrBall100': '188.0',
+  'histBall100': '164.5',
+  'mathBall100': '190.0',
+  'physBall100': '182.5',
+  'chemBall100': '188.0',
+  'bioBall100': '187.0',
+  'geoBall100': '192.0',
+  'engBall100': '184.0',
+  'fraBall100': '',
+  'deuBall100': '195.0',
+  'spaBall100': '',
+  'zno_median': '187.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Львівський фізико-математичний ліцей-інтернат при Львівському національному університеті імені Івана Франка',
+  'UkrBall100': '189.0',
+  'histBall100': '168.0',
+  'mathBall100': '191.0',
+  'physBall100': '182.5',
+  'chemBall100': '196.0',
+  'bioBall100': '189.0',
+  'geoBall100': '187.0',
+  'engBall100': '186.0',
+  'fraBall100': '',
+  'deuBall100': '148.0',
+  'spaBall100': '',
+  'zno_median': '186.5',
+  'AREANAME': 'м.Львів'},
+ {'EONAME': "Технічний ліцей Національного технічного університету України Київський політехнічний інститут Солом'янського району м.Києва",
+  'UkrBall100': '187.0',
+  'histBall100': '170.0',
+  'mathBall100': '189.0',
+  'physBall100': '180.0',
+  'chemBall100': '186.0',
+  'bioBall100': '189.0',
+  'geoBall100': '190.0',
+  'engBall100': '189.0',
+  'fraBall100': '',
+  'deuBall100': '180.0',
+  'spaBall100': '',
+  'zno_median': '186.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Ліцей Інтелект',
+  'UkrBall100': '192.0',
+  'histBall100': '184.0',
+  'mathBall100': '189.0',
+  'physBall100': '185.0',
+  'chemBall100': '178.5',
+  'bioBall100': '189.0',
+  'geoBall100': '186.5',
+  'engBall100': '191.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '186.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': "Гімназія №178 Солом'янського району м.Києва",
+  'UkrBall100': '189.0',
+  'histBall100': '179.0',
+  'mathBall100': '183.0',
+  'physBall100': '176.5',
+  'chemBall100': '188.5',
+  'bioBall100': '194.0',
+  'geoBall100': '190.0',
+  'engBall100': '184.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '184.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Товариство з обмеженою відповідальністю Навчально-виховний комплекс Святошинська гімназія',
+  'UkrBall100': '184.0',
+  'histBall100': '168.0',
+  'mathBall100': '190.0',
+  'physBall100': '96.0',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '188.5',
+  'engBall100': '188.5',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '184.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Ліцей Наукова зміна',
+  'UkrBall100': '184.0',
+  'histBall100': '181.0',
+  'mathBall100': '174.0',
+  'physBall100': '182.0',
+  'chemBall100': '197.5',
+  'bioBall100': '191.0',
+  'geoBall100': '186.0',
+  'engBall100': '181.0',
+  'fraBall100': '',
+  'deuBall100': '189.0',
+  'spaBall100': '',
+  'zno_median': '183.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Комунальний заклад освіти Дніпропетровський обласний ліцей-інтернат фізико-математичного профілю',
+  'UkrBall100': '185.0',
+  'histBall100': '',
+  'mathBall100': '196.0',
+  'physBall100': '178.0',
+  'chemBall100': '183.0',
+  'bioBall100': '',
+  'geoBall100': '',
+  'engBall100': '173.0',
+  'fraBall100': '',
+  'deuBall100': '184.0',
+  'spaBall100': '',
+  'zno_median': '183.0',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'ТОВ Навчальний заклад «Дніпровська середня загальноосвітня школа Британська міжнародна школа-Дніпро',
+  'UkrBall100': '187.0',
+  'histBall100': '',
+  'mathBall100': '179.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '',
+  'engBall100': '194.5',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '183.0',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Гімназія №153 імені О.С.Пушкіна Шевченківського району м.Києва',
+  'UkrBall100': '187.0',
+  'histBall100': '185.0',
+  'mathBall100': '183.0',
+  'physBall100': '169.0',
+  'chemBall100': '191.0',
+  'bioBall100': '192.0',
+  'geoBall100': '123.0',
+  'engBall100': '174.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '183.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Українська гімназія № 1 Івано-Франківської міської ради Івано-Франківської області',
+  'UkrBall100': '190.5',
+  'histBall100': '174.0',
+  'mathBall100': '182.0',
+  'physBall100': '182.0',
+  'chemBall100': '185.0',
+  'bioBall100': '187.0',
+  'geoBall100': '188.0',
+  'engBall100': '184.0',
+  'fraBall100': '',
+  'deuBall100': '179.5',
+  'spaBall100': '',
+  'zno_median': '183.0',
+  'AREANAME': 'Івано-Франківська область'},
+ {'EONAME': 'Ліцей Голосіївський №241 міста Києва',
+  'UkrBall100': '185.0',
+  'histBall100': '173.0',
+  'mathBall100': '190.0',
+  'physBall100': '186.0',
+  'chemBall100': '138.0',
+  'bioBall100': '182.5',
+  'geoBall100': '188.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '182.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Русанівський ліцей м. Києва',
+  'UkrBall100': '183.0',
+  'histBall100': '182.25',
+  'mathBall100': '190.5',
+  'physBall100': '176.0',
+  'chemBall100': '195.0',
+  'bioBall100': '180.5',
+  'geoBall100': '188.0',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '182.0',
+  'spaBall100': '',
+  'zno_median': '182.125',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Каховський навчально-виховний комплекс «Гімназія-спеціалізована школа І ступеня з поглибленим вивченням іноземних мов» Каховської міської ради Херсонської області',
+  'UkrBall100': '185.0',
+  'histBall100': '164.0',
+  'mathBall100': '172.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '184.0',
+  'engBall100': '182.0',
+  'fraBall100': '',
+  'deuBall100': '186.0',
+  'spaBall100': '',
+  'zno_median': '182.0',
+  'AREANAME': 'Херсонська область'},
+ {'EONAME': 'Український фізико-математичний ліцей Київського національного університету імені Т.Шевченка',
+  'UkrBall100': '185.0',
+  'histBall100': '164.0',
+  'mathBall100': '192.0',
+  'physBall100': '182.0',
+  'chemBall100': '167.5',
+  'bioBall100': '182.0',
+  'geoBall100': '187.25',
+  'engBall100': '171.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '182.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Український гуманітарний ліцей Київського національного університету імені Тараса Шевченка',
+  'UkrBall100': '187.0',
+  'histBall100': '184.5',
+  'mathBall100': '175.0',
+  'physBall100': '167.0',
+  'chemBall100': '177.5',
+  'bioBall100': '190.0',
+  'geoBall100': '193.5',
+  'engBall100': '183.0',
+  'fraBall100': '',
+  'deuBall100': '179.0',
+  'spaBall100': '',
+  'zno_median': '181.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Загальноосвітній навчальний заклад І-ІІІ ступенів Ліцей №100 Поділ Подільського району м.Києва',
+  'UkrBall100': '182.0',
+  'histBall100': '180.0',
+  'mathBall100': '179.0',
+  'physBall100': '171.0',
+  'chemBall100': '197.0',
+  'bioBall100': '190.0',
+  'geoBall100': '178.0',
+  'engBall100': '183.0',
+  'fraBall100': '',
+  'deuBall100': '182.5',
+  'spaBall100': '',
+  'zno_median': '181.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Комунальний заклад освіти Українсько-Американський ліцей Дніпровської міської ради',
+  'UkrBall100': '187.0',
+  'histBall100': '180.5',
+  'mathBall100': '186.0',
+  'physBall100': '135.0',
+  'chemBall100': '170.0',
+  'bioBall100': '180.0',
+  'geoBall100': '181.5',
+  'engBall100': '188.0',
+  'fraBall100': '',
+  'deuBall100': '130.5',
+  'spaBall100': '',
+  'zno_median': '180.25',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Комунальний заклад освіти Дніпропетровський обласний медичний ліцей-інтернат Дніпро',
+  'UkrBall100': '180.5',
+  'histBall100': '',
+  'mathBall100': '172.0',
+  'physBall100': '180.0',
+  'chemBall100': '192.0',
+  'bioBall100': '187.0',
+  'geoBall100': '',
+  'engBall100': '',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '180.25',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Ліцей №208 м. Києва',
+  'UkrBall100': '183.0',
+  'histBall100': '165.0',
+  'mathBall100': '187.0',
+  'physBall100': '180.0',
+  'chemBall100': '180.5',
+  'bioBall100': '195.0',
+  'geoBall100': '169.0',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '180.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Львівська академічна гімназія при Національному університеті Львівська політехніка',
+  'UkrBall100': '183.0',
+  'histBall100': '188.0',
+  'mathBall100': '180.0',
+  'physBall100': '160.0',
+  'chemBall100': '186.0',
+  'bioBall100': '189.0',
+  'geoBall100': '166.0',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '157.0',
+  'spaBall100': '',
+  'zno_median': '180.0',
+  'AREANAME': 'м.Львів'},
+ {'EONAME': 'Калуська гімназія імені Дмитра Бахматюка Калуської міської ради Івано-Франківської області',
+  'UkrBall100': '186.0',
+  'histBall100': '184.0',
+  'mathBall100': '177.0',
+  'physBall100': '173.0',
+  'chemBall100': '182.0',
+  'bioBall100': '184.0',
+  'geoBall100': '176.0',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '180.0',
+  'AREANAME': 'Івано-Франківська область'},
+ {'EONAME': 'Ліцей №8 Львівської міської ради',
+  'UkrBall100': '187.0',
+  'histBall100': '169.0',
+  'mathBall100': '180.0',
+  'physBall100': '160.0',
+  'chemBall100': '173.0',
+  'bioBall100': '183.0',
+  'geoBall100': '',
+  'engBall100': '188.0',
+  'fraBall100': '',
+  'deuBall100': '188.0',
+  'spaBall100': '',
+  'zno_median': '180.0',
+  'AREANAME': 'м.Львів'},
+ {'EONAME': 'Черкаський фізико-математичний ліцей (ФІМЛІ) Черкаської міської ради Черкаської області',
+  'UkrBall100': '182.0',
+  'histBall100': '156.0',
+  'mathBall100': '189.0',
+  'physBall100': '177.0',
+  'chemBall100': '194.5',
+  'bioBall100': '192.0',
+  'geoBall100': '180.0',
+  'engBall100': '174.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '180.0',
+  'AREANAME': 'м.Черкаси'},
+ {'EONAME': 'Комунальний заклад Луцька гімназія №18 Луцької міської ради Волинської області',
+  'UkrBall100': '186.5',
+  'histBall100': '165.0',
+  'mathBall100': '168.0',
+  'physBall100': '179.5',
+  'chemBall100': '193.0',
+  'bioBall100': '188.5',
+  'geoBall100': '186.0',
+  'engBall100': '180.0',
+  'fraBall100': '171.5',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '179.75',
+  'AREANAME': 'Волинська область'},
+ {'EONAME': 'Волинський науковий ліцей-інтернат Волинської обласної ради',
+  'UkrBall100': '185.0',
+  'histBall100': '166.0',
+  'mathBall100': '176.0',
+  'physBall100': '180.0',
+  'chemBall100': '179.5',
+  'bioBall100': '182.0',
+  'geoBall100': '192.5',
+  'engBall100': '179.0',
+  'fraBall100': '',
+  'deuBall100': '128.0',
+  'spaBall100': '',
+  'zno_median': '179.25',
+  'AREANAME': 'Волинська область'},
+ {'EONAME': 'Класична гімназія при Львівському національному університеті імені Івана Франка',
+  'UkrBall100': '187.0',
+  'histBall100': '186.0',
+  'mathBall100': '172.0',
+  'physBall100': '',
+  'chemBall100': '142.0',
+  'bioBall100': '179.0',
+  'geoBall100': '149.0',
+  'engBall100': '186.0',
+  'fraBall100': '',
+  'deuBall100': '195.0',
+  'spaBall100': '',
+  'zno_median': '179.0',
+  'AREANAME': 'м.Львів'},
+ {'EONAME': 'Києво-Печерський ліцей № 171 «Лідер» Печерського району м. Києва',
+  'UkrBall100': '180.0',
+  'histBall100': '170.0',
+  'mathBall100': '186.0',
+  'physBall100': '179.0',
+  'chemBall100': '177.5',
+  'bioBall100': '192.0',
+  'geoBall100': '138.0',
+  'engBall100': '188.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '179.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Харківська гімназія № 47 Харківської міської ради Харківської області',
+  'UkrBall100': '179.0',
+  'histBall100': '176.0',
+  'mathBall100': '180.0',
+  'physBall100': '172.5',
+  'chemBall100': '195.0',
+  'bioBall100': '188.0',
+  'geoBall100': '181.0',
+  'engBall100': '173.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '179.0',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Ліцей №142 м.Києва',
+  'UkrBall100': '179.0',
+  'histBall100': '161.0',
+  'mathBall100': '189.0',
+  'physBall100': '182.0',
+  'chemBall100': '169.5',
+  'bioBall100': '174.0',
+  'geoBall100': '193.0',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '179.0',
+  'spaBall100': '',
+  'zno_median': '179.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Запорізька гімназія № 93 Запорізької міської ради Запорізької області',
+  'UkrBall100': '183.0',
+  'histBall100': '179.5',
+  'mathBall100': '163.0',
+  'physBall100': '120.0',
+  'chemBall100': '180.0',
+  'bioBall100': '185.5',
+  'geoBall100': '183.0',
+  'engBall100': '174.0',
+  'fraBall100': '',
+  'deuBall100': '178.0',
+  'spaBall100': '',
+  'zno_median': '178.75',
+  'AREANAME': 'м.Запоріжжя'},
+ {'EONAME': 'Навчально-виховний комплекс “Домінанта” (дошкільний навчальний заклад-спеціалізована школа І ст. - суспільно-гуманітарна гімназія – СШ №204 з поглибленим вивченням фізичної культури)',
+  'UkrBall100': '187.0',
+  'histBall100': '172.0',
+  'mathBall100': '177.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '192.5',
+  'geoBall100': '178.5',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '178.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Гімназія Академія',
+  'UkrBall100': '182.0',
+  'histBall100': '163.0',
+  'mathBall100': '178.5',
+  'physBall100': '178.0',
+  'chemBall100': '180.5',
+  'bioBall100': '177.0',
+  'geoBall100': '177.5',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '177.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Політехнічний ліцей Національного технічного університету України Київський політехнічний інститут м. Києва',
+  'UkrBall100': '175.0',
+  'histBall100': '170.0',
+  'mathBall100': '182.0',
+  'physBall100': '171.0',
+  'chemBall100': '197.5',
+  'bioBall100': '162.0',
+  'geoBall100': '183.0',
+  'engBall100': '179.5',
+  'fraBall100': '',
+  'deuBall100': '186.0',
+  'spaBall100': '',
+  'zno_median': '177.25',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Ліцей Престиж м.Києва',
+  'UkrBall100': '177.0',
+  'histBall100': '161.0',
+  'mathBall100': '177.0',
+  'physBall100': '166.5',
+  'chemBall100': '',
+  'bioBall100': '178.0',
+  'geoBall100': '',
+  'engBall100': '179.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '177.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': "Гімназія біотехнологій №177 Солом'янського району м.Києва",
+  'UkrBall100': '177.0',
+  'histBall100': '177.0',
+  'mathBall100': '174.5',
+  'physBall100': '164.0',
+  'chemBall100': '180.0',
+  'bioBall100': '188.0',
+  'geoBall100': '177.0',
+  'engBall100': '171.0',
+  'fraBall100': '',
+  'deuBall100': '180.0',
+  'spaBall100': '',
+  'zno_median': '177.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Гімназія Києво - Могилянський колегіум ІІ-ІІІ ступенів Деснянського району міста Києва',
+  'UkrBall100': '185.0',
+  'histBall100': '177.0',
+  'mathBall100': '177.0',
+  'physBall100': '132.0',
+  'chemBall100': '191.5',
+  'bioBall100': '187.0',
+  'geoBall100': '152.0',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '177.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Рівненська спеціалізована школа І-ІІІ ступенів Центр надіїім. Надії Маринович Рівненської міської ради',
+  'UkrBall100': '187.0',
+  'histBall100': '175.0',
+  'mathBall100': '165.5',
+  'physBall100': '',
+  'chemBall100': '180.0',
+  'bioBall100': '164.5',
+  'geoBall100': '',
+  'engBall100': '182.0',
+  'fraBall100': '',
+  'deuBall100': '179.0',
+  'spaBall100': '',
+  'zno_median': '177.0',
+  'AREANAME': 'Рівненська область'},
+ {'EONAME': 'Комунальний заклад освіти Дніпровський ліцей інформаційних технологій при Дніпровському національному університеті імені Олеся Гончара Дніпровської міської ради',
+  'UkrBall100': '184.0',
+  'histBall100': '130.5',
+  'mathBall100': '187.0',
+  'physBall100': '169.0',
+  'chemBall100': '',
+  'bioBall100': '186.0',
+  'geoBall100': '167.5',
+  'engBall100': '182.0',
+  'fraBall100': '171.0',
+  'deuBall100': '192.5',
+  'spaBall100': '',
+  'zno_median': '176.5',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Комунальний заклад Обласна спеціалізована школа-інтернат ІІ-ІІІ ступенів Обдарованість Харківської обласної ради',
+  'UkrBall100': '183.0',
+  'histBall100': '152.0',
+  'mathBall100': '176.5',
+  'physBall100': '177.5',
+  'chemBall100': '184.0',
+  'bioBall100': '180.0',
+  'geoBall100': '169.5',
+  'engBall100': '150.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.5',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Комунальний заклад Харківський фізико-математичний ліцей № 27 Харківської міської ради Харківської області',
+  'UkrBall100': '180.0',
+  'histBall100': '192.75',
+  'mathBall100': '191.0',
+  'physBall100': '185.0',
+  'chemBall100': '145.0',
+  'bioBall100': '172.5',
+  'geoBall100': '',
+  'engBall100': '172.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.25',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Навчально-виховний комплекс Уманська міська гімназія - школа естетичного виховання Уманської міської ради Черкаської області',
+  'UkrBall100': '181.0',
+  'histBall100': '157.5',
+  'mathBall100': '177.5',
+  'physBall100': '176.0',
+  'chemBall100': '177.0',
+  'bioBall100': '186.0',
+  'geoBall100': '160.0',
+  'engBall100': '161.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.0',
+  'AREANAME': 'Черкаська область'},
+ {'EONAME': 'Товариство з обмеженою відповідальністю Навчально-виховний комплекс - Катеринослав',
+  'UkrBall100': '183.0',
+  'histBall100': '172.0',
+  'mathBall100': '',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.0',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Комунальний заклад Фізико-математична гімназія №17 Вінницької міської ради',
+  'UkrBall100': '185.5',
+  'histBall100': '167.0',
+  'mathBall100': '189.0',
+  'physBall100': '176.0',
+  'chemBall100': '164.0',
+  'bioBall100': '184.0',
+  'geoBall100': '171.0',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.0',
+  'AREANAME': 'Вінницька область'},
+ {'EONAME': 'Черкаський гуманітарно-правовий ліцей Черкаської міської ради Черкаської області',
+  'UkrBall100': '179.0',
+  'histBall100': '172.0',
+  'mathBall100': '165.0',
+  'physBall100': '',
+  'chemBall100': '192.0',
+  'bioBall100': '177.0',
+  'geoBall100': '176.0',
+  'engBall100': '176.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '176.0',
+  'AREANAME': 'м.Черкаси'},
+ {'EONAME': 'Приватне підприємство Спеціалізована школа Тріумф',
+  'UkrBall100': '176.0',
+  'histBall100': '171.0',
+  'mathBall100': '192.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '190.0',
+  'engBall100': '176.0',
+  'fraBall100': '',
+  'deuBall100': '192.0',
+  'spaBall100': '',
+  'zno_median': '176.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Харківський технічний ліцей №173 Харківської міської ради Харківської області',
+  'UkrBall100': '183.0',
+  'histBall100': '177.0',
+  'mathBall100': '182.0',
+  'physBall100': '173.0',
+  'chemBall100': '190.0',
+  'bioBall100': '174.5',
+  'geoBall100': '178.5',
+  'engBall100': '169.0',
+  'fraBall100': '',
+  'deuBall100': '170.5',
+  'spaBall100': '',
+  'zno_median': '175.75',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Угерська середня загальноосвітня школа І-ІІІ ступенів Стрийського району Львівської області',
+  'UkrBall100': '176.0',
+  'histBall100': '177.0',
+  'mathBall100': '175.0',
+  'physBall100': '164.0',
+  'chemBall100': '',
+  'bioBall100': '190.0',
+  'geoBall100': '160.5',
+  'engBall100': '195.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.5',
+  'AREANAME': 'Стрийський район'},
+ {'EONAME': 'Деренкoвецький навчально-виховний комплекс Дошкільний навчальний заклад - загальноосвітня школа І-ІІІ ступенів Набутівської сільської ради Корсунь-Шевченківського району Черкаської області',
+  'UkrBall100': '193.0',
+  'histBall100': '195.0',
+  'mathBall100': '175.5',
+  'physBall100': '',
+  'chemBall100': '172.0',
+  'bioBall100': '',
+  'geoBall100': '189.5',
+  'engBall100': '163.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.5',
+  'AREANAME': 'Корсунь-Шевченківський район'},
+ {'EONAME': 'Спеціалізована школа І-ІІІ ступенів №125 м.Києва з поглибленим вивченням англійської мови',
+  'UkrBall100': '180.0',
+  'histBall100': '180.5',
+  'mathBall100': '171.0',
+  'physBall100': '164.0',
+  'chemBall100': '147.0',
+  'bioBall100': '180.5',
+  'geoBall100': '161.5',
+  'engBall100': '186.0',
+  'fraBall100': '',
+  'deuBall100': '186.0',
+  'spaBall100': '',
+  'zno_median': '175.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Львівська гімназія Євшан',
+  'UkrBall100': '189.5',
+  'histBall100': '176.0',
+  'mathBall100': '185.0',
+  'physBall100': '149.5',
+  'chemBall100': '172.0',
+  'bioBall100': '175.5',
+  'geoBall100': '189.5',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.5',
+  'AREANAME': 'м.Львів'},
+ {'EONAME': 'ТОВ Навчально-виховний комплекс НОВОПЕЧЕРСЬКА ШКОЛА',
+  'UkrBall100': '179.0',
+  'histBall100': '165.0',
+  'mathBall100': '175.0',
+  'physBall100': '171.0',
+  'chemBall100': '182.0',
+  'bioBall100': '188.0',
+  'geoBall100': '190.0',
+  'engBall100': '189.0',
+  'fraBall100': '171.0',
+  'deuBall100': '175.0',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Черкаська приватна загальноосвітня школа І-ІІІ ступенів №770',
+  'UkrBall100': '180.5',
+  'histBall100': '175.0',
+  'mathBall100': '173.0',
+  'physBall100': '',
+  'chemBall100': '187.0',
+  'bioBall100': '194.0',
+  'geoBall100': '',
+  'engBall100': '116.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Черкаси'},
+ {'EONAME': 'Комунальний заклад «Навчально - виховний комплекс «Спеціалізована школа І ступеня – гімназія» №143 Оболонського району м.Києва»',
+  'UkrBall100': '185.0',
+  'histBall100': '167.0',
+  'mathBall100': '175.0',
+  'physBall100': '163.0',
+  'chemBall100': '185.5',
+  'bioBall100': '175.0',
+  'geoBall100': '173.5',
+  'engBall100': '181.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Чернівецька гімназія №5 Чернівецької міської ради',
+  'UkrBall100': '179.5',
+  'histBall100': '161.0',
+  'mathBall100': '169.0',
+  'physBall100': '188.0',
+  'chemBall100': '141.0',
+  'bioBall100': '175.0',
+  'geoBall100': '178.0',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Чернівці'},
+ {'EONAME': 'Комунальний заклад Харківська гімназія № 169 Харківської міської ради Харківської області',
+  'UkrBall100': '183.0',
+  'histBall100': '170.0',
+  'mathBall100': '182.0',
+  'physBall100': '186.0',
+  'chemBall100': '172.0',
+  'bioBall100': '184.0',
+  'geoBall100': '171.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Загальноосвітній навчальний заклад ІІ-ІІІ ступенів Фінансовий ліцей Подільського району м. Києва',
+  'UkrBall100': '183.5',
+  'histBall100': '158.0',
+  'mathBall100': '177.5',
+  'physBall100': '177.0',
+  'chemBall100': '',
+  'bioBall100': '170.0',
+  'geoBall100': '183.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '136.0',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Одеська спеціалізована школа №117 I-III ступенів Одеської міської ради Одеської області',
+  'UkrBall100': '184.0',
+  'histBall100': '181.0',
+  'mathBall100': '173.0',
+  'physBall100': '159.0',
+  'chemBall100': '183.0',
+  'bioBall100': '175.0',
+  'geoBall100': '',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Одеса'},
+ {'EONAME': 'Запорізька гімназія №28 Запорізької міської ради Запорізької області',
+  'UkrBall100': '175.0',
+  'histBall100': '164.0',
+  'mathBall100': '182.0',
+  'physBall100': '174.0',
+  'chemBall100': '176.5',
+  'bioBall100': '175.0',
+  'geoBall100': '178.5',
+  'engBall100': '169.0',
+  'fraBall100': '184.0',
+  'deuBall100': '150.5',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Запоріжжя'},
+ {'EONAME': "Середній загальноосвітній заклад Слов'янська гімназія",
+  'UkrBall100': '187.0',
+  'histBall100': '167.0',
+  'mathBall100': '175.0',
+  'physBall100': '141.0',
+  'chemBall100': '174.5',
+  'bioBall100': '188.0',
+  'geoBall100': '185.0',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Славутицький ліцей Славутицької міської ради Київської області',
+  'UkrBall100': '177.5',
+  'histBall100': '149.0',
+  'mathBall100': '175.0',
+  'physBall100': '182.0',
+  'chemBall100': '170.0',
+  'bioBall100': '180.0',
+  'geoBall100': '189.0',
+  'engBall100': '169.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'Київська область'},
+ {'EONAME': 'Комунальний заклад освіти Навчально-виховний комплекс № 148 спеціалізована школа-дошкільний навчальний заклад (ясла-садок) Планета Щастя Дніпровської міської ради',
+  'UkrBall100': '177.0',
+  'histBall100': '166.5',
+  'mathBall100': '175.0',
+  'physBall100': '',
+  'chemBall100': '177.5',
+  'bioBall100': '187.0',
+  'geoBall100': '166.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '175.0',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Навчально-виховний комплекс Школа І ступеня - гімназія Оболонь Оболонського району м. Києва',
+  'UkrBall100': '185.0',
+  'histBall100': '174.5',
+  'mathBall100': '178.5',
+  'physBall100': '189.0',
+  'chemBall100': '',
+  'bioBall100': '160.0',
+  'geoBall100': '',
+  'engBall100': '171.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Харківський приватний навчально-виховний комплекс Ліцей Шаалавім Харківської області',
+  'UkrBall100': '169.5',
+  'histBall100': '186.0',
+  'mathBall100': '159.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '181.0',
+  'engBall100': '179.5',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.5',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Навчально-виховний комплекс Загальноосвітня школа І-ІІІ ступенів №1-гімназія м. Копичинці Гусятинського району Тернопільської області',
+  'UkrBall100': '179.0',
+  'histBall100': '178.0',
+  'mathBall100': '160.0',
+  'physBall100': '124.0',
+  'chemBall100': '182.0',
+  'bioBall100': '',
+  'geoBall100': '179.0',
+  'engBall100': '171.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.5',
+  'AREANAME': 'Гусятинський район'},
+ {'EONAME': 'Загальноосвітній навчальний заклад І-ІІІ ступенів Гімназія №34 Либідь ім. Віктора Максименка Подільського району м.Києва',
+  'UkrBall100': '174.5',
+  'histBall100': '160.0',
+  'mathBall100': '171.0',
+  'physBall100': '144.0',
+  'chemBall100': '189.0',
+  'bioBall100': '178.0',
+  'geoBall100': '174.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '179.0',
+  'spaBall100': '',
+  'zno_median': '174.25',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Спеціалізована школа №89',
+  'UkrBall100': '176.0',
+  'histBall100': '158.0',
+  'mathBall100': '172.0',
+  'physBall100': '176.0',
+  'chemBall100': '174.5',
+  'bioBall100': '180.0',
+  'geoBall100': '162.0',
+  'engBall100': '174.0',
+  'fraBall100': '',
+  'deuBall100': '192.0',
+  'spaBall100': '',
+  'zno_median': '174.25',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Спеціалізована школа І-ІІІ ступенів №138 з поглибленим вивченням предметів природничого циклу Шевченківського району м.Києва',
+  'UkrBall100': '177.0',
+  'histBall100': '122.5',
+  'mathBall100': '162.0',
+  'physBall100': '153.0',
+  'chemBall100': '188.0',
+  'bioBall100': '174.0',
+  'geoBall100': '180.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Комунальний заклад Полтавська спеціалізована школа І-ІІІ ступенів № 3 Полтавської міської ради Полтавської області',
+  'UkrBall100': '189.0',
+  'histBall100': '173.0',
+  'mathBall100': '174.0',
+  'physBall100': '141.0',
+  'chemBall100': '186.0',
+  'bioBall100': '165.5',
+  'geoBall100': '174.0',
+  'engBall100': '178.0',
+  'fraBall100': '',
+  'deuBall100': '177.0',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'м.Полтава'},
+ {'EONAME': 'Гадяцький обласний науковий ліцей-інтернат ІІ-ІІІ ступенів імені Є.П.Кочергіна Полтавської обласної ради',
+  'UkrBall100': '177.0',
+  'histBall100': '140.0',
+  'mathBall100': '175.5',
+  'physBall100': '174.0',
+  'chemBall100': '195.5',
+  'bioBall100': '187.0',
+  'geoBall100': '161.0',
+  'engBall100': '148.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'Полтавська область'},
+ {'EONAME': 'Приватне підприємство Приватний загальноосвітній навчальний заклад гімназія Престиж',
+  'UkrBall100': '174.0',
+  'histBall100': '173.25',
+  'mathBall100': '184.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '',
+  'engBall100': '194.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Спеціалізована школа І-ІІІ ступенів №155 з поглибленим вивченням англійської мови Шевченківського району м.Києва',
+  'UkrBall100': '188.0',
+  'histBall100': '183.0',
+  'mathBall100': '177.0',
+  'physBall100': '144.0',
+  'chemBall100': '170.0',
+  'bioBall100': '164.0',
+  'geoBall100': '174.0',
+  'engBall100': '189.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Навчально-виховний комплекс Гімназія - загальноосвітній навчальний заклад І ступеня міста Обухова імені Володимира Мельника',
+  'UkrBall100': '178.0',
+  'histBall100': '153.0',
+  'mathBall100': '173.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '179.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '174.0',
+  'AREANAME': 'Київська область'},
+ {'EONAME': 'Спеціалізована загальноосвітня середня школа №1 з поглибленим вивченням іноземних мов',
+  'UkrBall100': '178.5',
+  'histBall100': '169.0',
+  'mathBall100': '177.0',
+  'physBall100': '138.0',
+  'chemBall100': '173.0',
+  'bioBall100': '174.0',
+  'geoBall100': '183.5',
+  'engBall100': '186.0',
+  'fraBall100': '167.5',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'м.Чернігів'},
+ {'EONAME': 'Білоцерківське навчально-виховне об’єднання «Ліцей-Мала академія наук» Білоцерківської міської ради Київської області',
+  'UkrBall100': '182.0',
+  'histBall100': '173.5',
+  'mathBall100': '178.0',
+  'physBall100': '179.5',
+  'chemBall100': '183.0',
+  'bioBall100': '171.0',
+  'geoBall100': '173.0',
+  'engBall100': '163.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'Київська область'},
+ {'EONAME': 'Дрогобицька спеціалізована школа І-ІІІ ступенів №2 Дрогобицької міської ради Львівської області',
+  'UkrBall100': '177.0',
+  'histBall100': '175.0',
+  'mathBall100': '172.0',
+  'physBall100': '186.0',
+  'chemBall100': '161.0',
+  'bioBall100': '179.0',
+  'geoBall100': '150.0',
+  'engBall100': '150.0',
+  'fraBall100': '',
+  'deuBall100': '177.0',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'Львівська область'},
+ {'EONAME': 'Харківський приватний навчально-виховний комплекс Авторська школа Бойка Харківської області',
+  'UkrBall100': '183.0',
+  'histBall100': '153.0',
+  'mathBall100': '178.0',
+  'physBall100': '164.0',
+  'chemBall100': '',
+  'bioBall100': '184.0',
+  'geoBall100': '169.0',
+  'engBall100': '180.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Комунальний заклад Харківський університетський ліцей Харківської міської ради Харківської області',
+  'UkrBall100': '177.0',
+  'histBall100': '159.0',
+  'mathBall100': '175.0',
+  'physBall100': '164.0',
+  'chemBall100': '138.0',
+  'bioBall100': '173.5',
+  'geoBall100': '169.0',
+  'engBall100': '179.5',
+  'fraBall100': '192.0',
+  'deuBall100': '191.0',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Комунальний заклад Рівненський обласний науковий ліцей-інтернат ІІ-ІІІ ступенів Рівненської обласної ради',
+  'UkrBall100': '180.0',
+  'histBall100': '165.0',
+  'mathBall100': '177.0',
+  'physBall100': '157.0',
+  'chemBall100': '183.0',
+  'bioBall100': '179.0',
+  'geoBall100': '170.0',
+  'engBall100': '167.0',
+  'fraBall100': '',
+  'deuBall100': '182.5',
+  'spaBall100': '',
+  'zno_median': '173.5',
+  'AREANAME': 'Рівненська область'},
+ {'EONAME': 'Бистрицький навчально-виховний комплекс загальноосвітня школа I-III ступенів - дошкільний навчальний заклад Кролевецької районної ради Сумської області',
+  'UkrBall100': '179.0',
+  'histBall100': '170.0',
+  'mathBall100': '174.5',
+  'physBall100': '175.5',
+  'chemBall100': '',
+  'bioBall100': '172.0',
+  'geoBall100': '',
+  'engBall100': '',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.25',
+  'AREANAME': 'Кролевецький район'},
+ {'EONAME': 'Навчально-виховний комплекс Сквирський ліцей - загальноосвітня школа І-ІІ ступенів Сквирської районної ради Київської області',
+  'UkrBall100': '174.0',
+  'histBall100': '173.0',
+  'mathBall100': '176.0',
+  'physBall100': '116.0',
+  'chemBall100': '197.0',
+  'bioBall100': '174.5',
+  'geoBall100': '142.0',
+  'engBall100': '122.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'Сквирський район'},
+ {'EONAME': 'Комунальний заклад Луцька гімназія №4 імені Модеста Левицького Луцької міської ради Волинської області',
+  'UkrBall100': '175.0',
+  'histBall100': '171.0',
+  'mathBall100': '168.0',
+  'physBall100': '159.5',
+  'chemBall100': '182.0',
+  'bioBall100': '177.0',
+  'geoBall100': '181.0',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '145.0',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'Волинська область'},
+ {'EONAME': 'Херсонська спеціалізована школа I-III ступенів № 24 із поглибленим вивченням математики, фізики та англійської мови Херсонської міської ради',
+  'UkrBall100': '172.0',
+  'histBall100': '162.5',
+  'mathBall100': '180.0',
+  'physBall100': '173.0',
+  'chemBall100': '175.0',
+  'bioBall100': '180.0',
+  'geoBall100': '172.5',
+  'engBall100': '175.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'м.Херсон'},
+ {'EONAME': 'Комунальний заклад Луцький навчально-виховний комплекс Гімназія №14 імені Василя Сухомлинського Луцької міської ради Волинської області',
+  'UkrBall100': '186.0',
+  'histBall100': '174.0',
+  'mathBall100': '173.0',
+  'physBall100': '167.0',
+  'chemBall100': '',
+  'bioBall100': '182.0',
+  'geoBall100': '177.0',
+  'engBall100': '169.0',
+  'fraBall100': '',
+  'deuBall100': '173.0',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'Волинська область'},
+ {'EONAME': 'Опорний заклад Рудківська середня загальноосвітня школа І-ІІІ ступенів імені Володимира Жеребного Самбірського району Львівської області',
+  'UkrBall100': '189.0',
+  'histBall100': '158.0',
+  'mathBall100': '183.0',
+  'physBall100': '162.0',
+  'chemBall100': '',
+  'bioBall100': '173.0',
+  'geoBall100': '',
+  'engBall100': '182.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'Самбірський район'},
+ {'EONAME': 'Гімназія Національного педагогічного університету імені М.П.Драгоманова Шевченківського району м.Києва',
+  'UkrBall100': '174.0',
+  'histBall100': '161.5',
+  'mathBall100': '174.5',
+  'physBall100': '151.5',
+  'chemBall100': '127.0',
+  'bioBall100': '178.5',
+  'geoBall100': '184.5',
+  'engBall100': '172.0',
+  'fraBall100': '',
+  'deuBall100': '185.5',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Харківська гімназія №46 ім. М.В. Ломоносова Харківської міської ради Харківської області',
+  'UkrBall100': '176.5',
+  'histBall100': '161.5',
+  'mathBall100': '170.0',
+  'physBall100': '142.5',
+  'chemBall100': '176.0',
+  'bioBall100': '185.0',
+  'geoBall100': '155.5',
+  'engBall100': '177.0',
+  'fraBall100': '186.0',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Навчально-виховний комплекс № 167 з поглибленим вивченням німецької мови (спеціалізована школа І ступеня - гімназія) м. Києва',
+  'UkrBall100': '183.0',
+  'histBall100': '173.0',
+  'mathBall100': '182.0',
+  'physBall100': '169.0',
+  'chemBall100': '',
+  'bioBall100': '194.0',
+  'geoBall100': '154.0',
+  'engBall100': '163.0',
+  'fraBall100': '',
+  'deuBall100': '184.0',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Комунальний заклад освіти Фінансово-економічний ліцей наукового спрямування при Університеті митної справи та фінансів Дніпровської міської ради',
+  'UkrBall100': '178.0',
+  'histBall100': '162.0',
+  'mathBall100': '174.0',
+  'physBall100': '173.0',
+  'chemBall100': '176.0',
+  'bioBall100': '184.0',
+  'geoBall100': '166.5',
+  'engBall100': '173.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '173.0',
+  'AREANAME': 'м.Дніпро'},
+ {'EONAME': 'Харківський навчально-виховний комплекс № 45 Академічна гімназія Харківської міської ради Харківської області',
+  'UkrBall100': '174.0',
+  'histBall100': '173.5',
+  'mathBall100': '177.0',
+  'physBall100': '176.5',
+  'chemBall100': '136.0',
+  'bioBall100': '172.0',
+  'geoBall100': '155.0',
+  'engBall100': '171.0',
+  'fraBall100': '',
+  'deuBall100': '177.5',
+  'spaBall100': '',
+  'zno_median': '172.75',
+  'AREANAME': 'м.Харків'},
+ {'EONAME': 'Ліцей Гранд',
+  'UkrBall100': '177.0',
+  'histBall100': '152.0',
+  'mathBall100': '172.5',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '',
+  'geoBall100': '',
+  'engBall100': '177.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Чернівецька гімназія №4 Чернівецької міської ради',
+  'UkrBall100': '180.0',
+  'histBall100': '169.0',
+  'mathBall100': '172.5',
+  'physBall100': '',
+  'chemBall100': '165.0',
+  'bioBall100': '175.0',
+  'geoBall100': '165.5',
+  'engBall100': '182.0',
+  'fraBall100': '',
+  'deuBall100': '172.5',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Чернівці'},
+ {'EONAME': 'Чернівецький ліцей №1 математичного та економічного профілів Чернівецької міської ради',
+  'UkrBall100': '172.0',
+  'histBall100': '164.0',
+  'mathBall100': '183.0',
+  'physBall100': '173.5',
+  'chemBall100': '',
+  'bioBall100': '179.5',
+  'geoBall100': '181.0',
+  'engBall100': '173.0',
+  'fraBall100': '171.0',
+  'deuBall100': '144.0',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Чернівці'},
+ {'EONAME': 'Володимир-Волинська гімназія імені Олександра Цинкаловського Володимир-Волинської міської ради Волинської області',
+  'UkrBall100': '178.0',
+  'histBall100': '165.5',
+  'mathBall100': '142.0',
+  'physBall100': '159.0',
+  'chemBall100': '173.0',
+  'bioBall100': '173.5',
+  'geoBall100': '172.5',
+  'engBall100': '179.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'Волинська область'},
+ {'EONAME': 'Гімназія №172 Нивки Шевченківського району м.Києва',
+  'UkrBall100': '177.0',
+  'histBall100': '164.0',
+  'mathBall100': '172.5',
+  'physBall100': '138.0',
+  'chemBall100': '162.0',
+  'bioBall100': '179.5',
+  'geoBall100': '196.0',
+  'engBall100': '173.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': "Навчально-виховний комплекс Ерудит дошкільний заклад (дитячий садок)-школа І ступеня - гімназія Солом'янського району м. Києва",
+  'UkrBall100': '182.0',
+  'histBall100': '174.0',
+  'mathBall100': '173.0',
+  'physBall100': '168.0',
+  'chemBall100': '156.0',
+  'bioBall100': '180.5',
+  'geoBall100': '150.5',
+  'engBall100': '172.0',
+  'fraBall100': '179.5',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Товариство з обмеженою відповідальністю Учбовий комплекс Олександрійська гімназія',
+  'UkrBall100': '173.5',
+  'histBall100': '135.0',
+  'mathBall100': '176.0',
+  'physBall100': '',
+  'chemBall100': '',
+  'bioBall100': '171.5',
+  'geoBall100': '',
+  'engBall100': '182.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.5',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Дрогобицька загальноосвітня школа І-ІІІ ступенів №10 Дрогобицької міської ради Львівської області',
+  'UkrBall100': '179.0',
+  'histBall100': '180.0',
+  'mathBall100': '172.0',
+  'physBall100': '179.0',
+  'chemBall100': '179.5',
+  'bioBall100': '172.0',
+  'geoBall100': '169.0',
+  'engBall100': '159.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.0',
+  'AREANAME': 'Львівська область'},
+ {'EONAME': 'Загальноосвітній навчальний заклад І–ІІІ ступеня «Спеціалізована школа №17 з поглибленим вивченням математики» Подільського району м. Києва',
+  'UkrBall100': '178.0',
+  'histBall100': '167.0',
+  'mathBall100': '186.0',
+  'physBall100': '179.5',
+  'chemBall100': '172.0',
+  'bioBall100': '185.0',
+  'geoBall100': '145.0',
+  'engBall100': '169.0',
+  'fraBall100': '',
+  'deuBall100': '',
+  'spaBall100': '',
+  'zno_median': '172.0',
+  'AREANAME': 'м.Київ'},
+ {'EONAME': 'Ліцей №28 Львівської міської ради',
+  'UkrBall100': '185.5',
+  'histBall100': '169.0',
+  'mathBall100': '176.0',
+  'physBall100': '161.0',
+  'chemBall100': '175.0',
+  'bioBall100': '182.0',
+  'geoBall100': '160.5',
+  'engBall100': '165.0',
+  'fraBall100': '',
+  'deuBall100': '182.0',
+  'spaBall100': '',
+  'zno_median': '172.0',
+  'AREANAME': 'м.Львів'}]
+        const data = [
+        //Посещений врачей
+        [384784199, 381035865, 384160635, 377965552, 371481413, 372425736, 311849514, 312975316, 309405054, 302089486, 289377302, 262439249],
+        //операций в стационаре
+        [2489579, 2389617, 2425410, 2439132, 2432377, 2453725, 2043627, 2056444, 2047298, 2042845, 2035114, 2027951],
+        //смертность
+        [669960,697110,741662,764669,792587,776717,754151,719954,739170,758082,745952,754911,765408,761261,781961,758092,762877,754460,706739,698235,664588,663139,662368,632296,594796,583631,574123,587665],
+        //Врачей
+        [226414, 224622, 223698, 220408, 208366, 207077, 174231, 175061, 173833, 172680, 168261, 163281],
+        //Посещений врачей
+        [384784199, 381035865, 384160635, 377965552, 371481413, 372425736, 311849514, 312975316, 309405054, 302089486, 289377302, 262439249],
+        //операций в стационаре
+        [2489579, 2389617, 2425410, 2439132, 2432377, 2453725, 2043627, 2056444, 2047298, 2042845, 2035114, 2027951],
+        //смертность
+        [669960,697110,741662,764669,792587,776717,754151,719954,739170,758082,745952,754911,765408,761261,781961,758092,762877,754460,706739,698235,664588,663139,662368,632296,594796,583631,574123,587665],
+        //Врачей
+        [226414, 224622, 223698, 220408, 208366, 207077, 174231, 175061, 173833, 172680, 168261, 163281]
+        
+    ];
+    for (r=0;r<data.length;r++) {
+        makeSparklines(r)
+    }
+    function makeSparklines(num) {
+        const width = 120;
+        const height = 30;
+        const margin = { top: 10, right: 5, bottom: 5, left: 5 };
+        const inner_width  = width - margin.left - margin.right;
+        const inner_height = height - margin.top - margin.bottom;
+        const x = d3.scaleLinear().domain([0, data[num].length]).range([0, inner_width]);
+        const y = d3.scaleLinear().domain([0, d3.max(data[num])]).range([inner_height, 0]);
+
+        const svg = d3.select('#sparklines'+String(num))
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        
+        const line = d3.line()
+            .x((d, i) => x(i))
+            .y(d => y(d));
+        
+        var tooltip = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .style("padding", "14px")
+            .style("background-color", "#f5f5f5")
+            .style("color", "black")
+            .style("border-radius", "6px")
+            .style("border-color", "black")
+            .style("font", "12px sans-serif")
+            .text("tooltip");
+        
+        var cell = svg.append('path').datum(data[num])
+            .attr('fill', 'none')
+            .attr('stroke', '#bbb')
+            .attr('stroke-width', 1)
+            .attr('d', line)
+            .text(function(d) { return d; });
+        svg.append('circle')
+            .attr('r', 2)
+            .attr('cx', x(0))
+            .attr('cy', y(data[num][0]))
+            .attr('fill', 'steelblue');
+        svg.append('circle')
+            .attr('r', 2)
+            .attr('cx', x(data[num].length - 1))
+            .attr('cy', y(data[num][data[num].length - 1]))
+            .attr('fill', 'tomato');
+        
+
+    }
+    var dataNSI = [
+        {name: 'Украина',low: 10.2,high: 13},
+        {name: 'США',low: 11,high: 13.5},
+        {name: 'Латвия',low: 11.2,high: 13.4},
+        {name: 'Польща',low: 11.3,high: 13.3},
+
+        {name: 'Эстония',low: 11.3,high: 13},
+        {name: 'Великобритания',low: 11.4,high: 14.8},
+        {name: 'Австрия',low: 11.5,high: 14.7},
+        {name: 'Швеция',low: 11.5,high: 14.7},
+        {name: 'Германия',low: 11.6,high: 14.7},
+        {name: 'Канада',low: 11.6,high: 14.5},
+        {name: 'Финляндия',low: 11.8,high: 14.5},
+        {name: 'Южная Корея',low: 11.9,high: 14.4},
+        {name: 'Япония',low: 11.95,high: 14.45}
+        ];
+
+    Highcharts.chart('dataNSI', {
+
+        chart: {
+            type: 'dumbbell',
+            style: {
+                fontFamily: 'Roboto'
+            },
+            inverted: true
+        },
+
+        legend: {
+            enabled: false
+        },
+
+        subtitle: {
+            text: 'на основе Индекса человеческого капитала (HCI). Источник: данные HLO и исследование STEP Мирового банка'
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Разрыв между фактической длительностью обучения и поправкой на качество образования'
+        },
+
+        tooltip: {
+            shared: true
+        },
+
+        xAxis: {
+            type: 'category'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Лет'
+            }
+        },
+        
+        series: [{
+            name: 'Life expectancy change',
+            data: dataNSI
+        }]
+
+    });
+    Highcharts.chart('finance', {
+        chart: {
+            type: 'column',
+            style: {
+                fontFamily: 'Roboto'
+            }
+        },
+        title: {
+            text: 'Траты государственного и местных бюджетов на образование'
+        },
+
+        subtitle: {
+            text: 'Источник: МОН'
+        },
+
+        yAxis: {
+            title: null,
+            labels: {
+                format: '{value}%'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                pointStart: 2010
+            }
+        },
+
+        series: [{
+            name: '% от ВВП',
+            data: [7.4, 6.6, 7.2, 7.2, 6.3, 5.7, 5.4,6,5.9]
+        }, {
+            name: '% от сведенного бюджета',
+            data: [21.1,20.7,20.6,20.9,19.1,16.8,15.5,16.8,16.6]
+        }]
+
+    });
+    Highcharts.chart('finance_parts', {
+        chart: {
+            type: 'bar',
+            style: {
+                fontFamily: 'Roboto'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        subtitle: {
+            text: 'Источник: МОН'
+        },
+        title: {
+            text: 'Доля разных уровней образования в бюджете'
+        },
+        xAxis: {
+            categories: ['2014', '2015', '2016', '2017', '2018']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: null
+            },
+            labels: {
+                format: '{value}%'
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+            shared: true
+        },
+        plotOptions: {
+            bar: {
+                stacking: 'percent',
+                dataLabels: {
+                    enabled: true,
+                    //format: '{series.name}'
+                    formatter: function() {
+                        var name = this.series.name
+                        if (name != 'Внешкольное' && this.x == '2014') {
+                            return this.series.name+': '+this.y+'%'
+                        } else if (this.x != '2014') {
+                            return this.y+'%'
+                        }
+                        //if (this.series.name !=)
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Последипломное',
+            data: [0.9,0.8,0.8,0.8,0.8]
+        },{
+            name: 'Проф-техническое',
+            data: [5.9,5.4,4.8,4.7,5]
+        }, {
+            name: 'Внешкольное',
+            data: [5.9,5.4,4.8,4.7,5]
+        }, {
+            name: 'Другое',
+            data: [3,3.1,3.8,5.1,5.5]
+        }, {
+            name: 'Дошкольное',
+            data: [15.2,15.9,15.5,15.9,15.5]
+        },{
+            name: 'Высшее',
+            data: [28.3,27.1,27.2,21.8,20.7]
+        }, {
+            name: 'Среднее школьное',
+            data: [42.4,43.5,43.7,47.4,48]
+        }]
+    });
+    Highcharts.chart('grad', {
+        chart: {
+            type: 'bar',
+            style: {
+                fontFamily: 'Roboto'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        subtitle: {
+            text: 'Источник: МОН'
+        },
+        title: {
+            text: 'ТОП-специальности по количеству выпускников-бакалавров 2020'
+        },
+        xAxis: {
+            categories: ["Право","Менеджмент","Учет, аудит и налогообложение","Предпринимательство, торговля, биржа","Финансы, банковская деятельность, страхование","Морской и речной транспорт","Пищевые технологии","Пожарная безопасность","Гостинично-ресторанная деятельность","Экономика"]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: null
+            },
+            labels: {
+                format: '{value}'
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+            shared: true
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        series: [{
+            name: 'Выпускников',
+            showInLegend: false,
+            data: [1080,948,802,596,588,582,497,460,337,252]
+        }]
+    });
+    </script>
+    </body>
+</html>
