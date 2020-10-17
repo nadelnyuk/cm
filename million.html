@@ -159,7 +159,7 @@
 <script type="text/javascript">
 	function getValue(file){
 	   var value = $.ajax({ 
-	      url: file+'.json', 
+	      url: 'https://cdn.jsdelivr.net/gh/liga-net/few-projects/'+file+'.json', 
 	      async: false
 	   }).responseJSON.data;
 	   return value;
@@ -168,7 +168,7 @@
         rayon_data = null,
         mer_data = null,
         oblasne_data = null;
-    const data = getValue('https://cdn.jsdelivr.net/gh/liga-net/few-projects/local_dils');
+    const data = getValue('local_dils');
 
 	var modal = document.getElementById('myModal');
 	var obl = [
