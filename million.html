@@ -158,7 +158,7 @@
 <script type="text/javascript">
 	function getValue(file){
 	   var value = $.ajax({ 
-	      url: 'https://raw.githubusercontent.com/nadelnyuk/cm/master/'+file+'.json', 
+	      url: file+'.json', 
 	      async: false
 	   }).responseJSON.data;
 	   return value;
@@ -167,8 +167,7 @@
         rayon_data = null,
         mer_data = null,
         oblasne_data = null;
-
-    const data = getValue('local_dils');
+    const data = getValue('https://raw.githubusercontent.com/nadelnyuk/cm/master/local_dils');
 
 	var modal = document.getElementById('myModal');
 	var obl = [
@@ -214,7 +213,7 @@
         var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
         
 		random += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + сity_place +  '</div>';
-		random += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="https://raw.githubusercontent.com/nadelnyuk/cm/master/point.png"> ' +rayon_place + '</div>';
+		random += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' +rayon_place + '</div>';
 		random += '</div></div>';
 		return random
 	}
@@ -276,23 +275,23 @@
         text += '<div class="first_text">Дільниця №' + splited_id[2].replace('d','') + '</div>'
         text += '<div class="title">Бюлетень №1: кандидати у мери</div>'
         if (mer_data == null) {
-            var mer_data = getValue('mer_candidates');
+            var mer_data = getValue('https://raw.githubusercontent.com/nadelnyuk/cm/master/mer_candidates');
         }
         makeTable(mer_data,'mer')
         text += '<div class="title"><button id="miski">Бюлетень №2: кандидати до міської ради</button></div>'
         if (miski_data == null) {
-            var miski_data = getValue('miski_candidates');
+            var miski_data = getValue('https://raw.githubusercontent.com/nadelnyuk/cm/master/miski_candidates');
         }
         makeTable(miski_data,'miski')
         if (splited_id[0].replace('c','') != 4) {
             text += '<div class="title"><button id="rayon">Бюлетень №3: кандидати до районної ради</button></div>'
             if (rayon_data == null) {
-                var rayon_data = getValue('rayon_candidates');
+                var rayon_data = getValue('https://raw.githubusercontent.com/nadelnyuk/cm/master/rayon_candidates');
             }
             makeTable(rayon_data,'rayon')
             text += '<div class="title"><button id="oblasni">Бюлетень №4: кандидати до обласної ради</button></div>'
             if (oblasne_data == null) {
-                var oblasni_data = getValue('oblasni_candidates');
+                var oblasni_data = getValue('https://raw.githubusercontent.com/nadelnyuk/cm/master/oblasni_candidates');
             }
             makeTable(oblasni_data,'oblasni')
         } 
@@ -328,6 +327,7 @@
 	$('#txt-search').keyup(function(){
 		function makeOutput (val,search) {
             var place = ''
+            //var place = val.place;
             
 			var regex_replace = new RegExp(searchField,'i')
 
@@ -338,7 +338,7 @@
             var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
 
 			output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
-			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="https://raw.githubusercontent.com/nadelnyuk/cm/master/point.png"> ' + rayon_place + '</div>';
+			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
             output += '<div class="district">Дільниця №' + val.dil + '</div>';
 
 
