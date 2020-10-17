@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<style type="text/css">
+		h1 {line-height: 1.3}
+		.text {max-width: 650px; margin: 0 auto; line-height: 1.6; padding-left: 10px;}
+		#grid {max-width: 720px; margin: 0 auto;}
+		.modal {
+		  display: none; 
+		  position: fixed;
+		  z-index: 1;
+		  left: 0;
+		  top: 0;
+		  width: 100%;
+		  height: 100%;
+		  overflow: auto;
+		  background-color: rgb(0,0,0);
+		  background-color: rgba(0,0,0,0.4);
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+		  background-color: #fefefe;
+		  margin: 7% auto;
+		  margin-left: 17%;
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 53%; 
+		}
+		.close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		}
+		.close:hover,
+		.close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+		.form-group {
+		    margin-bottom: 15px;
+		    margin-left: 5px;
+		}
+		.input-lg {
+		    height: 46px;
+		    padding: 10px 16px;
+		    font-size: 18px;
+		    line-height: 1.3;
+		    border-radius: 6px;
+		}
+		.form-control {
+		    display: block;
+		    width: 95%;
+		    height: 34px;
+		    padding: 4px 12px;
+		    font-size: 14px;
+		    line-height: 1.4;
+		    color: #555;
+		    background-color: #fff;
+		    background-image: none;
+		    border: 1px solid #ccc;
+		    border-radius: 4px;
+		    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		}
+		.row {
+			max-width: 100%;
+			margin: 0 auto;
+		    
+		}
+		.well {
+			width: 130px;
+			position: relative;
+			display: inline-block;
+		    min-height: 130px;
+		    vertical-align: top;
+		    margin: 0px 5px;
+		    padding: 19px;
+		    margin-bottom: 20px;
+		    background-color: #f5f5f5;
+		    border: 1px solid #e3e3e3;
+		    border-radius: 4px;
+		    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+		    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+		    cursor: pointer;
+		}
+		.okrug {font-size: 16px; font-weight: bold; }
+		.district {font-size: 14px; margin-top: 15px;}
+		table {border-collapse: collapse; margin: 0 auto; margin-top: 10px;}
+        td, th {padding: 5px 30px 5px 0px; text-transform: capitalize;}
+        tr {border-bottom: 1px solid #cecece}
+        .title {font-weight: bold; font-size: 20px;margin-top:20px;}
+        .first_text {font-size: 14px; margin-top: 5px}
+		.position {font-size: 14px;border-bottom: 1px solid #cecece;}
+		.position a {color: black; text-decoration: none; border-bottom: 1px solid #042964}
+		.party {padding: 5px 5px;}
+		.district {word-wrap: break-word; width: 132px;}
+		.region {position: absolute; top: 94px;}
+		.many {width: 132px; height: 36px; text-overflow: ellipsis; white-space: pre-line; overflow: hidden; position: absolute; bottom: 5px;}
+        .ssource {font-size: 12px; color: #cecece;}
+        #mer_table {margin-top:10px;}
+        #miski_table,#rayon_table,#oblasni_table {display: none; margin-top:10px;}
+        #miski:hover,#rayon:hover,#oblasni:hover {cursor: pointer;}
+		@media (max-width: 815px){
+			.party {padding: 0px;}
+			.modal-content {
+			  margin: 15% auto;
+			  margin-left: 7%;
+			  padding: 20px;
+			  border: 1px solid #888;
+			  width: 75%; 
+			}
+			td, th {padding: 5px 0px 5px 0px; text-transform: capitalize;}
+		}
+		@media (max-width: 375px){
+			
+			.well {width: 90%; min-height: 115px;}
+			.district {width: 100%; word-wrap: normal;}
+			.region {top: 66px;}
+		}
+	</style>
+
+</head>
+<body>
+	<div class="text">
+    <h1>Заголовок</h1>
+    <h4>Подзаг</h4>
+    <hr>
+    <p style="margin-top: 20px;"><b>ИМЯ фамилия</b></p>
+    <p style="font-size: 12px;">18.04.2019</p>
+    <p style="margin-top: 50px;">Порошенко, Зеленский, опять Зеленский и вновь Порошенко,  дебаты, заявления, обещания, видеообращения, обвинения, <оскорбления… Информационный предвыборный ураган вываливает на украинцев ежедневно сотни новостей-статей о финалистах президентской гонки Порошенко и Зеленском. Дают ли они ответ на вопрос - что за человек будет управлять Украиной следующие пять лет. </p>
+  </div>
+    
+	<div id="grid">
+		<h3>Поиск по округам</h3>
+		<form role="form">
+			<div class="form-group">
+				<input type="input" class="form-control input-lg" id="txt-search" placeholder="Введіть свій населенний пункт, район або вулицю">
+			</div>
+		</form>
+		<div id="filter-records"></div>
+		<div id="myModal" class="modal">
+			<div class="modal-content"><span class="close">&times;</span><div id="cont"></div>
+		</div>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- <script type="text/javascript" src='majori1.js'></script> -->
+<script type="text/javascript">
+	function getValue(file){
+	   var value = $.ajax({ 
+	      url: file+'.json', 
+	      async: false
+	   }).responseJSON.data;
+	   return value;
+    }
+    var miski_data = null,
+        rayon_data = null,
+        mer_data = null,
+        oblasne_data = null;
+    //var data = getValue('data');
+    //var data = getValue('local_dils');
+    /* var data = [
+        {"id": "121046", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Бережна: 146–148, 150, 152, 154, 156, 158–158А, 160–160А, 164, 166, 168–168А, 170–170Б, 172, 174А, 176, 178–178А, 180–180А, 182, 184–184В, 200–373; вул.Березанівська, вул.Епіка, вул.Загірська: 36–36А, 38, 40–63А; вул.Кінноспортивна, вул.Моторна: 187, 189–191А, 193–193А, 195, 197, 201, 203–203А, 205, 207, 209–209А, 211, 213, 215, 217, 219, 221, 223–223А, 225, 227, 229–229А, 231А, 235, 240–296А; вул.Мохова: 90–92, 96–96А, 98, 100, 102–102А, 104–104А, 106–106А, 108–246; вул.Новоставкова, вул.Передова: 673–677, 683–685, 687–689, 691, 693, 695, 698–699В, 701, 703, 705, 707, 709, 711–713А, 715, 717, 719, 721, 723, 725, 727, 729, 731, 733, 735–735А, 737–737А, 745, 747–749, 751, 753–755, 757, 759, 761, 763–763А, 765, 767, 769–771, 773, 779–781, 783–783А, 785–785А, 787, 789, 791, 793, 795, 797, 799–820; вул.Робкорівська: 26–26А, 28, 30, 32–194; вул.Шпакова, пров.Касьянівський, пров.Моховий, пров.Новоставковий, шосе Полтавське, Обслуговуючий кооператив Садове товариство Озерне, садівниче товариство Березка, садівниче товариство Родник, садівниче товариство Росинка-5", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
+        {"id": "121049", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Атлетична, вул.Бєлградська: 47–47А, 49, 51, 53, 55, 57, 59, 61, 63–63А, 65–177; вул.Гуртова: 21, 23, 25, 27, 29, 31–31А, 33–33А, 35; вул.Казахстанська: 71, 73, 75, 77, 79, 81–81А, 83, 87–266; вул.Лєскова, вул.Невська, вул.Олексія Неживого, вул.Передова: 513, 517, 519–519А, 523, 525–525А, 527–531, 533, 535, 537, 539, 541–541А, 543, 545, 547, 549, 551, 555, 557, 559, 561, 563, 565–567А, 569–569А, 571–571З, 573–573Б, 575, 577–577А, 579, 581–581А, 583, 585, 587, 589, 591, 593, 599–599В, 601, 603, 605, 607–609, 611–669, 678, 686, 690, 692, 694, 696, 700, 702, 704–704А, 706, 708, 710, 714–714А, 716–716А, 718, 720, 722, 724, 726, 728, 730, 732, 734, 736–736А, 740–744, 746, 750–750А, 752, 756, 758, 760, 762, 764, 766, 768, 772–772А, 776А–778, 782, 784, 786, 788–788А, 790, 792, 794–794А, 796, 798–798А; вул.Петриківська, вул.Східна, вул.Царичанська, пров.Лук’яненка, пров.Східний", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
+        {"id": "121076", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Каруни: 2, 4; вул.Котляревського: 2, 5–9Б; вул.Полонської-Василенко: 4–6Б; просп.Слобожанський: 19, 21;", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
+        {"id": "121086", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Калинова: 76, 77, 79, 79А к.1, 79А к.2, 81;", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0}
+    ]; */
+    const data = getValue('local_dils');
+
+	var modal = document.getElementById('myModal');
+	var obl = [
+		{name: 'Вінницька', id: 5},{name: 'Волинська', id: 7},{name: 'Дніпропетровська', id: 12},{name: 'Донецька', id: 14},{name: 'Житомирська', id: 18},{name: 'Закарпатська', id: 21},{name: 'Запорізька', id: 23},{name: 'Івано-Франківська', id: 26},{name: 'Київська', id: 32},{name: 'Кіровоградська', id: 35},{name: 'Луганська', id: 44},{name: 'Львівська', id: 46},{name: 'Миколаївська', id: 48},{name: 'Одеська', id: 51},{name: 'Полтавська', id: 53},{name: 'Рівненська', id: 56},{name: 'Сумська', id: 59},{name: 'Тернопільська', id: 61},{name: 'Харківська', id: 63},{name: 'Херсонська', id: 65},{name: 'Хмельницька', id: 68},{name: 'Черкаська', id: 71},{name: 'Чернівецька', id: 73},{name: 'Чернігівська', id: 74},{name: 'Київ', id: 80}
+    ];
+    var city_replace = [{name:'Дніпро', id:1},{name:'Львів', id:2},{name:'Харків', id:3},{name:'Київ', id:4}];
+    var rayon_replace = [{'name': 'Амур-Нижньодніпровський район', 'id': 1},
+        {'name': 'Шевченківський район', 'id': 2},
+        {'name': 'Індустріальний район', 'id': 3},
+        {'name': 'Новокодацький район', 'id': 4},
+        {'name': 'Самарський район', 'id': 5},
+        {'name': 'Соборний район', 'id': 6},
+        {'name': 'Центральний район', 'id': 7},
+        {'name': 'Чечелівський район', 'id': 8},
+        {'name': 'Галицький район', 'id': 9},
+        {'name': 'Залізничний район', 'id': 10},
+        {'name': 'Личаківський район', 'id': 11},
+        {'name': 'Сихівський район', 'id': 12},
+        {'name': 'Франківський район', 'id': 13},
+        {'name': 'Київський район', 'id': 14},
+        {'name': 'Московський район', 'id': 15},
+        {'name': 'Немишлянський район', 'id': 16},
+        {'name': 'Новобаварський район', 'id': 17},
+        {'name': "Основ'янський район", 'id': 18},
+        {'name': 'Слобідський район', 'id': 19},
+        {'name': 'Холодногірський район', 'id': 20},
+        {'name': 'Голосіївський район', 'id': 21},
+        {'name': 'Дарницький район', 'id': 22},
+        {'name': 'Деснянський район', 'id': 23},
+        {'name': 'Дніпровський район', 'id': 24},
+        {'name': 'Оболонський район', 'id': 25},
+        {'name': 'Печерський район', 'id': 26},
+        {'name': 'Подільський район', 'id': 27},
+        {'name': 'Святошинський район', 'id': 28},
+        {'name': "Солом'янський район", 'id': 29}];
+	
+	function getRandomArbitrary() {
+		return Math.round(Math.random() * (data.length - 0) + 0);
+    }
+    
+	function randomOutput(val) {
+        var сity_place = city_replace.filter(d => d['id'] == val.city)[0].name
+        var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
+        
+		random += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + сity_place +  '</div>';
+		random += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' +rayon_place + '</div>';
+		random += '</div></div>';
+		return random
+	}
+	function range(start, end) {
+		var foo = [];
+		for (var i = start; i <= end; i++) {
+			foo.push(i);
+		}
+		return foo;
+    }
+    function toggle(element_id) {
+        var x = document.getElementById(element_id);
+        if (x.style.display == "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+	function showModal(idd) {
+
+        function makeTable(major,name) {
+            if (name != 'mer') {
+                var filter = major.filter(d => d['city'] == splited_id[0].replace('c','') && 
+                                        d['tvo'] == splited_id[1].replace('m',''))
+            } else {
+                var filter = major.filter(d => d['city'] == splited_id[0].replace('c',''))
+            }
+            var parties = filter.map(p => p.party)
+            var parties = [...new Set(parties)]
+            text += '<table id="'+name+'_table">'
+            for (f=0; f <filter.length; f++) {
+                if (name == 'mer') {
+                    text += '<tr class="position"><td>'+filter[f].name+'</td>'
+                    text += '<td class="position">'+filter[f].party.toLowerCase()+'</td></tr>'
+                } else if (f == 0 || filter[f].party != filter[f-1].party) {
+                    var rowspan = filter.filter(d => d['party'] == filter[f].party).length;
+                    text += '<tr class="position"><td style="text-align: center;" rowspan='+rowspan+'>'+filter[f].party.toLowerCase()+'</td>'
+                    text += '<td>'+filter[f].tvo_num+'</td>'
+                    text += '<td class="position">'+filter[f].name+'</td></tr>'
+                    
+                } else {
+                    text += '<tr class="position"><td>'+filter[f].tvo_num+'</td>'
+                    text += '<td class="position">'+filter[f].name+'</td></tr>'
+                }
+                
+            }
+            text += '</table>'
+            var cont = document.getElementById('cont')
+            cont.innerHTML += text
+        }
+
+        var splited_id = idd.split('_');        
+        
+        var сity_place = city_replace.filter(d => d['id'] == splited_id[0].replace('c',''))[0].name;
+        var text = '<div class="first_text">Місто: ' + сity_place + '</div>'
+        text += '<div class="first_text">Район: ' + rayon_replace.filter(d => d['id'] == splited_id[3].replace('r',''))[0].name + '</div>'
+        text += '<div class="first_text">Територіальний виборчий округ: ' + splited_id[1].replace('m','') + '</div>'
+        text += '<div class="first_text">Дільниця №' + splited_id[2].replace('d','') + '</div>'
+        text += '<div class="title">Бюлетень №1: кандидати у мери</div>'
+        if (mer_data == null) {
+            var mer_data = getValue('mer_candidates');
+        }
+        makeTable(mer_data,'mer')
+        text += '<div class="title"><button id="miski">Бюлетень №2: кандидати до міської ради</button></div>'
+        if (miski_data == null) {
+            var miski_data = getValue('miski_candidates');
+        }
+        makeTable(miski_data,'miski')
+        if (splited_id[0].replace('c','') != 4) {
+            text += '<div class="title"><button id="rayon">Бюлетень №3: кандидати до районної ради</button></div>'
+            if (rayon_data == null) {
+                var rayon_data = getValue('rayon_candidates');
+            }
+            makeTable(rayon_data,'rayon')
+            text += '<div class="title"><button id="oblasni">Бюлетень №4: кандидати до обласної ради</button></div>'
+            if (oblasne_data == null) {
+                var oblasni_data = getValue('oblasni_candidates');
+            }
+            makeTable(oblasni_data,'oblasni')
+        } 
+        
+        var cont = document.getElementById('cont')
+        cont.innerHTML = text
+        
+        modal.style.display = "block";
+
+        
+        $('#miski').on('click',function() {
+            toggle('miski_table')
+        })
+        $('#rayon').on('click',function() {
+            toggle('rayon_table')
+        })
+        $('#oblasni').on('click',function() {
+            toggle('oblasni_table')
+        })
+		//});
+	}
+    var random = '<div class="row">';
+    for (r=0;r<4;r++) {
+		randomOutput(data[getRandomArbitrary()])
+	}
+	random += '</div>';
+    $('#filter-records').html(random);
+    $('.well').on('click', function() {
+        showModal($(this)[0].id);
+    });
+    
+    
+	$('#txt-search').keyup(function(){
+		function makeOutput (val,search) {
+            var place = ''
+            //var place = val.place;
+            
+			var regex_replace = new RegExp(searchField,'i')
+
+			var place = place.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+
+			//var region = obl.filter(d => d['id'] == val.region)[0].name
+            var city_place = city_replace.filter(d => d['id'] == val.city)[0].name;	
+            var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
+
+			output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
+			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
+            output += '<div class="district">Дільниця №' + val.dil + '</div>';
+
+
+			if ((searchField.search(digit) != -1)) {
+
+				var regex2 = new RegExp(searchField.replace(searchField.match(digit)[0],'').trim()+': '+searchField.match(digit)[0], "i");
+				if (search == 0) {
+					var sl2 = val.place.search(regex2)
+				} else{
+					var sl2 = search.search(regex2)
+				}
+				
+				if (sl2 != -1) {
+					if (search == 0) {
+						var sliced = val.place.slice(sl2,val.place.length).split(';')[0]
+					} else{
+						var sliced = search.slice(sl2,search.length).split(';')[0]
+					}
+					if (sliced.includes('–')) {
+						var digit_slash = new RegExp('\\d+\\S?\\S\\d+\\S?');
+						
+						var num = sliced.match(digit_slash)[0]
+						var array1 = num.split('–')
+						var array_range = range(parseInt(array1[0]),parseInt(array1[1]))
+						val.place = val.place.replace(num,array_range.join(', '+searchField.replace(digit,'').trim()+' '))
+						
+					}
+					var word = sliced.replace(': ', ' ')
+					var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+
+					output += '<div class="district many">' + word + '</div>';
+				}
+			} else {
+				var regex1 = new RegExp('\\S+\\s?\\'+searchField.split(' ')[0]+'\\s?\\S+?', "i");
+					
+				var sl = val.place.search(regex1)
+
+				if (sl != -1) {
+					var word = val.place.slice(sl,val.place.length).split(/,|:|;/)[0]
+					var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+
+					output += '<div class="district many">' + word + '</div>';
+				}
+			}
+			output += '</div></div>';
+			return output
+		}
+
+			var searchField = $(this).val();
+
+			
+
+			if(searchField === '')  {
+				$('#filter-records').html('');
+				return;
+			}
+			
+			
+            var regex = new RegExp(searchField.trim().replace("місто ", "м. "), "i");
+            var dis = new RegExp(searchField.replace(' округ', ""), "i");
+
+            var digit = new RegExp('\\d+', "i");
+            
+            var output = '<div class="row">';
+            var count = 1;
+            $.each(data, function(key, val){
+				var regex3 = new RegExp(searchField+': ', "i");
+				if ((val.place.search(regex3) != -1)) {
+					var a = val.place.split(';')
+					var a = a.filter(d => d.toLowerCase().includes(searchField))
+					var a = a.map(d => d.replace(new RegExp('^\\,\\s'),''))
+					for (v=0;v<a.length;v++) {
+						if (a[v].includes(', ')) {
+							var a = a.map(d => d.replace(', ',';'+searchField+': '))
+						}
+						if (a[v].includes('–')) {
+							var c = a[v].split(';')
+							for (x=0;x<c.length;x++) {
+								if ((c[x].includes('–'))) {
+									var slash = new RegExp('\\d+?\\/?\\d+\\–\\d+\\/?\\d+?', "i");
+									if ((c[x].match(slash) != null)&&(c[x].match(slash)[0].split('–')[0]!=c[x].match(slash)[0].split('–')[1])) {
+										var splited = c[x].match(slash)[0].split('–')
+										if (splited[0].includes('/')) {
+											var ifslash1 =';'+ searchField+': '+splited[0]
+											var sp1 = parseInt(splited[0].split('/')[0])+1
+										} else {
+											var ifslash1 = ''
+											var sp1 = parseInt(splited[0])
+										}
+										if (splited[1].includes('/')) {
+											var ifslash2 = ';'+s+': '+splited[1]
+											var sp2 = parseInt(splited[1].split('/')[0])-1
+										} else {
+											var ifslash2 = ''
+											var sp2 = parseInt(splited[1])
+										}
+										a[v] = range(sp1,sp2).join(';'+searchField+': ')+ifslash1+ifslash2
+									}
+								}
+							}
+						}
+					}
+					makeOutput(val,a.join('; ').trim())
+				}
+            });
+            
+			  output += '</div>';
+			  $('#filter-records').html(output);
+              $('.well').on('click', function() {
+                    showModal($(this)[0].id);
+                });
+			  
+        });  
+		
+		var span = document.getElementsByClassName('close')[0];
+		span.onclick = function() {
+		  modal.style.display = "none";
+		}
+		window.onclick = function(event) {
+		  if (event.target == modal) {
+		    modal.style.display = "none";
+		  }
+		}
+</script>
+
+</body>
+</html>
