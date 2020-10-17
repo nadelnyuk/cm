@@ -158,7 +158,7 @@
 <script type="text/javascript">
 	function getValue(file){
 	   var value = $.ajax({ 
-	      url: file+'.json', 
+	      url: 'https://raw.githubusercontent.com/nadelnyuk/cm/master/'+file+'.json', 
 	      async: false
 	   }).responseJSON.data;
 	   return value;
@@ -167,14 +167,7 @@
         rayon_data = null,
         mer_data = null,
         oblasne_data = null;
-    //var data = getValue('data');
-    //var data = getValue('local_dils');
-    /* var data = [
-        {"id": "121046", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Бережна: 146–148, 150, 152, 154, 156, 158–158А, 160–160А, 164, 166, 168–168А, 170–170Б, 172, 174А, 176, 178–178А, 180–180А, 182, 184–184В, 200–373; вул.Березанівська, вул.Епіка, вул.Загірська: 36–36А, 38, 40–63А; вул.Кінноспортивна, вул.Моторна: 187, 189–191А, 193–193А, 195, 197, 201, 203–203А, 205, 207, 209–209А, 211, 213, 215, 217, 219, 221, 223–223А, 225, 227, 229–229А, 231А, 235, 240–296А; вул.Мохова: 90–92, 96–96А, 98, 100, 102–102А, 104–104А, 106–106А, 108–246; вул.Новоставкова, вул.Передова: 673–677, 683–685, 687–689, 691, 693, 695, 698–699В, 701, 703, 705, 707, 709, 711–713А, 715, 717, 719, 721, 723, 725, 727, 729, 731, 733, 735–735А, 737–737А, 745, 747–749, 751, 753–755, 757, 759, 761, 763–763А, 765, 767, 769–771, 773, 779–781, 783–783А, 785–785А, 787, 789, 791, 793, 795, 797, 799–820; вул.Робкорівська: 26–26А, 28, 30, 32–194; вул.Шпакова, пров.Касьянівський, пров.Моховий, пров.Новоставковий, шосе Полтавське, Обслуговуючий кооператив Садове товариство Озерне, садівниче товариство Березка, садівниче товариство Родник, садівниче товариство Росинка-5", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
-        {"id": "121049", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Атлетична, вул.Бєлградська: 47–47А, 49, 51, 53, 55, 57, 59, 61, 63–63А, 65–177; вул.Гуртова: 21, 23, 25, 27, 29, 31–31А, 33–33А, 35; вул.Казахстанська: 71, 73, 75, 77, 79, 81–81А, 83, 87–266; вул.Лєскова, вул.Невська, вул.Олексія Неживого, вул.Передова: 513, 517, 519–519А, 523, 525–525А, 527–531, 533, 535, 537, 539, 541–541А, 543, 545, 547, 549, 551, 555, 557, 559, 561, 563, 565–567А, 569–569А, 571–571З, 573–573Б, 575, 577–577А, 579, 581–581А, 583, 585, 587, 589, 591, 593, 599–599В, 601, 603, 605, 607–609, 611–669, 678, 686, 690, 692, 694, 696, 700, 702, 704–704А, 706, 708, 710, 714–714А, 716–716А, 718, 720, 722, 724, 726, 728, 730, 732, 734, 736–736А, 740–744, 746, 750–750А, 752, 756, 758, 760, 762, 764, 766, 768, 772–772А, 776А–778, 782, 784, 786, 788–788А, 790, 792, 794–794А, 796, 798–798А; вул.Петриківська, вул.Східна, вул.Царичанська, пров.Лук’яненка, пров.Східний", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
-        {"id": "121076", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Каруни: 2, 4; вул.Котляревського: 2, 5–9Б; вул.Полонської-Василенко: 4–6Б; просп.Слобожанський: 19, 21;", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0},
-        {"id": "121086", "region": 12, "rayon": 63562, "city": 1, "place": "вул.Калинова: 76, 77, 79, 79А к.1, 79А к.2, 81;", "oblaste": 1, "miske": 1, "rayon_tvo": 2.0}
-    ]; */
+
     const data = getValue('local_dils');
 
 	var modal = document.getElementById('myModal');
@@ -221,7 +214,7 @@
         var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
         
 		random += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + сity_place +  '</div>';
-		random += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' +rayon_place + '</div>';
+		random += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="https://raw.githubusercontent.com/nadelnyuk/cm/master/point.png"> ' +rayon_place + '</div>';
 		random += '</div></div>';
 		return random
 	}
@@ -335,7 +328,6 @@
 	$('#txt-search').keyup(function(){
 		function makeOutput (val,search) {
             var place = ''
-            //var place = val.place;
             
 			var regex_replace = new RegExp(searchField,'i')
 
@@ -346,7 +338,7 @@
             var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
 
 			output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
-			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
+			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="https://raw.githubusercontent.com/nadelnyuk/cm/master/point.png"> ' + rayon_place + '</div>';
             output += '<div class="district">Дільниця №' + val.dil + '</div>';
 
 
