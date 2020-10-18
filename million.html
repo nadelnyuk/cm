@@ -26,8 +26,8 @@
 		/* Modal Content/Box */
 		.modal-content {
 		  background-color: #fefefe;
-		  margin: 7% auto;
-		  margin-left: 17%;
+		  margin: 8% auto;
+		  margin-left:22%;
 		  padding: 20px;
 		  border: 1px solid #888;
 		  width: 53%; 
@@ -96,12 +96,12 @@
 		}
 		.okrug {font-size: 16px; font-weight: bold; }
 		.district {font-size: 14px; margin-top: 15px;}
-		table {border-collapse: collapse; margin: 0 auto; margin-top: 10px;}
-        td, th {padding: 5px 30px 5px 0px; text-transform: capitalize;}
-        tr {border-bottom: 1px solid #cecece}
+		table {border-collapse: collapse; margin: 0 auto; margin-top: 10px; border: 2px solid black; }
+        td, th {padding: 5px 30px 5px 10px; text-transform: capitalize;border-right: 2px solid black;border-left: 0px}
+        tr {border-bottom: 2px solid black;}
         .title {font-weight: bold; font-size: 20px;margin-top:20px;}
         .first_text {font-size: 14px; margin-top: 5px}
-		.position {font-size: 14px;border-bottom: 1px solid #cecece;}
+        .position {font-size: 14px;text-align: right;border-right: 0px}
 		.position a {color: black; text-decoration: none; border-bottom: 1px solid #042964}
 		.party {padding: 5px 5px;}
 		.district {word-wrap: break-word; width: 132px;}
@@ -152,8 +152,7 @@
 		<div id="myModal" class="modal">
 			<div class="modal-content"><span class="close">&times;</span><div id="cont"></div>
 		</div>
-    </div>
-    </div>
+	</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- <script type="text/javascript" src='majori1.js'></script> -->
 <script type="text/javascript">
@@ -168,6 +167,7 @@
         rayon_data = null,
         mer_data = null,
         oblasne_data = null;
+
     const data = getValue('local_dils');
 
 	var modal = document.getElementById('myModal');
@@ -328,85 +328,72 @@
 	$('#txt-search').keyup(function(){
 		function makeOutput (val,search) {
             var place = ''
-            //var place = val.place;
-            
 			var regex_replace = new RegExp(searchField,'i')
-
-			var place = place.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
-
-			//var region = obl.filter(d => d['id'] == val.region)[0].name
             var city_place = city_replace.filter(d => d['id'] == val.city)[0].name;	
             var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
 
-			output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
-			output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
-            output += '<div class="district">Дільниця №' + val.dil + '</div>';
+            var regex1 = new RegExp('\\S+\\s?\\'+searchField.split(' ')[0]+'\\s?\\S+?', "i");
+            
+            output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
 
+            if (search == 0) {
+                var regex_rayon = new RegExp(searchField.trim(), "i");
+                var sl = rayon_place.search(regex_rayon)
+                if (sl != -1) {
+                    var word = rayon_place.slice(sl,rayon_place.length)
+                    var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+                    output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
+                } 
+            } else if (search == 1) {
+                output += '<div class="district" style="background-color: #ffecb3;"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
+                output += '<div class="district">Дільниця №' + val.dil + '</div>';
+                var regex_rayon_split = new RegExp(searchField.split('район ')[1], "i");
+                //var new_sl = val.place.search(regex_rayon_split)
+                var sl = val.place.search(regex_rayon_split)
+                if (sl != -1) {
+                    var word = val.place.slice(sl,val.place.length)
+                    console.log(word)
+                    var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+                    
+                    output += '<div class="district many"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
+                } 
+            } else {
+                output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
+                output += '<div class="district">Дільниця №' + val.dil + '</div>';
 
-			if ((searchField.search(digit) != -1)) {
+                var sl = val.place.search(regex1)
+                if (sl != -1) {
+                    var word = val.place.slice(sl,val.place.length)
+                    var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
+                    output += '<div class="district many"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
+                } 
+                
+            }
 
-				var regex2 = new RegExp(searchField.replace(searchField.match(digit)[0],'').trim()+': '+searchField.match(digit)[0], "i");
-				if (search == 0) {
-					var sl2 = val.place.search(regex2)
-				} else{
-					var sl2 = search.search(regex2)
-				}
-				
-				if (sl2 != -1) {
-					if (search == 0) {
-						var sliced = val.place.slice(sl2,val.place.length).split(';')[0]
-					} else{
-						var sliced = search.slice(sl2,search.length).split(';')[0]
-					}
-					if (sliced.includes('–')) {
-						var digit_slash = new RegExp('\\d+\\S?\\S\\d+\\S?');
-						
-						var num = sliced.match(digit_slash)[0]
-						var array1 = num.split('–')
-						var array_range = range(parseInt(array1[0]),parseInt(array1[1]))
-						val.place = val.place.replace(num,array_range.join(', '+searchField.replace(digit,'').trim()+' '))
-						
-					}
-					var word = sliced.replace(': ', ' ')
-					var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
-
-					output += '<div class="district many">' + word + '</div>';
-				}
-			} else {
-				var regex1 = new RegExp('\\S+\\s?\\'+searchField.split(' ')[0]+'\\s?\\S+?', "i");
-					
-				var sl = val.place.search(regex1)
-
-				if (sl != -1) {
-					var word = val.place.slice(sl,val.place.length).split(/,|:|;/)[0]
-					var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
-
-					output += '<div class="district many">' + word + '</div>';
-				}
-			}
-			output += '</div></div>';
-			return output
+            output += '</div></div>';
+		    return output
 		}
 
-			var searchField = $(this).val();
-
-			
-
-			if(searchField === '')  {
-				$('#filter-records').html('');
+            var searchField = $(this).val();
+            var regex = new RegExp(searchField.trim(), "i");
+			if(searchField == '')  {
+				$('#filter-records').html('<p>Такой улицы или района нет в базе ЦИК. Попробуйте другой запрос</p>');
 				return;
 			}
-			
-			
-            var regex = new RegExp(searchField.trim().replace("місто ", "м. "), "i");
-            var dis = new RegExp(searchField.replace(' округ', ""), "i");
-
-            var digit = new RegExp('\\d+', "i");
             
             var output = '<div class="row">';
             var count = 1;
             $.each(data, function(key, val){
-				var regex3 = new RegExp(searchField+': ', "i");
+                var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
+			  	if (rayon_place.search(regex) != -1) {
+					makeOutput(val,0)
+                }
+                if (searchField.includes('район ') && val.place.search(new RegExp(searchField.split('район ')[1], "i")) != -1) {
+					makeOutput(val,1)
+                }
+			});
+            $.each(data, function(key, val){
+                var regex3 = new RegExp(searchField, "i");
 				if ((val.place.search(regex3) != -1)) {
 					var a = val.place.split(';')
 					var a = a.filter(d => d.toLowerCase().includes(searchField))
@@ -430,7 +417,7 @@
 											var sp1 = parseInt(splited[0])
 										}
 										if (splited[1].includes('/')) {
-											var ifslash2 = ';'+s+': '+splited[1]
+											var ifslash2 = ';'+searchField+': '+splited[1]
 											var sp2 = parseInt(splited[1].split('/')[0])-1
 										} else {
 											var ifslash2 = ''
@@ -441,13 +428,14 @@
 								}
 							}
 						}
-					}
+                    }
 					makeOutput(val,a.join('; ').trim())
-				}
+				} 
             });
             
 			  output += '</div>';
 			  $('#filter-records').html(output);
+              //showModal($(this)[0].id)
               $('.well').on('click', function() {
                     showModal($(this)[0].id);
                 });
