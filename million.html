@@ -82,7 +82,7 @@
 			width: 130px;
 			position: relative;
 			display: inline-block;
-		    min-height: 130px;
+		    min-height: 150px;
 		    vertical-align: top;
 		    margin: 0px 5px;
 		    padding: 19px;
@@ -133,19 +133,22 @@
 </head>
 <body>
 	<div class="text">
-    <h1>Заголовок</h1>
+    <h1>Кто баллотируется в мэры Киева, Днепра, Харькова, Львова</h1>
     <h4>Подзаг</h4>
     <hr>
     <p style="margin-top: 20px;"><b>ИМЯ фамилия</b></p>
     <p style="font-size: 12px;">18.04.2019</p>
-    <p style="margin-top: 50px;">Порошенко, Зеленский, опять Зеленский и вновь Порошенко,  дебаты, заявления, обещания, видеообращения, обвинения, <оскорбления… Информационный предвыборный ураган вываливает на украинцев ежедневно сотни новостей-статей о финалистах президентской гонки Порошенко и Зеленском. Дают ли они ответ на вопрос - что за человек будет управлять Украиной следующие пять лет. </p>
+    <p style="margin-top: 50px;">Более 164 000 человек решили попробовать свои силы и избраются в местную власть. Из них 105 000 человек захотели стать депутатами в городских советах (или 265 человек в один совет), еще 2600 - борются за креса меров. </p>
+    <p>В Украине в начала года вступил в силу новый избирательный кодекс, который, в частности, предусматривает голосование не только за партии, но и за конкретных кандидатов. Учитывая, что в городах (кроме Киева) голосующим предстоит выбирать также депутатов в районный и областной советы, то предстоит сложный выбор.</p>
+    <p>LIGA.net решила показать кандидатов в советы, если вы проживаете в Киеве, Днепре, Харькове и Львове. За несколько минут вы можете ознакомиться со всеми кандидатами по вашему округу (да, они отличаются от района), просто введя район или адрес регистрации. При нажатии на полученный запрос, вы сразу увидите кандидатов в меры, а ниже есть списки с кандидатами в городской, районный и областной советы.</p>
+    <p>Ищите на украинском языке.</p>
   </div>
     
 	<div id="grid">
-		<h3>Поиск по округам</h3>
+		<h3>Поиск</h3>
 		<form role="form">
 			<div class="form-group">
-				<input type="input" class="form-control input-lg" id="txt-search" placeholder="Введіть свій населенний пункт, район або вулицю">
+				<input type="input" class="form-control input-lg" id="txt-search" placeholder="Введіть свій район або вулицю">
 			</div>
 		</form>
 		<div id="filter-records"></div>
@@ -332,7 +335,7 @@
             var city_place = city_replace.filter(d => d['id'] == val.city)[0].name;	
             var rayon_place = rayon_replace.filter(d => d['id'] == val.rayon)[0].name
 
-            var regex1 = new RegExp('\\S+\\s?\\'+searchField.split(' ')[0]+'\\s?\\S+?', "i");
+            var regex1 = new RegExp('\\S+\\s?\\'+searchField+'\\s?\\S+?', "i");
             
             output += '<div id="c'+val.city+'_m'+val.miske+'_d'+val.dil+'_r'+val.rayon+'" class="well"><div><div class="okrug">' + city_place +  '</div>';
 
@@ -344,6 +347,8 @@
                     var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
                     output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
                 } 
+                output += '<div class="district">Дільниця №' + val.dil + '</div>';
+                output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + val.place.split(/,|:|;/)[0] + '</div>';
             } else if (search == 1) {
                 output += '<div class="district" style="background-color: #ffecb3;"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
                 output += '<div class="district">Дільниця №' + val.dil + '</div>';
@@ -355,17 +360,17 @@
                     console.log(word)
                     var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
                     
-                    output += '<div class="district many"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
+                    output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
                 } 
             } else {
                 output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + rayon_place + '</div>';
                 output += '<div class="district">Дільниця №' + val.dil + '</div>';
-
+                
                 var sl = val.place.search(regex1)
                 if (sl != -1) {
-                    var word = val.place.slice(sl,val.place.length)
-                    var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField + '</span>')
-                    output += '<div class="district many"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
+                    var word = val.place.slice(sl,val.place.length).split(/,|:|;/)[0]
+                    var word = word.replace(regex_replace,'<span style="background-color: #ffecb3;text-transform:capitalize;">'+ searchField.split(/,|:|;/)[0] + '</span>')
+                    output += '<div class="district"><img style="width: 8px; padding-right: 2px;" src="point.png"> ' + word + '</div>';
                 } 
                 
             }
