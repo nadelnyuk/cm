@@ -6,25 +6,95 @@
     <meta name="description" content="">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
     <title></title>
+    <!-- https://cdn.jsdelivr.net/gh/liga-net/few-projects/highcharts_module/code/ -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="http://code.highcharts.com/maps/modules/map.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/ua/ua-all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><!-- 
+    <script src="https://cdn.jsdelivr.net/gh/liga-net/few-projects/highcharts_module/code/highcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/liga-net/few-projects/highcharts_module/code/modules/map.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/liga-net/few-projects/highcharts_module/code/modules/ua-all.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/liga-net/few-projects/highcharts_module/code/jquery.min.js"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/local-25117.appspot.com/o/benz.js?alt=media&token=01383a6a-e107-4efa-864c-aada4f7198b3"></script> -->
 </head>
 <body>
-    
+    <!-- <select id="select" class="exit_select">
+        <option value="0">А92</option>
+        <option value="1">А95</option>
+        <option value="2">А95+</option>
+        <option value="3">Дизель</option>
+        <option value="4">Газ</option>
+    </select> 
+    <div id="heat" style="max-width: 600px; margin: 0 auto; height: 500px;"></div>-->
     <div id="container" style="max-width: 600px; margin: 0 auto; height: 700px;"></div>
 <script>
+$('#select').on('change',function() {
+    var num = $(this)[0].value
+    makeMap(num)
+})
+var data = [
+    [["ua-vi", 22.5],["ua-vo", 22.56],["ua-dp", 22.44],["ua-dt", 23.39],["ua-zt", 22.91],["ua-zk", 22.37],["ua-zp", 22.86],["ua-if", 22.85],["ua-kv", 22.76],["ua-kh", 23.22],["ua-kr", null],["ua-lh", 23.5],["ua-lv", 22.95],["ua-kc", null],["ua-mk", 22.25],["ua-my", 23.08],["ua-pl", 22.57],["ua-rv", 22.92],["ua-sc", null],["ua-sm", 22.1],["ua-tp", 22.52],["ua-kk", 22.4],["ua-ks", 22.33],["ua-km", 22.51],["ua-ck", 23.01],["ua-cv", 22.97],["ua-ch", 23.48]],
+    [["ua-vi", 23.6],["ua-vo", 23.7],["ua-dp", 23.6],["ua-dt", 24.5],["ua-zt", 24.1],["ua-zk", 23.4],["ua-zp", 24.2],["ua-if", 24],["ua-kv", 23.9],["ua-kh", 24.5],["ua-kr", null],["ua-lh", 24.5],["ua-lv", 24.1],["ua-kc", null],["ua-mk", 23.4],["ua-my", 24.2],["ua-pl", 23.7],["ua-rv", 23.9],["ua-sc", null],["ua-sm", 23.1],["ua-tp", 23.6],["ua-kk", 23.5],["ua-ks", 23.6],["ua-km", 23.7],["ua-ck", 24],["ua-cv", 24.2],["ua-ch", 24.5]],
+    [["ua-vi", 25.4],["ua-vo", 24.7],["ua-dp", 24.7],["ua-dt", 26.2],["ua-zt", 26],["ua-zk", 25.1],["ua-zp", 26],["ua-if", 24.7],["ua-kv", 25.7],["ua-kh", 25.9],["ua-kr", null],["ua-lh", 25.2],["ua-lv", 25.7],["ua-kc", null],["ua-mk", 24.7],["ua-my", 25.4],["ua-pl", 25],["ua-rv", 25.2],["ua-sc", null],["ua-sm", 24.6],["ua-tp", 25.2],["ua-kk", 25.1],["ua-ks", 24.8],["ua-km", 25.1],["ua-ck", 24.8],["ua-cv", 25.1],["ua-ch", 25.2]],
+    [["ua-vi", 22.4],["ua-vo", 22.8],["ua-dp", 22.5],["ua-dt", 23.6],["ua-zt", 23.1],["ua-zk", 22.1],["ua-zp", 23],["ua-if", 23.1],["ua-kv", 22.7],["ua-kh", 23.5],["ua-kr", null],["ua-lh", 23.7],["ua-lv", 23],["ua-kc", null],["ua-mk", 22.4],["ua-my", 23.3],["ua-pl", 22.5],["ua-rv", 23.3],["ua-sc", null],["ua-sm", 21.8],["ua-tp", 22.7],["ua-kk", 22.3],["ua-ks", 22.7],["ua-km", 22.8],["ua-ck", 23],["ua-cv", 23.4],["ua-ch", 23.7]],
+    [["ua-vi", 12.6],["ua-vo", 12.7],["ua-dp", 12.5],["ua-dt", 12.8],["ua-zt", 12.5],["ua-zk", 12.6],["ua-zp", 12.6],["ua-if", 12.5],["ua-kv", 12.5],["ua-kh", 12.6],["ua-kr", null],["ua-lh", 12.5],["ua-lv", 12.7],["ua-kc", null],["ua-mk", 12.4],["ua-my", 12.9],["ua-pl", 12.6],["ua-rv", 12.6],["ua-sc", null],["ua-sm", 12.4],["ua-tp", 12.6],["ua-kk", 12.4],["ua-ks", 12.4],["ua-km", 12.6],["ua-ck", 12.5],["ua-cv", 12.6],["ua-ch", 12.4]]
+];
+
+var titles = ['Средние цены на бензин марки А92 по областям, 26.10.2020',
+    'Средние цены на бензин марки А95 по областям, 26.10.2020',
+    'Средние цены на бензин марки А95+ по областям, 26.10.2020',
+    'Средние цены на дизельное топливо по областям, 26.10.2020',
+    'Средние цены на автогаз по областям, 26.10.2020']
+//makeMap(0)
+function makeMap(num) {
+    var yValues = data[num].map(d => d[1])
+Highcharts.mapChart('heat', {
+    chart: {
+        map: 'countries/ua/ua-all'
+    },
+
+    title: {
+        text: titles[num]
+    },
+
+    colorAxis: {
+        min: Math.min(...yValues.filter(d => d != null)),
+        minColor: 'white',
+        maxColor: '#0097a7'
+    },
+    credits: {enabled: false},
+
+    series: [{
+        data: data[num],
+        name: 'Random data',
+        states: {
+            hover: {
+                borderColor: 'black'
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function() {
+                var key = this.key
+                if (key != 'Sevastopol' && key != 'Crimea' && key != 'Kiev City') {
+                    return this.point.value +' грн'
+                }
+                
+            }
+        }
+    }]
+});
+}
     Highcharts.chart('container', {
 chart: {type:'spline'},
 title: {
     text: 'Средняя мобильность граждан и среднее количество активных заболевших в Украине, по неделям'
 },
 xAxis: {
-    //type: 'datetime',
-    labels: {
-        format: '{value} неделя',
-    },
+    type: 'datetime'
 },
-yAxis: [{ // Primary yAxis
+yAxis: [{ 
         labels: {
             format: '{value}%',
             style: {
@@ -37,7 +107,7 @@ yAxis: [{ // Primary yAxis
                 color: Highcharts.getOptions().colors[1]
             }
         }
-    }, { // Secondary yAxis
+    }, { 
         title: {
             text: 'Активные зараженные',
             style: {
@@ -59,7 +129,8 @@ plotOptions: {
         label: {
             connectorAllowed: false
         },
-        pointStart: 4,
+        pointStart: Date.UTC(2020, 0, 22),
+        pointInterval: 24 * 3600 * 1000 * 7
     }
 },
 
@@ -71,14 +142,14 @@ series: [{
     data: [null, null, 3.5, 6.714285714, 8.142857143, 8.857142857, -6.571428571, -28.42857143, -40.28571429, -41.71428571, -42.71428571, -44.28571429, -44.71428571, -40.57142857, -34, -27.71428571, -20.57142857, -18, -15.85714286, -19.85714286, -14.57142857, -16.71428571, -20.85714286, -18.14285714, -18, -19.14285714, -19.71428571, -20.57142857, -20.85714286, -20.71428571, -23.57142857, -18, -17.28571429, -13.42857143, -13.85714286, -13.14285714, -13, -21.57142857]
 }, {
     name: 'Apple: вождение',
-    data: [104.01, 103.4214286, 112.86, 112.1542857, 110.5242857, 112.1642857, 104.0957143, 76.81857143, 64.57857143, 59.32857143, 60.82571429, 62.2, 69.95428571, 81.54428571, 87.99571429, 106.984, 115.6542857, 114.1571429, 127.0971429, 135.0985714, 138.95, 158.4728571, 165.4171429, 171.5871429, 169.5271429, 170.0885714, 169.5485714, 179.2657143, 178.2985714, 180.2371429, 177.3357143, 154.3457143, 157.8171429, 161.3414286, 147.4414286, 140.14, 139.9971429, 133.6871429, 126.14]
+    data: [4.01, 3.42, 12.86, 12.15, 10.52, 12.16, 4.1, -23.18, -35.42, -40.67, -39.17, -37.8, -30.05, -18.46, -12, 6.98, 15.65, 14.16, 27.1, 35.1, 38.95, 58.47, 65.42, 71.59, 69.53, 70.09, 69.55, 79.27, 78.3, 80.24, 77.34, 54.35, 57.82, 61.34, 47.44, 40.14, 40, 33.69, 26.14]
 }, {
     name: 'Apple: прогулки',
-    data: [101.18, 100.6128571, 112.9057143, 113.5114286, 108.2971429, 113.6071429, 97.22714286, 63.18857143, 50.23714286, 45.29857143, 47.81428571, 45.00142857, 50.53857143, 57.92857143, 61.97714286, 78.504, 84.20428571, 84.87, 100.3028571, 107.0928571, 111.91, 123.3371429, 132.4442857, 146.1342857, 146.6671429, 143.5357143, 143.8614286, 152.3014286, 153.7828571, 157.0771429, 165.4585714, 152.0114286, 157.9371429, 176.6528571, 164.6, 157.7914286, 156.2, 143.6271429, 134.0766667]
+    data: [1.18, 0.61, 12.91, 13.51, 8.3, 13.61, -2.77, -36.81, -49.76, -54.7, -52.19, -55, -49.46, -42.07, -38.02, -21.5, -15.8, -15.13, 0.3, 7.09, 11.91, 23.34, 32.44, 46.13, 46.67, 43.54, 43.86, 52.3, 53.78, 57.08, 65.46, 52.01, 57.94, 76.65, 64.6, 57.79, 56.2, 43.63, 34.08]
 }, {
-    name: 'Средняя разница количества болеющих за день',
+    name: 'Абсолютное количество активных больных в последний день недели',
     yAxis: 1,
-    data: [null, 0, 0, 0, 0, 0.571428571, 1.142857143, 9.285714286, 60.85714286, 118.7142857, 240.1428571, 331.5714286, 353, 277, 151.4285714, 39.85714286, -75.42857143, -136.8571429, 83.42857143, 196.1428571, 289.8571429, 432.2857143, 74.42857143, -12, 56.28571429, 291.5714286, 562.8571429, 611.1428571, 931.4285714, 1200.285714, 1105, 1526.428571, 1816.285714, 2226.428571, 2192.857143, 2917.142857, 3969.714286, 3490.714286, 1534.333333]
+    data: [0, 0, 0, 0, 0, 4, 12, 77, 503, 1334, 3015, 5336, 7807, 9746, 10806, 11085, 10557, 9599, 10183, 11556, 13585, 16611, 17132, 17048, 17442, 19483, 23423, 27701, 34221, 42623, 50358, 61043, 73757, 89342, 104692, 125112, 152900, 177335, 181938]
 }]
 
 });
