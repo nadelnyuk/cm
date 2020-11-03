@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<style>
+    .full_body {max-width: 600px; margin: 0 auto;}
+    #start_block{
+		font-family: 'Roboto';
+		max-width: 600px;
+		height: 100%;
+		margin: 0 auto;
+			font-size: 20px;
+		}
+		#start_block div {
+			display: inline-block;
+			width: 28%;
+			height: 75px;
+			background-color: #fafafa;
+			border: 1px solid #d2d2d2;
+			cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 0px;
+            margin-left: 5px;
+			text-align: center;
+			vertical-align: top;
+        }
+        .first_narush {margin-left: 0px!important;}
+		#start_block a {color: #042964;}
+		#start_block {margin-top: 10px;margin-bottom: 10px;}
+		#start_block div:hover {opacity: 0.8;}
+		#start_block div:nth-child(2){vertical-align: top;}
+		#start_block:first-child a{width: 150px;}
+        #start_block:last-child a{width: 200px;}
+
+        #yavka_bar,#bullet_bar {
+            font-family: 'Roboto';
+            width: 50%; 
+            left: 10px;
+            position: absolute;
+            background-color: #f2f0f0;
+            font-size: 0.66em;
+		}
+		#yavka_bar #yavk_bar, #bul_bar {
+		    height: 22px;
+		    background-color: #d54a46;
+        }
+        
+        .narush01 {position: relative;}
+        
+        #narush1 {font-size: 16px; font-weight: 500;position: absolute;right: 10px;top: 22px; color: #042964;}
+
+        #sections_yavka {position: relative;}
+        #yavka1, #bullet1 {right: 10px;position: absolute; top: -15px;font-size: 16px; font-weight: 400;color: #042964;}
+        #bullet1 {top: 22px;}
+
+        #bullet1_2, #yavka1_2, .narush_1_2 {font-size: 0.6em; color: black;text-align: left; padding-left: 10px;}
+
+        .narush_1_2 {text-align: left;width: 150px;}
+        #narushtop {position: absolute; top: 30px; left: 1px;}
+
+        .block {font-size: 1em; color: #042964;text-align: left; padding-left: 10px;position: absolute; top: -6px;}
+        @media (max-width: 999px) {
+            #start_block div {
+                display: block;
+                width: 100%;
+                padding-top: 0px;
+                margin-top:10px;
+                margin-left: 0px
+            }
+            #yavka_bar {width: 80%;}
+            #yavka1 {top: -30px;}
+            #yavka1_2 {font-size: 0.7em;}
+            #sections_yavka {margin-top: -5px;}
+            .narush01 .narush_1_2 {font-size: 0.7em; width: 210px;}
+            .narush01 #yavka_1_2 {margin-top: 15px;padding-right: 115px;}
+            .narush_1_2 {width: 220px;vertical-align: top; padding-top: 0px;}
+            #narush1{top:10px;}
+            .first_narush {margin-top: 0px;}
+        }
+    .selection {cursor:pointer;color:black;font-size: 17px; margin: 0 auto; max-width: 200px;}
+    .selection select {width: 200px; background-color:white; font-size: 17px; padding: 4px;border: 1px solid #eeeeee}
+    .table_mer {max-width: 600px; margin: 0 auto;}
+    .council {border-collapse: collapse; width: 100%;}
+    .council tr{border-bottom: 1px solid #d1d1d1;}
+    .council th, .council td { padding: 5px 10px; font-size: 16px; text-align: right;}
+    .council th, .council td:first-child{padding-left: 0px;}
+    .council td:first-child{text-align: left; width: 40%;}
+    .council .number {width: 10%;}
+    .council .barline{width: 20%;}
+    .council tr:first-child td{font-weight: bold;font-size: 12px; padding-top: 0px}
+    .table_button {width: 100%;}
+    .table_button .button {width: 100%;margin: 0 auto; background-color: white; border: none; color: black;padding: 10px 15px;text-align: center;text-decoration: none;font-size: 14px; border-bottom: 1px solid #d1d1d1;}
+    .table_button .button:hover{cursor: pointer;background-color: #d1d1d1; }
+    #kyiv_map, #kharkiv_map, #dnipro_map, #odesa_map, #lviv_map {max-width: 600px; margin: 0 auto;}
+
+    #oblasni_map .district:hover,#rayon_map .district:hover {stroke:black; stroke-width: 2px;}
+    #mers_map .dot:hover ,#miski_rada_map .dot:hover {stroke:black; stroke-width: 2px;}
+</style>
+<body>
+    <!-- <div class="selection"><select id="cities_option"></select></div> -->
+    <!-- <div class="full_body">
+    <div id="start_block">
+        <div class="narush01 first_narush"><p id="yavka1_2"></p><section id="sections_yavka"><section id="yavka_bar"><section id="yavk_bar" style="width:19%"></section></section><p id="yavka1"></p></section></div>
+        <div id="bullet_block" style="display: none;" class="narush01"><p id="bullet1_2"></p><section id="sections_bullet"><section id="bullet_bar"><section id="bul_bar" style="width:19%"></section></section><p id="bullet1"></p></section></div>
+        <div class="narush01"><p class="narush_1_2">МВД: зафиксировано нарушений</p><p id="narush1"></p></div>
+    </div>
+    <div class="table_mer">
+        <p id="kyiv_text">Выборы мэра Киева</p>
+        <table id="kyiv_candidate" class="council"></table>
+        <div class="table_button kyiv_candidate_button" style="display: none;"><button class="button">Показать всех</button></div>
+        <p id="kyiv_council_text">Выборы Киевсовета</p>
+        <table id="kyiv_council" class="council"></table>
+        <div class="table_button kyiv_council_button" style="display: none;"><button class="button">Показать всех</button></div>
+    </div>
+    <div id="kyiv_map"></div>
+    <div class="table_mer">
+        <p id="kharkiv_text">Выборы мэра Харькова</p>
+        <table id="kharkiv_candidate" class="council"></table>
+        <div class="table_button kharkiv_candidate_button" style="display: none;"><button class="button">Показать всех</button></div>
+        <p id="kharkiv_council_text">Выборы Харьковского городского совета</p>
+        <table id="kharkiv_council" class="council"></table>
+        <div class="table_button kharkiv_council_button" style="display: none;"><button class="button">Показать всех</button></div>
+    </div>
+    <div id="kharkiv_map"></div> 
+    <div class="table_mer">
+        <p id="dnipro_text">Выборы мэра Днепра</p>
+        <table id="dnipro_candidate" class="council"></table>
+        <div class="table_button dnipro_candidate_button" style="display: none;"><button class="button">Показать всех</button></div>
+        <p id="dnipro_council_text">Выборы Днепровского городского совета</p>
+        <table id="dnipro_council" class="council"></table>
+        <div class="table_button dnipro_council_button" style="display: none;"><button class="button">Показать всех</button></div>
+    </div>
+    <div id="dnipro_map"></div>
+    <div class="table_mer">
+        <p id="odesa_text">Выборы мэра Одессы</p>
+        <table id="odesa_candidate" class="council"></table>
+        <div class="table_button odesa_candidate_button" style="display: none;"><button class="button">Показать всех</button></div>
+        <p id="odesa_council_text">Выборы Одесского городского совета</p>
+        <table id="odesa_council" class="council"></table>
+        <div class="table_button odesa_council_button" style="display: none;"><button class="button">Показать всех</button></div>
+    </div>
+    <div id="odesa_map"></div>
+    <div class="table_mer">
+        <p id="lviv_text">Выборы мэра Львова</p>
+        <table id="lviv_candidate" class="council"></table>
+        <div class="table_button lviv_candidate_button" style="display: none;"><button class="button">Показать всех</button></div>
+        <p id="lviv_council_text">Выборы Львовского городского совета</p>
+        <table id="lviv_council" class="council"></table>
+        <div class="table_button lviv_council_button" style="display: none;"><button class="button">Показать всех</button></div>
+    </div>
+    <div id="lviv_map"></div>
+    </div> -->
+    <!-- <div id="resultsmap_oblasni" style="max-width: 800px; height: 600px; margin: 0 auto;"></div> -->
+    <div class="table_mer"><h3>Областные советы</h3></div>
+    <div id="oblasni_map" style="margin: 0 auto; max-width: 800px;"></div>
+    <div class="table_mer"><h3>Районные советы</h3></div>
+    <div id="rayon_map" style="margin: 0 auto; max-width: 800px;"></div>
+    <div class="table_mer"><h3>Выборы мэров городов: кто они и из каких партий</h3></div>
+    <div id="mers_map" style="margin: 0 auto; max-width: 800px;"></div>
+    <div class="table_mer"><h3>Выборы городких советов: какие партии проходят</h3></div>
+    <div id="miski_rada_map" style="margin: 0 auto; max-width: 800px;"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/maps/modules/map.js"></script>
+	<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+	<script src="https://code.highcharts.com/mapdata/countries/ua/ua-all.js"></script>
+    
+    <script>
+        function drawResultsMap() {
+            Highcharts.data({
+                googleSpreadsheetKey: '1Q0ZpV4cGYjpINGRDbMHrCxvq_MnrC3Lj2ElDKnZSFhA',
+                googleSpreadsheetWorksheet: 2,
+                
+                parsed: function (columns) {
+                var data = [];
+                Highcharts.each(columns[0], function (code, i) {
+                    data.push({
+                        code: code,
+                        id: columns[1][i],
+                        sluha: columns[2][i],
+                        batkiv: columns[3][i],
+                        mayb: columns[4][i],
+                        evro: columns[5][i],
+                        oppo: columns[6][i],
+                        value: parseFloat(columns[7][i])
+                    });
+                });
+                Highcharts.mapChart('resultsmap_oblasni', {
+                    chart: {
+                        type: 'map',
+                        map: 'countries/ua/ua-all',
+                        style: {
+                            fontFamily: 'Roboto'
+                        }
+                    },
+                    title: {
+                        text: 'Результаты голосования в областные советы на местных выборах 2020, по регионам'
+                    },
+                    subtitle: {
+                        text:'Наведите для дополнительной информации. Данные: ЦИК'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    colorAxis: {
+                        dataClasses: [ {
+                            from: 1,
+                            to: 2,
+                            color: '#1e9b56',
+                            name: 'Слуга Народа'
+                        }, {
+                            from: 3,
+                            to: 4,
+                            color: '#c62828',
+                            name: 'Батькивщина'
+                        }, {
+                            from: 5,
+                            to: 6,
+                            color: '#8e24aa',
+                            name: 'За майбутнє'
+                        }, {
+                            from: 7,
+                            to: 8,
+                            color: '#fdd835',
+                            name: 'Евросолидарность'
+                        }, {
+                            from: 9,
+                            to: 10,
+                            color: '#303f9f',
+                            name: 'ОПЗЖ'
+                        }
+                    ]
+                    },
+
+                    series: [{
+                        data: data,
+                        joinBy: ['hc-key','code'],
+                        name: 'Результаты голосования в мире',
+                        states: {
+                            hover: {
+                                borderColor: 'black'
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '',
+                            pointFormatter: function () {
+                                var hoverVotes = this.hoverVotes; 
+                                    return '<b>' + this.id + '</b><br/>' +
+                                Highcharts.map([
+                                    ['Слуга Народа', this.sluha, '#1e9b56'],
+                                    ['Батькивщина', this.batkiv, '#c62828'],
+                                    ['За майбутнє', this.mayb, '#8e24aa'],
+                                    ['Евросолидарность', this.evro, '#fdd835'],
+                                    ['ОПЗЖ', this.oppo, '#303f9f']
+                                ].sort(function (a, b) {
+                                    return b[1] - a[1]; 
+                                }), function (line) {
+                                    return '<span style="color:' + line[2] + '">\u25CF</span> ' +
+                                        (line[0] === hoverVotes ? '<b>' : '') + line[0] + ': ' +
+                                        Highcharts.numberFormat(line[1], 0) + (line[0] === hoverVotes ? '</b>' : '') + ' мест<br/>';
+                                }).join('')
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+            },
+            error: function () {
+                document.getElementById('resultsmap').innerHTML = '<div class="loading">' +
+                    '<i class="icon-frown icon-large"></i> ' +
+                    'Error loading data from Google Spreadsheets' +
+                    '</div>';
+            }
+            });
+    }
+    //drawResultsMap()
+        var city_replace = [
+            {'id':'Киев','name':'kyiv','rotate':-30.48,'center':50.46,'scale':55000},
+            {'id':'Харьков','name':'kharkiv','rotate':-36.24,'center':50.03,'scale':95000},
+            {'id':'Днепр','name':'dnipro','rotate':-34.97,'center':48.48,'scale':80000},
+            {'id':'Львов','name':'lviv','rotate':-24.0,'center':49.86,'scale':100000},
+            {'id':'Одесса','name':'odesa','rotate':-30.70,'center':46.44,'scale':110000}]
+        var rayon_replace = [
+            {'name': 'Голосіївський район', 'id': '479'},
+            {'name': 'Дарницький район', 'id': '480'},
+            {'name': 'Деснянський район', 'id': '481'},
+            {'name': 'Дніпровський район', 'id': '482'},
+            {'name': 'Оболонський район', 'id': '483'},
+            {'name': 'Печерський район', 'id': '484'},
+            {'name': 'Подільський район', 'id': '485'},
+            {'name': 'Святошинський район', 'id': '486'},
+            {'name': 'Солом’янський район', 'id': '487'},
+            {'name': 'Шевченківський район', 'id': '488'},
+            {'name': 'Амур-Нижньодніпровський район', 'id': '713'},
+            {'name': 'Індустріальний район', 'id': '716'},
+            {'name': 'Новокодацький район', 'id': '719'},
+            {'name': 'Самарський район', 'id': '720'},
+            {'name': 'Соборний район', 'id': '715'},
+            {'name': 'Центральний район', 'id': '717'},
+            {'name': 'Чечелівський район', 'id': '718'},
+            {'name': 'Шевченківський район', 'id': '714'},
+            {'name': 'Новобаварський район', 'id': '789'},
+            {'name': 'Індустріальний район', 'id': '794'},
+            {'name': 'Київський район', 'id': '790'},
+            {'name': 'Слобідський район', 'id': '791'},
+            {'name': 'Московський район', 'id': '793'},
+            {'name': 'Немишлянський район', 'id': '795'},
+            {'name': 'Холодногірський район', 'id': '792'},
+            {'name': 'Основ’янський район', 'id': '796'},
+            {'name': 'Шевченківський район', 'id': '788'},
+            {'name': 'Київський район', 'id': '777'},
+            {'name': 'Малиновський район', 'id': '778'},
+            {'name': 'Приморський район', 'id': '779'},
+            {'name': 'Галицький район', 'id': '767'},
+            {'name': 'Залізничний район', 'id': '768'},
+            {'name': 'Личаківський район', 'id': '769'},
+            {'name': 'Сихівський район', 'id': '772'},
+            {'name': 'Франківський район', 'id': '770'},
+            {'name': 'Шевченківський район', 'id': '771'}];
+        function makeCityMap(city) {
+            var city_properties = city_replace.filter(d => d['id'] == city)[0]
+            var id = city_properties.name;
+            var width = 600,
+                height = 400;
+            var albersProjection = d3.geoAlbers()
+                .scale(city_properties.scale)
+                .rotate([city_properties.rotate,0])
+                .center([0, city_properties.center])
+                .translate( [width/2.2,height/3] );
+
+            var geoPath = d3.geoPath()
+                .projection(albersProjection);
+
+            var svg = d3.select("#"+id+"_map").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            var g = svg.append("g");
+            var tooltipBee = d3.select("body")
+                .append("div")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden")
+                .style("padding", "14px")
+                .style("background-color", "#f5f5f5")
+                .style("color", "black")
+                .style("border-radius", "6px")
+                .style("border-color", "black")
+                .style("font", "12px sans-serif")
+                .text("tooltip");
+            d3.json(id+".json", function (error,topology) {
+                g.selectAll( "path" )
+                    .data(topology.features)
+                    .enter()
+                    .append( "path" )
+                    .attr("fill", "#ccc" )
+                    .attr("stroke", "#ccc")
+                    .attr("id", function(d) {return 'd'+d.properties.region})
+                    .attr("d", geoPath )
+                    .attr("class", "district")
+                    .on("mouseover", function(d){
+                        var rayon_id = d.properties.region
+                        var rayon = rayon_replace.filter(k => k['id'] == rayon_id)[0].name;
+                        tooltipBee.html(rayon)
+                        d3.select('#d'+rayon_id).style('stroke','black')
+                        d3.select('#d'+rayon_id).style('stroke-width','3')
+                        tooltipBee.style("visibility", "visible")
+                    })
+                    .on("mousemove", function() {
+                        return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                    })
+                    .on("mouseout", function(d){
+                        d3.select('#d'+d.properties.region).style('stroke-width','0')
+                        return tooltipBee.style("visibility", "hidden");
+                    });
+            });
+        }
+        
+        function getData(){
+            var value = $.ajax({ 
+                url: 'ukraine.json', 
+                async: false
+            }).responseJSON;
+            return value;
+        }
+        var ukraine = getData();
+        function makeMiskiMap(id) {
+            var width = 900,
+                height = 600;
+                
+            var albersProjection = d3.geoAlbers()
+                .scale(4000)
+                .rotate([-30.48,0])
+                .center([0, 49.96])
+                .translate( [width/2.2,height/3] );
+
+            var geoPath = d3.geoPath()
+                .projection(albersProjection);
+
+            var svg = d3.select("#"+id+"_map").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            var g = svg.append("g");
+            var tooltipBee = d3.select("body")
+                .append("div")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden")
+                .style("padding", "14px")
+                .style("background-color", "white")
+                .style("border", "1px solid #f5f5f5")
+                .style("color", "black")
+                .style("border-radius", "6px")
+                .style("border-color", "black")
+                .style("font", "12px sans-serif")
+                .text("tooltip");
+            //d3.json("ukraine.json", function (error,topology) {
+                g.selectAll( "path" )
+                    .data(ukraine.features)
+                    .enter()
+                    .append("path")
+                    .attr("fill", "#eeeeee" )
+                    .attr("stroke", "#bdbdbd")
+                    .attr("d", geoPath )
+                    .attr("class", "district");
+
+                var cities_mer = svg.append( "g" );
+                
+                d3.json(id+".json", function (error,mer) {
+                    var json = mer.data
+                
+                    var keys = ["Слуга Народу","Європейська Солідарність","Батьківщина","За Майбутнє","Наш Край","Опозиційна Платформа – За Життя"]
+                    
+                    var colors = ["#43a047","#fdd835","#e53935","#5e35b1","#3949ab",'#1976d2']
+                    svg.selectAll("mydots")
+                        .data(keys)
+                        .enter()
+                        .append("circle")
+                            .attr("cx", 100)
+                            .attr("cy", function(d,i){ return 450 + i*25}) 
+                            .attr("r", 7)
+                            .style("fill", function(d,i){ return colors[i]})
+
+                    svg.selectAll("mylabels")
+                        .data(keys)
+                        .enter()
+                        .append("text")
+                            .attr("x", 110)
+                            .attr("y", function(d,i){ return 450 + i*25}) 
+                            .style("fill", 'black')
+                            .text(function(d){ return d})
+                            .attr("text-anchor", "left")
+                            .attr("font-size", "10px")
+                            .style("alignment-baseline", "middle")                    
+                    cities_mer.selectAll("path")
+                        .data(mer.data)
+                        .enter()
+                        .append("path")
+                        .attr("fill",function(d) {return d.properties.fill})
+                        .attr("stroke",function(d) {return d.properties.fill})
+                        .attr("d", geoPath )
+                        .attr("stroke-width", 5)
+                        .attr("class", "dot")
+                        .on("mouseover", function(d){
+                            var html = '<p style="font-size: 14px"><b>'+d.properties.city+', '+d.properties.region+'</b></p><p>Результати: </p>'
+                            var d_results = d.properties.results
+                            var keys = Object.keys(d_results)
+                            if ($.isEmptyObject(d_results) == false) {
+                                var results = ''
+                                if (id == 'mers') {
+                                    keys.forEach(function(k,i) {
+                                        if (i == 0) {
+                                            if (parseFloat(d_results[k].percent) != parseFloat(d_results[String(i+2)].percent)) {
+                                                results += '<p><b>'+d_results[k].name+'</b> (' +d_results[k].party+'): '+d_results[k].percent +'%</p>'
+                                            } else{
+                                                results += '<p>'+d_results[k].name+' ('+d_results[k].party+'): '+d_results[k].percent +'%</p>'
+                                            }
+                                        } else if (i < 3) {
+                                            results += '<p>'+d_results[k].name+' ('+d_results[k].party+'): '+d_results[k].percent +'%</p>'
+                                        }
+                                    })  
+                                } else {
+                                    keys.forEach(function(k) {
+                                        if (d_results[k].places == 1) {
+                                            var place_text = ' депутат ('
+                                        } else if (d_results[k].places > 1 && d_results[k].places < 5) {
+                                            var place_text = ' депутати ('
+                                        } else if (d_results[k].places >= 5) {
+                                            var place_text = ' депутатів ('
+                                        }
+                                        results += '<p>'+d_results[k].party+': '+String(d_results[k].places) +place_text+d_results[k].percent +'%)</p>'
+                                    })        
+                                }
+                            html += results
+                            }
+                            tooltipBee.html(html)
+                            tooltipBee.style("visibility", "visible")
+                        })
+                        .on("mousemove", function() {
+                            return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                        })
+                        .on("mouseout", function(d){
+                            return tooltipBee.style("visibility", "hidden");
+                        });
+                    cities_mer.selectAll("text")
+                    .data(mer.data)
+                    .enter()
+                    .append("svg:text")
+                    .text(function(d,i){
+                        if (mer.data.length < 100 && i % 2 == 1) {
+                            return d.properties.city;
+                        } else if (mer.data.length >= 100 && i % 4 == 1) {
+                            return d.properties.city;
+                        }
+                    })
+                    .attr("x", function(d){
+                        return geoPath.centroid(d)[0];
+                    })
+                    .attr("y", function(d){
+                        return geoPath.centroid(d)[1]+15;
+                    })
+                    .attr("text-anchor","middle")
+                    .attr('font-family','Circe')
+                    .attr('fill','black')
+                    .attr('font-size','10px');
+                })
+            //});
+        }
+        makeMiskiMap('mers')
+        makeMiskiMap('miski_rada')
+        function makeOblasniMap(id) {
+            var width = 900,
+                height = 600;
+                
+            var albersProjection = d3.geoAlbers()
+                .scale(4000)
+                .rotate([-30.48,0])
+                .center([0, 49.96])
+                .translate( [width/2.2,height/3] );
+
+            var geoPath = d3.geoPath()
+                .projection(albersProjection);
+
+            var svg = d3.select("#"+id+"_map").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            var g = svg.append("g");
+            var tooltipBee = d3.select("body")
+                .append("div")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden")
+                .style("padding", "14px")
+                .style("background-color", "#f5f5f5")
+                .style("color", "black")
+                .style("border-radius", "6px")
+                .style("border-color", "black")
+                .style("font", "12px sans-serif")
+                .text("tooltip");
+            var keys = ["Слуга Народу","Європейська Солідарність","Батьківщина","За Майбутнє","Наш Край","Опозиційна Платформа – За Життя"]
+                    
+                    var colors = ["#43a047","#fdd835","#e53935","#5e35b1","#3949ab",'#1976d2']
+                    svg.selectAll("mydots")
+                        .data(keys)
+                        .enter()
+                        .append("circle")
+                            .attr("cx", 100)
+                            .attr("cy", function(d,i){ return 450 + i*25}) 
+                            .attr("r", 7)
+                            .style("fill", function(d,i){ return colors[i]})
+
+                    svg.selectAll("mylabels")
+                        .data(keys)
+                        .enter()
+                        .append("text")
+                            .attr("x", 110)
+                            .attr("y", function(d,i){ return 450 + i*25}) 
+                            .style("fill", 'black')
+                            .text(function(d){ return d})
+                            .attr("text-anchor", "left")
+                            .attr("font-size", "10px")
+                            .style("alignment-baseline", "middle")   
+            d3.json(id+".json", function (error,topology) {
+                g.selectAll("path")
+                    .data(topology.features)
+                    .enter()
+                    .append( "path" )
+                    .attr("fill", function(d) {return d.fill})
+                    .attr("stroke", "#bdbdbd")
+                    .attr("d", geoPath )
+                    .attr("class", "district")
+                    .on("mouseover", function(d){
+                        var d_results = d.results
+                        if ($.isEmptyObject(d_results) == false) {
+                            var keys = Object.keys(d_results)
+                            var results = '<table>'
+                            keys.forEach(function(k) {
+                                if (d_results[k].places == 1) {
+                                    var place_text = ' место'
+                                } else if (d_results[k].places > 1 && d_results[k].places < 5) {
+                                    var place_text = ' места'
+                                } else if (d_results[k].places >= 5) {
+                                    var place_text = ' мест'
+                                }
+                                results += '<tr><td>'+d_results[k].party+'</td><td>'+String(d_results[k].places) +place_text+'</td><td>'+d_results[k].percent +'%</td></tr>'
+                            })
+                            results += '</table'
+                        } else{
+                            var results = '<p>Результатов еще нет</p>'
+                        }
+                        tooltipBee.html(
+                            '<p><b>'+d.name.replace('область', 'обласна рада')+'</b></p>'+results
+                        )
+                        tooltipBee.style("visibility", "visible")
+                    })
+                    .on("mousemove", function() {
+                        return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                    })
+                    .on("mouseout", function(d){
+                        return tooltipBee.style("visibility", "hidden");
+                    });
+
+                g.selectAll("text")
+                    .data(topology.features)
+                    .enter()
+                    .append("svg:text")
+                    .text(function(d,i){
+                        var d_results = d.results
+                        if ($.isEmptyObject(d_results) == false && Object.keys(d_results).length < 40) {
+                            return d.name
+                        } else if ($.isEmptyObject(d_results) == false && Object.keys(d_results).length > 39 && i % 2 == 1) {
+                            return d.name
+                        } else if (id == 'oblasni'){
+                            return d.name.replace('область', '');
+                        }
+                    })
+                    .attr("x", function(d){
+                        return geoPath.centroid(d)[0];
+                    })
+                    .attr("y", function(d){
+                        return geoPath.centroid(d)[1];
+                    })
+                    .attr("text-anchor","middle")
+                    .attr('font-family','Circe')
+                    .attr('fill','black')
+                    .attr('font-size','10px');
+            });
+        }
+        makeOblasniMap('oblasni')
+        makeOblasniMap('rayon')
+        function getValue(){
+            var value = $.ajax({ 
+                url: 'https://spreadsheets.google.com/feeds/list/1Q0ZpV4cGYjpINGRDbMHrCxvq_MnrC3Lj2ElDKnZSFhA/1/public/values?alt=json', 
+                async: false
+            }).responseJSON.feed.entry;
+            return value;
+        }
+        function toggle(element_id) {
+            var x = document.getElementsByClassName(element_id);
+            for (item=0; item<x.length;item++){
+                x[item].style.display = "table-row"
+            }
+        }
+        function cityCandidates(city,type,poll) {
+            var filter_city = data.filter(d => d['gsx$'+type+'city']['$t'] == city)
+            var filter_city = filter_city.filter(d => d['gsx$'+type+'exitname']['$t'] == poll)
+            var id = city_replace.filter(d => d['id'] == city)[0].name;
+            if (type =='candidate') {
+                var column_name = 'Кандидат'
+            } else {
+                var column_name = 'Партия'
+            }
+            
+            if (data[0]['gsx$bullet']['$t'] != '') {
+                var city_table = '<tr><td>'+column_name+'</td><td>Голосов</td><td></td></tr>'
+            } else {
+                var element = document.getElementById('select_'+id+'_'+type)
+                if (element == null) {
+                var filter = data.filter(d => d['gsx$'+type+'city']['$t'] == city)
+                var exitname = [...new Set(filter.map(d => d['gsx$'+type+'exitname']['$t']))]
+                
+                var exitname = exitname.filter(d => d != poll)
+                const index = exitname.indexOf('');
+                if (index > -1) {
+                    exitname.splice(index, 1);
+                }
+                var exitname_buttons = ''
+                if (exitname.length >= 1) {
+                    exitname_buttons += '<option Value="'+poll+'">'+poll+'</option>'
+                    for (r=0;r<exitname.length; r++) {
+                        exitname_buttons += '<option Value="'+exitname[r]+'">'+exitname[r]+'</option>'
+                    }
+                    if (type == 'candidate') {
+                        $('#'+id+'_text').append('. Экзитполы: <select id="select_'+id+'_'+type+'" class="exit_select">'+exitname_buttons+'</select>')
+                    } else {
+                        $('#'+id+'_council_text').append('. Экзитполы: <select id="select_'+id+'_'+type+'" class="exit_select">'+exitname_buttons+'</select>')
+                    }
+                } else {
+                    if (type == 'candidate') {
+                        $('#'+id+'_text').append('. Экзитпол: '+poll)
+                    } else {
+                        $('#'+id+'_council_text').append('. Экзитпол: '+poll)
+                    }
+                }
+                }
+                var city_table = '<tr><td>'+column_name+'</td><td>Экзитпол</td><td></td></tr>'
+            }
+            filter_city.forEach(function(element,index) {
+                if (data[0]['gsx$bullet']['$t'] != '') {
+                    var add_element = '<td>'+element['gsx$'+type]['$t']+'</td><td class="number">'+element['gsx$'+type+'percent']['$t']+'%</td><td class="barline"><div class="bar" style="width: '+element['gsx$'+type+'bar']['$t']+'%; position: relative; background-color: #00123f; left: 0%; height: 6px;"></div></td></tr>'
+                } else {
+                    var add_element = '<td>'+element['gsx$'+type]['$t']+'</td><td class="number">'+element['gsx$'+type+'exit']['$t']+'</td><td class="barline"><div class="bar" style="width: '+element['gsx$'+type+'bar']['$t']+'%; position: relative; background-color: #00123f; left: 0%; height: 6px;"></div></td></tr>'
+                }
+                if (index <= 2) {
+                    city_table += '<tr>'+add_element
+                } else {
+                    city_table += '<tr class="'+id+'_'+type+'_hide" style="display:none">'+add_element
+                }
+            });
+            $('#'+id+'_'+type).html('<tbody>'+city_table+'</tbody>');
+            $('.'+id+'_'+type+'_button').css('display','block')
+        }
+
+        /* 
+        var data = getValue();
+
+        $('#yavk_bar').css("width",parseFloat(data[0]['gsx$yavka']['$t'])+'%');
+        $('#narush1').text(data[0]['gsx$narushtime']['$t'])
+        $('#yavka1').text(data[0]['gsx$yavka']['$t'])
+        $('#yavka1_2').text('Явка на ' + data[0]['gsx$yavka2']['$t']);
+        if (data[0]['gsx$bullet']['$t'] != '') {
+            $('#bul_bar').css("width",parseFloat(data[0]['gsx$bullet']['$t'])+'%');
+            $('#bullet1').text(data[0]['gsx$bullet']['$t']+'%')
+            $('#bullet1_2').text('Обработано');
+            $('#bullet_block').css("display","inline-block")
+        }
+        $('#start_block').css("display","block")
+        function checkColumn(column) {
+            var cities = [...new Set(data.map(d => d['gsx$'+column]['$t']))];
+            const index = cities.indexOf('');
+                if (index > -1) {
+                cities.splice(index, 1);
+            }
+            return cities
+        }
+        var cities = checkColumn('candidatecity')
+        cities.forEach(function(d) {cityCandidates(d,'candidate','Шустер LIVE')})
+        cities.forEach(function(d) {cityCandidates(d,'council','Шустер LIVE')})
+        var null_cities = city_replace.filter(k => cities.includes(k.id) == false)
+        null_cities.forEach(function(d) {
+            var city_id = city_replace.filter(k => k.id == d.id)[0].name
+            $('#'+city_id+'_text').append(': результаты ожидаются после 20:00')
+            $('#'+city_id+'_council_text').append(': результаты ожидаются после 20:00')
+        }); 
+
+        var mapCities = checkColumn('map')
+        mapCities.forEach(function(d) {makeCityMap(d)})
+
+        $('.table_button').on('click',function() {
+            var splited = $(this)[0].className.split(' ')[1]
+            toggle(splited.replace('_button','_hide'))
+            $('.'+splited).css('display','none')
+        }) 
+        $('.exit_select').on('change',function() {
+            var splited = $(this)[0].id.split('_')
+            var id = city_replace.filter(d => d['name'] == splited[1])[0].id;
+            cityCandidates(id,splited[2],$(this)[0].value)
+        }) */
+    </script>
+</body>
+</html>
