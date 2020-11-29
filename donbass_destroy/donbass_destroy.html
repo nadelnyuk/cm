@@ -1,0 +1,408 @@
+<html>
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='scroller_style.css' rel='stylesheet' />
+
+    <script src="https://unpkg.com/d3@5.9.1/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/intersection-observer"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <script src="https://russellgoldenberg.github.io/scrollama/stickyfill.min.js"></script>
+    <style>
+        body {font-family: 'Arial';}
+        #scrolly {
+            position: relative;
+            padding: 1rem;
+        }
+
+        article {
+            position: relative;
+            padding: 0;
+            max-width: 59rem;
+            margin: 0 auto;
+        }
+        #map {
+            position: -webkit-sticky;
+            position: sticky;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            z-index: 0;
+        }
+        .step {
+            max-width: 30rem!important;
+            margin: 0 auto 60rem auto;
+            color: black;
+            /* border: 3px solid black; */
+            max-width: calc(100% - 40px * 2);
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        .step h4 {
+            text-align: center;
+            font-size: 24px;
+            padding: 20px;
+        }
+        .step p {
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+    </style>
+
+    <section id="scrolly">
+        <!-- <figure>
+        <p>0</p>
+        </figure> -->
+        <div id='map' style='max-width: 900px; height: 600px; margin: 0 auto'></div>
+        <!-- <pre id="info"></pre> -->
+
+        <article>
+        <div class="step" data-step="1">
+            <h4>Руйнування та відновлення будівель на окупованому Донбасі</h4>
+            <p>Інтерактивна карта зруйнованих та відновлених будівель на неконтрольованій частині Донецької та Луганської областей</p>
+        </div>
+        <div class="step" data-step="2">
+            <p>Так виглядає один з об'єктів, які вдалось ідентифікувати. Будинки були зруйновані у 2014 році. До сих пір їх не відбудовували.</p>
+        </div>
+        <div class="step" data-step="3" style="max-width: 59rem!important;background-color: rgba(255, 255, 255, 0);box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);">
+            <div id="page">
+                <div class="wrapper">
+                    <div class="before"><img class="content-image" src="image6.jpg" draggable="false"/></div>
+                    <div class="after"><img class="content-image" src="image7.jpg" draggable="false"/></div>
+                    <div class="scroller"><svg class="scroller__thumb" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="0 50 37 68 37 32 0 50" style="fill:#fff"/><polygon points="100 50 64 32 64 68 100 50" style="fill:#fff"/></svg></div>
+                </div>
+            </div>
+        </div>
+        <div class="step" data-step="4">
+            <p>А це одна з будівель, яку після потрапляння знаряду, відновили самопроголошені "ДНР".</p>
+        </div>
+        <div class="step" data-step="5" style="max-width: 59rem!important;background-color: rgba(255, 255, 255, 0);box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);">
+            <div id="page">
+                <div class="wrapper">
+                    <div class="before"><img class="content-image" src="image2.jpg" draggable="false"/></div>
+                    <div class="after"><img class="content-image" src="image3.jpg" draggable="false"/></div>
+                    <div class="scroller"><svg class="scroller__thumb" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="0 50 37 68 37 32 0 50" style="fill:#fff"/><polygon points="100 50 64 32 64 68 100 50" style="fill:#fff"/></svg></div>
+                </div>
+            </div>
+        </div>
+        </article>
+    </section>
+
+    <script src="scroller_script.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic25hZGVsbnl1ayIsImEiOiJja2ZzYWt6NzkwN2VwMnNscmxpZDZhcmxpIn0.rhu6uiE_X3hQCTl3k_dI1g';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 7,
+            center: [37.954238, 48.332794]
+        });
+        /* map.on('mousemove', function (e) {
+            document.getElementById('info').innerHTML =
+        // e.point is the x, y coordinates of the mousemove event relative
+        // to the top-left corner of the map
+            JSON.stringify(e.point) +
+            '<br />' +
+            // e.lngLat is the longitude, latitude geographical position of the event
+            JSON.stringify(e.lngLat.wrap());
+        }); */
+        map.scrollZoom.disable();
+        map.on('load', function () {
+            map.addSource('earthquakes', {
+                'type': 'geojson',
+                'data': {
+                    "type": "FeatureCollection",
+                    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                    "features": [
+                    
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Ясинувата","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[37.877623,48.132903,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Донецьк","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.770028,48.062303,100]}},
+
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Спартак","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.766011,48.079689,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Спартак","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.765467,48.079653,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Спартак","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.764789,48.079972,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.79142,48.115371,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.791655,48.115604,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.791779,48.115522,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.791792,48.115662,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.792113,48.115619,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.792516,48.115752,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.793038,48.116006,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[37.738459,48.138783,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[37.743838,48.134677,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Авдіївка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[37.749447,48.134674,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.684198,48.05775,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.68438,48.057673,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.685506,48.057293,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.686126,48.057095,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.685246,48.0563,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.680544,48.059488,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.68012,48.05959,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.68212,48.058852,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Піски","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.682667,48.058336,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Новотроїцьке","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.588542,47.720181,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Новотроїцьке","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.593065,47.717374,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Новотроїцьке","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.593002,47.715668,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Новотроїцьке","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.593258,47.715671,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Новотроїцьке","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.600113,47.70906,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.817203,47.6962,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.817126,47.695594,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.817868,47.695047,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.817616,47.694523,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.818547,47.693288,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.854938,47.680657,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Стила","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.855065,47.680073,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Петрівське","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.833983,47.630758,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Біла Кам’янка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.85737,47.539515,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Біла Кам’янка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.857396,47.539399,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Біла Кам’янка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.85757,47.538575,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Біла Кам’янка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.85813,47.538477,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Біла Кам’янка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.859667,47.536862,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.815546,47.098391,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.815195,47.09836,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.815312,47.096939,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.812553,47.097379,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.809037,47.097804,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.817358,47.095872,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.819202,47.095122,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.820058,47.094806,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.822589,47.095443,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.823702,47.095521,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.825428,47.095145,100]}},
+                    {"type":"Feature","properties":{"region":"Донецька","town":"Широкине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[37.825978,47.096125,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Луганськ","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.259536,48.5649,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Луганськ","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.262479,48.560909,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Луганськ","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.291379,48.532473,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Луганськ","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.251625,48.563517,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Луганськ","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.301957,48.524482,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Новосвітівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.516472,48.493985,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Новосвітівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.518839,48.48401,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Новосвітівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.518146,48.483791,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Новосвітівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.510368,48.48686,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Новосвітівка","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.517554,48.493071,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Лутугине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.224951,48.408313,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Лутугине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.223624,48.407223,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Лутугине","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.223395,48.405956,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Урало-Кавказ","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.798792,48.308216,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Урало-Кавказ","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[39.796524,48.308031,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Власівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.907219,48.265148,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Власівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.906858,48.265367,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Власівка","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[39.910066,48.264127,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Хрустальний","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.904017,48.124523,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[38.371041,48.631138,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[38.379533,48.632006,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані і відбудовані будівлі"},"geometry":{"type":"Point","coordinates":[38.366561,48.62235,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.402754,48.628635,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.40326,48.629046,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.403751,48.635902,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.403113,48.635649,100]}},
+                    {"type":"Feature","properties":{"region":"ЛУГАНСЬКА","town":"Попасна","type":"зруйновані будівлі"},"geometry":{"type":"Point","coordinates":[38.362338,48.622657,100]}}
+                ]},
+                'cluster': true,
+                'clusterMaxZoom': 14, // Max zoom to cluster points on
+                'clusterRadius': 50
+            });
+            map.addLayer({
+                'id': 'clusters',
+                'type': 'circle',
+                'source': 'earthquakes',
+                'filter': ['has', 'point_count'],
+                'paint': {
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        'red',
+                        100,
+                        '#f1f075',
+                        750,
+                        '#f28cb1'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40
+                    ]
+                }
+            });
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'earthquakes',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
+            
+            map.addLayer({
+                id: 'unclustered-point',
+                type: 'circle',
+                source: 'earthquakes',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': 'red',
+                    'circle-radius': 10,
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': '#fff'
+                }
+            });
+            
+            // inspect a cluster on click
+            map.on('click', 'clusters', function (e) {
+                var features = map.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
+                });
+                var clusterId = features[0].properties.cluster_id;
+                map.getSource('earthquakes').getClusterExpansionZoom(
+                    clusterId,
+                    function (err, zoom) {
+                        if (err) return;
+                        map.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom
+                        });
+                    }
+                );
+            });
+            
+            // When a click event occurs on a feature in
+            // the unclustered-point layer, open a popup at
+            // the location of the feature, with
+            // description HTML from its properties.
+            map.on('click', 'unclustered-point', function (e) {
+                var coordinates = e.features[0].geometry.coordinates.slice();
+                var town = e.features[0].properties.town;
+                var region = e.features[0].properties.region;
+                
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                
+                new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(
+                        'Населений пункт: ' + town + ', ' + region +"<br>"+e.features[0].properties.type
+                    )
+                    .addTo(map);
+            });
+            
+            map.on('mouseenter', 'clusters', function () {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'clusters', function () {
+                map.getCanvas().style.cursor = '';
+            });
+        });
+        // using d3 for convenience
+        var scrolly = d3.select("#scrolly");
+        var mapBackground = scrolly.select("#map");
+        var article = scrolly.select("article");
+        var step = scrolly.selectAll(".step");
+
+        // initialize the scrollama
+        var scroller = scrollama();
+
+        // generic window resize listener event
+        function handleResize() {
+            // 1. update height of step elements
+            var stepH = Math.floor(window.innerHeight * 0.75);
+            //step.style("height", stepH + "px");
+            var figureHeight = window.innerHeight - 100;
+            if (window.innerWidth > 600) {
+                var figureMarginTop = 50;
+            } else {
+                var figureMarginTop = 400;
+            }
+            //d3.select("#map")['_parents'][0].clientWidth
+            mapBackground
+                //.style("height", figureHeight + "px")
+                .style("top", figureMarginTop + "px");
+
+            // 3. tell scrollama to update new element dimensions
+            scroller.resize();
+        }
+
+        // scrollama event handlers
+        function handleStepEnter(response) {
+            // response = { element, direction, index }
+            
+            // add color to current step only
+            step.classed("is-active", function(d, i) {
+                return i === response.index;
+            });
+            
+            if (response.index == 1) {
+            //d3.select("#map")['_parents'][0].clientWidth
+                    map.flyTo({
+                    center: [37.877623, 48.132903],
+                    duration: 3000,
+                    zoom: 14,
+                    essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                }); 
+            }
+            if (response.index == 2) {
+                    map.flyTo({
+                    center: [37.770028, 48.062303],
+                    zoom: 14,
+                    essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                }); 
+            }
+            // update graphic based on step
+            //figure.select("p").text(response.index + 1);
+        }
+
+        function setupStickyfill() {
+            d3.selectAll(".sticky").each(function() {
+                Stickyfill.add(this);
+            });
+        }
+
+        function init() {
+            setupStickyfill();
+
+            // 1. force a resize on load to ensure proper dimensions are sent to scrollama
+            handleResize();
+
+            // 2. setup the scroller passing options
+            // 		this will also initialize trigger observations
+            // 3. bind scrollama event handlers (this can be chained like below)
+            scroller
+            .setup({
+                step: "#scrolly .step",
+                offset: 0.33
+            })
+            .onStepEnter(handleStepEnter);
+
+            // setup resize event
+            window.addEventListener("resize", handleResize);
+        }
+
+        // kick things off
+        init();
+    </script>
+
+    <!-- 
+    
+    <script>
+    
+    </script> -->
+    
+    
+</html>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
