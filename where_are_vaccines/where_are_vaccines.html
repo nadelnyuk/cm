@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<style>
+    .covid_vax_page {max-width: 600px; margin: 0 auto;}
+    .covid_vax_page h4 {text-align: center;}
+    .fancy_table{overflow-x: auto; margin-top: 20px; font-family: 'Arial';max-width: 280px;}
+    .fancy_table table {max-width: 280px;margin: 0 auto; border-collapse: collapse; font-size: 12px;}
+    .fancy_table td {padding: 5px 20px 5px 5px; vertical-align: top; text-align: left;}
+    .fancy_table tr:first-child {border-bottom: 1px solid black;font-weight: bold;text-align: center;}
+    .fancy_table tr:nth-child(even) {background: #F9F9F9}
+    .fancy_table .left {text-align: left;}
+    .fancy_table tr {border-bottom: 1px solid #F0F0F0; font-size: 12px;}
+    .fancy_table tbody{display:block;overflow: auto; height: 260px;}
+    #regions .region {display: inline-block; vertical-align: top; margin-top: 30px;}
+</style>
+<body>
+
+    <div class="covid_vax_page">
+        <h4>Остатки вакцин на региональных складах, данные СНБО</h4>
+        <div id="reserves" style="max-width: 600px; margin: 0 auto;"></div>
+        <h4>Где можно вакцинироваться в вашей области, данные СНБО</h4>
+        <div id="objects" style="max-width: 600px; margin: 0 auto;"></div>
+        <div id="regions" style="max-width: 600px; margin: 0 auto;">
+            <div class="region"><div id="objects0"></div><div id="table0" class="fancy_table"></div></div>
+            <div class="region"><div id="objects1"></div><div id="table1" class="fancy_table"></div></div>
+            <div class="region"><div id="objects2"></div><div id="table2" class="fancy_table"></div></div>
+            <div class="region"><div id="objects3"></div><div id="table3" class="fancy_table"></div></div>
+            <div class="region"><div id="objects4"></div><div id="table4" class="fancy_table"></div></div>
+            <div class="region"><div id="objects5"></div><div id="table5" class="fancy_table"></div></div>
+            <div class="region"><div id="objects6"></div><div id="table6" class="fancy_table"></div></div>
+            <div class="region"><div id="objects7"></div><div id="table7" class="fancy_table"></div></div>
+            <div class="region"><div id="objects8"></div><div id="table8" class="fancy_table"></div></div>
+            <div class="region"><div id="objects9"></div><div id="table9" class="fancy_table"></div></div>
+            <div class="region"><div id="objects10"></div><div id="table10" class="fancy_table"></div></div>
+            <div class="region"><div id="objects11"></div><div id="table11" class="fancy_table"></div></div>
+            <div class="region"><div id="objects12"></div><div id="table12" class="fancy_table"></div></div>
+            <div class="region"><div id="objects13"></div><div id="table13" class="fancy_table"></div></div>
+            <div class="region"><div id="objects14"></div><div id="table14" class="fancy_table"></div></div>
+            <div class="region"><div id="objects15"></div><div id="table15" class="fancy_table"></div></div>
+            <div class="region"><div id="objects16"></div><div id="table16" class="fancy_table"></div></div>
+            <div class="region"><div id="objects17"></div><div id="table17" class="fancy_table"></div></div>
+            <div class="region"><div id="objects18"></div><div id="table18" class="fancy_table"></div></div>
+            <div class="region"><div id="objects19"></div><div id="table19" class="fancy_table"></div></div>
+            <div class="region"><div id="objects20"></div><div id="table20" class="fancy_table"></div></div>
+            <div class="region"><div id="objects21"></div><div id="table21" class="fancy_table"></div></div>
+            <div class="region"><div id="objects22"></div><div id="table22" class="fancy_table"></div></div>
+            <div class="region"><div id="objects23"></div><div id="table23" class="fancy_table"></div></div>
+        </div>
+        
+        
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        
+        var locale = d3.timeFormatLocale({
+            "dateTime": "%A, %e %B %Y г. %X",
+            "date": "%d.%m.%Y",
+            "time": "%H:%M:%S",
+            "periods": ["AM", "PM"],
+            "days": ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
+            "shortDays": ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+            "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
+            "shortMonths": ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
+        });
+        function numberWithSpaces(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        const range = (start, stop, step = 1) =>
+                Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step)
+        function makeDomain(min, max, step) {
+            return range(min, max, max/step)
+        }
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        function getData(id){
+            if (window.innerWidth > 600) {
+                var requestURL = id
+            } else {
+                var requestURL = id.replace('https://health','https://m-health')
+            }
+            var time = d3.timeFormat("%H");
+            var today = new Date()
+            if (parseInt(time(today)) >= 0 && parseInt(time(today)) < 9 && id.includes('date')) {
+                var yesterday = new Date()
+                yesterday.setDate(yesterday.getDate() - 1) 
+                var value = $.ajax({ 
+                    url: requestURL+todayDateFormat(yesterday), 
+                    async: false
+                }).responseJSON;
+                return value;
+            } else if (id.includes('date') && parseInt(time(today)) >= 9){
+                var value = $.ajax({ 
+                    url: requestURL+todayDateFormat(today), 
+                    async: false
+                }).responseJSON;
+                return value;
+            } else {
+                var value = $.ajax({ 
+                    url: requestURL, 
+                    async: false
+                }).responseJSON;
+                return value;
+            }   
+        }
+
+    function makeChoroplethMap(id,w) {
+        if (w < 600) {
+            var width = w,
+            height = w/1.3,
+            scale = w*4.4,
+            from = 260827968,
+            to = 14;
+        } else {
+            var width = 600,
+            scale = 2800,
+            from = 260827968,
+            to = 18,
+            height = 450;
+        }
+
+        var albersProjection = d3.geoAlbers()
+            .scale(scale)
+            .rotate([-30.68,0])
+            .center([0, 50.12])
+            .translate( [width/2.2,height/3] );
+
+        var geoPath = d3.geoPath()
+            .projection(albersProjection);
+        
+        d3.select("#"+id).html('')
+        
+        var svg = d3.select("#"+id).append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var g = svg.append("g");
+        
+        var tooltipBee = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .style("padding", "14px")
+            .style("background-color", "white")
+            .style("border", "1px solid #f5f5f5")
+            .style("color", "black")
+            .style("border-radius", "6px")
+            .style("border-color", "black")
+            .style("font", "12px sans-serif")
+            .text("tooltip");
+            
+        if (id == 'reserves') {
+            var json = []
+            reserves.items.forEach(function(d,i) {
+                json.push({
+                    'region':d.label,
+                    'value':d.daily[0]
+                })
+            })
+        }     
+        function makeColorRange(id) {
+            return json.map(d => parseInt(d.value))
+        }
+        var vax_values = makeColorRange(id)
+        var color = d3.scaleThreshold()
+            .domain(
+                makeDomain(d3.min(vax_values),d3.max(vax_values),8)
+            )
+            .range(["rgb(247,252,253)","rgb(229,245,249)","rgb(204,236,230)","rgb(153,216,201)","rgb(102,194,164)","rgb(65,174,118)","rgb(35,139,69)","rgb(0,109,44)","rgb(0,68,27)"]);
+    
+        var colorText = d3.scaleThreshold()
+            .domain(
+                makeDomain(d3.min(vax_values),d3.max(vax_values),8)
+            )
+            .range(["rgb(0,68,27)","rgb(0,109,44)","rgb(35,139,69)","rgb(65,174,118)","rgb(62,88,82)","rgb(153,216,201)","rgb(204,236,230)","rgb(229,245,249)","rgb(247,252,253)"])
+        
+        g.selectAll("path")
+            .data(ukraine.features)
+            .enter()
+            .append("path")
+            .attr("fill", function(d) {
+                if (d.properties.name == 'Автономна Республіка Крим'){
+                    return '#cecece'
+                } else {
+                    var items = json.filter(k => k.region == d.properties.name)
+                    if (items.length != 0) {
+                        var value = items[0].value
+                        return color(value)
+                    } else {
+                        return '#cecece'
+                    }
+                }
+            })
+            .attr("stroke", "#f5f5f5")
+            .attr("stroke-width", ".1px")
+            .attr("d", geoPath )
+            .attr("class", "district")
+            .on("mouseover", function(d) {
+                if (d.properties.name == 'Автономна Республіка Крим'){
+                    tooltipBee.html(
+                        '<h4>'+d.properties['name:ru']+'</h4><p>Временно оккупированная территория РФ</p>'
+                    )
+                } else {
+                    var items = json.filter(k => k.region == d.properties.name)
+                    if (items.length != 0) {
+                        var value = items[0].value
+                        var html = '<h4>'+d.properties['name:ru']+'</h4><p>Осталось '+numberWithSpaces(value)+' вакцин</p>'
+                    } else {
+                        var html = '<h4>'+d.properties['name:ru']+'</h4><p>Неизвестно</p>'
+                    }
+                    tooltipBee.html(html)
+                }
+                var dist = d3.select(this)
+                dist.attr("stroke", "black")
+                    .attr("stroke-width", "1.5px")
+                return tooltipBee.style("visibility", "visible")
+            })
+            .on("mousemove", function() {
+                return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+            })
+            .on("mouseout", function(d){
+                var dist = d3.select(this)
+                dist.attr("stroke", "#f5f5f5")
+                    .attr("stroke-width", ".1px")
+                return tooltipBee.style("visibility", "hidden");
+            })
+        g.selectAll("text")
+            .data(ukraine.features)
+            .enter()
+            .append("svg:text")
+            .html(function(d,i){
+                if (d.properties.name != 'Автономна Республіка Крим'){
+                    var items = json.filter(k => k.region == d.properties.name)
+                    if (items.length != 0) {
+                        var value = items[0].value
+                        return numberWithSpaces(value)
+                    }
+                } 
+            })
+            .attr("x", function(d){
+                return geoPath.centroid(d)[0];
+            })
+            .attr("y", function(d){
+                if (d.properties['name:ru'] != 'Киевская область') {
+                    return geoPath.centroid(d)[1]+5;
+                } else {
+                    return geoPath.centroid(d)[1]+20;
+                }
+                
+            })
+            .attr("text-anchor","middle")
+            .attr('font-family','Arial')
+            .attr('fill',function(d) {
+                if (d.properties.name == 'Автономна Республіка Крим'){
+                    return 'white'
+                } else {
+                    var items = json.filter(k => k.region == d.properties.name)
+                    if (items.length != 0) {
+                        var value = items[0].value
+                        return colorText(value)
+                    }        
+                } 
+            })
+            .attr('opacity','.9')
+            .attr("font-size",'10px')
+            var kyiv = json.filter(d =>d.region == "м. Київ")
+            if (w < 400) {
+                var kyiv_trasforme = [168.0325342476886, 92.10098342813808]
+            } else {
+                var kyiv_trasforme = [260.0325342476886,128.10098342813808]
+            }
+            var cities_mer = svg.append("g");  
+            cities_mer.selectAll("circle")
+                    .data(kyiv)
+                    .enter()
+                    .append("circle")
+                    .attr("stroke", "#cecece")
+                    .attr("stroke-width", ".5px")
+                    .attr("fill", function(d) {
+                        return color(kyiv[0].value)
+                    })
+                    .attr("r",10)
+                    .attr("transform", function(d) { 
+                        return "translate(" + kyiv_trasforme + ")"; 
+                    })
+                    .attr("class", "dot")
+                    .on("mouseover", function(d) {
+                        if (id == 'reserves'){
+                            tooltipBee.html('<h4>Киев</h4><p>Осталось '+numberWithSpaces(kyiv[0].value)+' вакцин</p>')
+                        } 
+                        var dist = d3.select(this)
+                        dist.attr("stroke", "black")
+                            .attr("stroke-width", "1.5px")
+                        tooltipBee.style("visibility", "visible")
+                    })
+                    .on("mousemove", function(d) {
+                        return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                    })
+                    .on("mouseout", function(d){
+                        var dist = d3.select(this)
+                        dist.attr("stroke", "#f5f5f5")
+                            .attr("stroke-width", ".1px")
+                        return tooltipBee.style("visibility", "hidden");
+                    });
+                cities_mer.selectAll("text")
+                    .data(kyiv)
+                    .enter()
+                    .append("svg:text")
+                    .html(function(d) {
+                        return numberWithSpaces(kyiv[0].value) 
+                    })
+                    .attr("x", kyiv_trasforme[0])
+                    .attr("y", kyiv_trasforme[1]+5)
+                    .attr("text-anchor","middle")
+                    .attr('font-family','Arial')
+                    .attr('fill',function(d) {
+                        return colorText(kyiv[0].value)
+                    })
+                    .attr('opacity','.9')
+                    .attr("font-size",'10px')
+            //}
+    }
+    
+    function makeRegionMap(id,w,region) {
+        var width = 290,
+            scale = 6000,
+            height = 250;
+        
+        d3.select("#"+id).html('')
+        
+        var svg = d3.select("#"+id).append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        svg.append("text")
+            .attr("x", 0) 
+            .attr("y", 15)
+            .attr("text-anchor", "start")  
+            .style("font-size", '15px')
+            .style("font-family", "sans-serif")
+            .style('font-family','Circe')
+            .text(region.replace("область",''));
+
+        var g = svg.append("g");
+        
+        var tooltipBee = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .style("padding", "14px")
+            .style("background-color", "white")
+            .style("border", "1px solid #f5f5f5")
+            .style("color", "black")
+            .style("border-radius", "6px")
+            .style("border-color", "black")
+            .style("font", "12px sans-serif")
+            .text("tooltip");
+        
+        var json = objects.filter(d => d.properties.regionName == region)
+        // Create a unit projection.
+        var projection = d3.geoAlbers()
+            .rotate([-31.68,0])
+            .scale(1)
+            .translate([0, 0]);
+
+        // Create a path generator.
+        var geoPath = d3.geoPath()
+            .projection(projection);
+
+        // Compute the bounds of a feature of interest, then derive scale & translate.
+        var oblast = ukraine.features.filter(d => d.properties.name == region)
+        
+        var b = geoPath.bounds(oblast[0]),
+            s = .88 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+            t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+        
+        projection
+            .scale(s)
+            .translate(t);
+        
+        g.selectAll("path")
+            .data(oblast)
+            .enter()
+            .append("path")
+            .attr("fill", '#f5f5f5')
+            .attr("stroke", "#e0e0e0")
+            .attr("stroke-width", "1px")
+            .attr("d", geoPath)
+        
+            
+        var text_json = json.filter((arr, index, self) =>
+            index === self.findIndex((t) => (t.properties.communityName === arr.properties.communityName)))
+        
+        var cities_mer = svg.append("g");  
+        cities_mer.selectAll("circle")
+            .data(text_json)
+            .enter()
+            .append("circle")
+            .attr("stroke", "#4caf50")
+            .attr("stroke-width", ".5px")
+            .attr("fill", '#a5d6a7')
+            .attr("r",function(d) {
+                var vaccines = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+                if (vaccines.length > 0) {
+                    var vaccines = vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer)
+                    return radiusSize(vaccines)
+                } else{
+                    return 1
+                }
+            })
+            .attr("transform", function(d) {return "translate(" + geoPath.centroid(d) + ")"; })
+            .attr("class", "dot")
+            .on("mouseover", function(d) {
+                var hromada =  json.filter(x => x.properties.communityName == d.properties.communityName)
+
+                var address = d.properties.attributes.address.split(', ')
+                if (d.properties.attributes.address.includes('район')) {
+                    var street = address.slice(3,).join(' ').replace('вулиця ','')
+                } else {
+                    var street = address.slice(2,).join(' ').replace('вулиця ','')
+                }
+                var punkt = address.filter(function(x) {
+                    if (x.includes('місто') || x.includes('село')|| x.includes('смт')) {
+                        return x
+                    }
+                })
+                if (punkt.length > 0) {
+                    var punkt = punkt[0].replace('місто ','').replace('село ','').replace('смт. ','')
+                    var vaccines = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+                    if (hromada.length == 1){
+                        if (vaccines.length > 0) {
+                            var vaccines = vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer)
+                            tooltipBee.html('<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>'+'<p>Вакцин на складе: '+numberWithSpaces(vaccines)+'</p>') 
+                        } else {
+                            tooltipBee.html('<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>') 
+                        }
+                    } else {
+                        var vaccines = vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer)
+                        var html = '<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Вакцин на складах: '+numberWithSpaces(vaccines)+'</p><h4>Лікарні:</h4>'
+                        var vaccines_per_hospital = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+                        var text_hromada = hromada.filter((arr, index, self) =>
+                            index === self.findIndex((t) => (t.properties.entityName === arr.properties.entityName)))
+                        text_hromada.forEach(function(value){
+                            vacc = vaccines_per_hospital.filter(v => v.properties.name == value.properties.entityName)[0]
+                            html += '<p>'+value.properties.entityName+': '+numberWithSpaces(vacc.properties.daily.total.cumulative)+' вакцин</p>'
+                        })
+                        tooltipBee.html(html) 
+                    }
+                }
+                
+                var dist = d3.select(this)
+                dist.attr("stroke", "black")
+                    .attr("stroke-width", "1.5px")
+                tooltipBee.style("visibility", "visible")
+            })
+            .on("mousemove", function(d) {
+                return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+            })
+            .on("mouseout", function(d){
+                var dist = d3.select(this)
+                dist.attr("stroke", "#f5f5f5")
+                    .attr("stroke-width", ".1px")
+                return tooltipBee.style("visibility", "hidden");
+            });
+        
+        
+        var text = cities_mer.selectAll("text")
+            .data(text_json)
+            .enter()
+            .append("svg:text")
+            .html(function(d,i) {
+                var address = d.properties.attributes.address.split(', ')
+                var punkt = address.filter(function(x) {
+                    if (x.includes('місто')) {
+                        return x
+                    }
+                })
+                var x = json.filter(x => x.properties.communityName == d.properties.communityName)
+                if (punkt.length > 0 && x.length> 2) {
+                    var punkt = punkt[0].replace('місто ','')
+                    return capitalizeFirstLetter(punkt)
+                }
+                
+            })
+            .attr("transform", function(d) {return "translate(" + geoPath.centroid(d) + ")"; })
+            .attr("text-anchor","start")
+            .attr('font-family','Arial')
+            .attr('font-weight','bold')
+            .attr('fill','black')
+            .attr('class','place-label')
+            .attr('opacity','.9')
+            .attr("font-size",'12px');
+            arrangeLabels()
+            function arrangeLabels() {
+                var move = .5;
+                while(move > 0) {
+                    move = 0;
+                    svg.selectAll(".place-label")
+                    .each(function() {
+                        var that = this,
+                            a = this.getBoundingClientRect();
+                        svg.selectAll(".place-label")
+                            .each(function() {
+                            if(this != that) {
+                                var b = this.getBoundingClientRect();
+                                if((Math.abs(a.left - b.left) * 3 < (a.width + b.width)) &&
+                                (Math.abs(a.top - b.top) * 3 < (a.height + b.height))) {
+                                // overlap, move labels
+                                var dx = (Math.max(0, a.right - b.left) +
+                                        Math.min(0, a.left - b.right)) * 0.01,
+                                    dy = (Math.max(0, a.bottom - b.top) +
+                                        Math.min(0, a.top - b.bottom)) * 0.02,
+                                    tt = d3.select(this).attr("transform").replace('translate(','').replace(')','').split(',')
+                                    to = d3.select(that).attr("transform").replace('translate(','').replace(')','').split(',')
+                                move += Math.abs(dx) + Math.abs(dy);
+                                var to = to.map(x => parseFloat(x))
+                                var tt = tt.map(x => parseFloat(x))
+                                
+                                to = [ to[0] + dx, to[1] + dy ];
+                                tt = [ tt[0] - dx, tt[1] - dy ];
+                                d3.select(this).attr("transform", "translate(" + tt + ")");
+                                d3.select(that).attr("transform", "translate(" + to + ")");
+                                a = this.getBoundingClientRect();
+                                }
+                            }
+                            });
+                    });
+                }
+            }
+    }
+var rnboLinks = {
+    'reserves':'https://health-security.rnbo.gov.ua/api/vaccination/distribution//ranking?aggregateBy=regions&indicator=balance&warehouseLevel=regional&vaccine=total&regionId=&communityId=&date=',
+    'objects':'https://health-security.rnbo.gov.ua/api/vaccination/infra/stationary/map?aggregateBy=objects&regionId=&communityId=',
+    'balance_objects':'https://health-security.rnbo.gov.ua/api/vaccination/distribution//map?aggregateBy=objects&indicator=balance&warehouseLevel=local&vaccine=total&date='
+}
+function capitalizeFirstLetter(string) {
+    var str = string.toLowerCase()
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+var todayDateFormat = d3.timeFormat("%Y-%m-%d");
+var parseTodayDate = d3.timeParse("%Y-%m-%d");
+var dayMonth = locale.format("%d %B")
+var parseTime = d3.timeParse("%m/%d/%Y");
+
+var today = new Date()
+var reserves = getData(rnboLinks.reserves);
+var objects = getData(rnboLinks.objects);
+/* var text_json = objects.filter((arr, index, self) =>
+        index === self.findIndex((t) => (t.properties.communityName === arr.properties.communityName))) */
+var balance_objects = getData(rnboLinks.balance_objects);
+var balance_objects_unique = balance_objects.filter((arr, index, self) =>
+        index === self.findIndex((t) => (t.properties.koatuu === arr.properties.koatuu)))
+var values = []
+balance_objects_unique.forEach(function(d) {
+    var vaccines = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+    values.push(vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer))
+})
+var radiusSize = d3.scaleLinear()
+    .domain([d3.min(values), d3.max(values)])
+    .range([3,60]) 
+
+//var ukraine = getData('https://cdn.jsdelivr.net/gh/liga-net/few-projects/local_elections/ukraine.json');
+var ukraine = getData('ukraine.json');
+makeChoroplethMap('reserves',window.innerWidth)
+
+function makeTable(id,region) {
+    var json = objects.filter(d => d.properties.regionName == region)
+    var table = d3.select('#'+id)
+        .append('table')
+        .append('tbody')
+    
+    var json = json.map(d => d.properties)
+    var clean_json = JSON.parse(JSON.stringify(json));
+    clean_json.forEach(function(d) {
+        d.communityName = d.communityName.split(' ')[0]
+    })
+    //clean_json = clean_json.map(d => d.communityName.split(' ')[0])
+
+    clean_json.sort(function(a, b) {
+        return (a.communityName > b.communityName) ? 1 : ((a.communityName < b.communityName) ? -1 : 0);
+        //return (b.communityName > a.communityName) ? 1 : ((b.communityName < a.communityName) ? -1 : 0);
+    })
+    table.selectAll('tr')
+        .data([1])
+        .enter()
+        .append('tr')
+        .html(function(d) {
+            return '<td>Нас.пункт</td><td>Адрес</td><td>Телефон</td><td>Больница</td>'
+        })
+    table.selectAll('tr')
+        .data(clean_json)
+        .enter()
+        .append('tr')
+        .html(function(d) {
+            var address = d.attributes.address.split(', ')
+            if (d.attributes.address.includes('район')) {
+                var street = address.slice(3,).join(' ').replace('вулиця ','')
+            } else {
+                var street = address.slice(2,).join(' ').replace('вулиця ','')
+            }
+            var punkt = address.filter(function(x) {
+                if (x.includes('місто') || x.includes('село')|| x.includes('смт')) {
+                    return x
+                }
+            })
+            
+            if (punkt.length > 0) {
+                var punkt = punkt[0].replace('місто ','').replace('село ','').replace('смт. ','')
+                return '<td>'+capitalizeFirstLetter(punkt)+'</td>'+'<td>'+street+'</td>'+'<td>'+d.attributes.registryPhone+'</td>'+'<td>'+d.entityName+'</td>'
+            }
+            
+            
+        })
+}
+
+var oblasts = ['Дніпропетровська область', 'Вінницька область', 'Харківська область', 'Кіровоградська область', 'Сумська область', 'Рівненська область', 'Запорізька область', 'Київська область', 'Черкаська область', 'Чернігівська область', 'Львівська область', 'Донецька область','Житомирська область', 'Миколаївська область', 'Полтавська область', 'Херсонська область', 'Волинська область', 'Тернопільська область', 'Хмельницька область', 'Закарпатська область', 'Івано-Франківська область', 'Одеська область', 'Чернівецька область', 'Луганська область']
+oblasts.forEach(function(d,i) {
+    makeRegionMap('objects'+String(i),window.innerWidth,d)
+    makeTable('table'+String(i),d)
+})
+
+window.onresize = function(event) {
+    makeChoroplethMap('reserves',window.innerWidth)
+}; 
+    </script>
+</body>
+</html>
