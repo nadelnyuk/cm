@@ -23,7 +23,7 @@
 <body>
 
     <div class="covid_vax_page">
-        <h4>Остатки вакцин на региональных складах, данные СНБО</h4>
+        <h4>Остатки вакцин на местных складах, данные СНБО</h4>
         <div id="reserves" style="max-width: 600px; margin: 0 auto;"></div>
         <h4>Где можно вакцинироваться в вашей области, данные СНБО</h4>
         <div id="objects" style="max-width: 600px; margin: 0 auto;"></div>
@@ -53,8 +53,6 @@
             <div class="region"><div id="objects22"></div><div id="table22" class="fancy_table"></div></div>
             <div class="region"><div id="objects23"></div><div id="table23" class="fancy_table"></div></div>
         </div>
-        
-        
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -419,7 +417,7 @@
             .attr("transform", function(d) {return "translate(" + geoPath.centroid(d) + ")"; })
             .attr("class", "dot")
             .on("mouseover", function(d) {
-                var hromada =  json.filter(x => x.properties.communityName == d.properties.communityName)
+                var hromada = json.filter(x => x.properties.koatuu == d.properties.koatuu)
 
                 var address = d.properties.attributes.address.split(', ')
                 if (d.properties.attributes.address.includes('район')) {
@@ -427,35 +425,32 @@
                 } else {
                     var street = address.slice(2,).join(' ').replace('вулиця ','')
                 }
-                var punkt = address.filter(function(x) {
-                    if (x.includes('місто') || x.includes('село')|| x.includes('смт')) {
-                        return x
-                    }
-                })
-                if (punkt.length > 0) {
-                    var punkt = punkt[0].replace('місто ','').replace('село ','').replace('смт. ','')
-                    var vaccines = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
-                    if (hromada.length == 1){
-                        if (vaccines.length > 0) {
-                            var vaccines = vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer)
-                            tooltipBee.html('<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>'+'<p>Вакцин на складе: '+numberWithSpaces(vaccines)+'</p>') 
-                        } else {
-                            tooltipBee.html('<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>') 
-                        }
-                    } else {
+                var vaccines = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+                if (hromada.length == 1){
+                    if (vaccines.length > 0) {
                         var vaccines = vaccines.map(x => x.properties.daily.total.cumulative).reduce(reducer)
-                        var html = '<h3>'+capitalizeFirstLetter(punkt)+'</h3>'+'<p>Вакцин на складах: '+numberWithSpaces(vaccines)+'</p><h4>Лікарні:</h4>'
-                        var vaccines_per_hospital = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
-                        var text_hromada = hromada.filter((arr, index, self) =>
-                            index === self.findIndex((t) => (t.properties.entityName === arr.properties.entityName)))
-                        text_hromada.forEach(function(value){
-                            vacc = vaccines_per_hospital.filter(v => v.properties.name == value.properties.entityName)[0]
-                            html += '<p>'+value.properties.entityName+': '+numberWithSpaces(vacc.properties.daily.total.cumulative)+' вакцин</p>'
-                        })
-                        tooltipBee.html(html) 
+                        tooltipBee.html('<h3>'+d.properties.communityName+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Вакцин на складе: '+numberWithSpaces(vaccines)+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>') 
+                    } else {
+                        tooltipBee.html('<h3>'+d.properties.communityName+'</h3>'+'<p>Лікарня: '+d.properties.entityName+'</p>'+'<p>Адреса: '+street+'</p>'+'<p>Телефон: '+d.properties.attributes.registryPhone+'</p>') 
                     }
+                } else {
+                    var vaccines = vaccines.map(x => x.properties.daily.total.cumulative)
+                    if (vaccines.length>0){
+                        vaccines = vaccines.reduce(reducer)
+                    }
+                    var html = '<h3>'+d.properties.communityName+'</h3>'+'<p>Вакцин на складах: '+numberWithSpaces(vaccines)+'</p><h4>Лікарні:</h4>'
+                    var vaccines_per_hospital = balance_objects.filter(k => k.properties.koatuu == d.properties.koatuu)
+                    var text_hromada = hromada.filter((arr, index, self) =>
+                        index === self.findIndex((t) => (t.properties.entityName === arr.properties.entityName)))
+                    text_hromada.forEach(function(value){
+                        vacc = vaccines_per_hospital.filter(v => v.properties.name == value.properties.entityName)
+                        if (vacc.length > 0) {
+                            html += '<p>'+value.properties.entityName+': '+numberWithSpaces(vacc[0].properties.daily.total.cumulative)+' вакцин</p>'
+                        }
+                        
+                    })
+                    tooltipBee.html(html) 
                 }
-                
                 var dist = d3.select(this)
                 dist.attr("stroke", "black")
                     .attr("stroke-width", "1.5px")
@@ -486,7 +481,11 @@
                 var x = json.filter(x => x.properties.communityName == d.properties.communityName)
                 if (punkt.length > 0 && x.length> 2) {
                     var punkt = punkt[0].replace('місто ','')
-                    return capitalizeFirstLetter(punkt)
+                    
+                    if(d.properties.communityName.includes(capitalizeFirstLetter(punkt).slice(0,5))) {
+                        return capitalizeFirstLetter(punkt)
+                    }
+                    
                 }
                 
             })
@@ -537,7 +536,7 @@
             }
     }
 var rnboLinks = {
-    'reserves':'https://health-security.rnbo.gov.ua/api/vaccination/distribution//ranking?aggregateBy=regions&indicator=balance&warehouseLevel=regional&vaccine=total&regionId=&communityId=&date=',
+    'reserves':'https://health-security.rnbo.gov.ua/api/vaccination/distribution//ranking?aggregateBy=regions&indicator=balance&warehouseLevel=local&vaccine=total&regionId=&communityId=&date=',
     'objects':'https://health-security.rnbo.gov.ua/api/vaccination/infra/stationary/map?aggregateBy=objects&regionId=&communityId=',
     'balance_objects':'https://health-security.rnbo.gov.ua/api/vaccination/distribution//map?aggregateBy=objects&indicator=balance&warehouseLevel=local&vaccine=total&date='
 }
@@ -629,6 +628,10 @@ oblasts.forEach(function(d,i) {
 
 window.onresize = function(event) {
     makeChoroplethMap('reserves',window.innerWidth)
+    oblasts.forEach(function(d,i) {
+        makeRegionMap('objects'+String(i),window.innerWidth,d)
+        makeTable('table'+String(i),d)
+    })
 }; 
     </script>
 </body>
