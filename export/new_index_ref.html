@@ -152,7 +152,7 @@ a {
 
 <script src="js/first_picture.js"></script>
 <script src="js/barchart.js"></script>
-<script src="js/render.js"></script>
+<script src="js/render.js?1"></script>
 <script src="js/train.js"></script>
 
 <script>
@@ -200,7 +200,7 @@ a {
                     var realIndex = index+1
                 }
                 //if (width < 450)
-                console.log('index:'+String(realIndex))
+                //console.log('index:'+String(realIndex))
                 var tooltipBee = d3.select("body")
                     .append("div")
                     .style("position", "absolute")
@@ -512,35 +512,82 @@ a {
                 } else if (realIndex == 5) {
                     var svg = d3.select(".container-1 #graph svg")
                     svg.attr('height',600)
-                    var dots = document.getElementsByClassName('death_reason')
-                    if(dots.length == 0) {
+                    var death_reason = document.getElementsByClassName('death_reason')
+                    if(death_reason.length == 0) {
                         drawBarChart(width)
                     }
-                    if (dots.length == 1 && d3.select('.death_reason').attr('opacity')) {
-                        d3.select('.death_reason').attr('opacity',1)
-                    }
+                    d3.selectAll('.death_reason').attr('opacity',1)
                     updateBarChart(window.innerWidth,winterData)
-                    var svg = d3.select(".container-1 #graph svg")
                     var olimp = document.getElementsByClassName('olimp')
                     if (olimp.length !=0) {
                         svg.select(".olimp").html('')
                     }
                     var dots = document.getElementsByClassName('death_dots')
                     if(dots.length != 0) {
-                        d3.selectAll('.death_dots').html('')
+                        d3.selectAll('.death_reason').attr('opacity',1)
+                        d3.selectAll(".circles_index1")
+                            .transition().duration(200)
+                            .delay(function(d,i){ return i * 2 })
+                            .attr("r", 0)
+                        d3.selectAll(".index1 text")
+                            .attr('opacity',0)
+                        d3.selectAll(".circles_index0")
+                            .transition().duration(200)
+                            .delay(function(d,i){ return i * 2 })
+                            .attr("r", 0)
+                        d3.selectAll(".index0 text")
+                            .attr('opacity',0)
                     }
                 } else if (realIndex == 6) {
                     var svg = d3.select(".container-1 #graph svg")
                     var dots = document.getElementsByClassName('death_reason')
                     if(dots.length != 0) {
-                        d3.selectAll('.death_reason').transition().duration(1000).attr('opacity',0).attr('transform','translate(0,0)')
+                        d3.selectAll('.death_reason').transition().duration(1000).attr('opacity',0)//.attr('transform','translate(0,0)')
                     }
-                    drawDots(width,0)
-                    drawDots(width,1)
-                    d3.select(".index2").html('')
+                    var dots = document.getElementsByClassName('circles_index1')
+                    if(dots.length == 0) {
+                        drawDots(width,0)
+                        drawDots(width,1)
+                    } else {
+                        d3.selectAll(".circles_index0")
+                            .transition().duration(200)
+                            .delay(function(d,i){ return i * 2 })
+                            .attr("r", 4)
+                        d3.selectAll(".index0 text")
+                            .attr('opacity',1)
+                        d3.selectAll(".circles_index1")
+                            .transition().duration(200)
+                            .delay(function(d,i){ return i * 2 })
+                            .attr("r", 4)
+                        d3.selectAll(".index1 text")
+                            .attr('opacity',1)   
+                    }
+                    
+                    d3.selectAll(".circles_index2")
+                        .transition().duration(200)
+                        .delay(function(d,i){ return i * 2 })
+                        .attr("r", 0)
+                    d3.selectAll(".index2 text")
+                        .attr('opacity',0)
                 } else if (realIndex == 7) {
-                    drawDots(width,2)
-                    d3.select(".index3").html('')
+                    var svg = d3.select(".container-1 #graph svg")
+                    var dots = document.getElementsByClassName('circles_index2')
+                    if(dots.length == 0) {
+                        drawDots(width,2)
+                    } else {
+                        d3.selectAll(".circles_index2")
+                        .transition().duration(200)
+                        .delay(function(d,i){ return i * 2 })
+                        .attr("r", 4)
+                        d3.selectAll(".index2 text")
+                        .attr('opacity',1)
+                    }
+                    d3.selectAll(".circles_index3")
+                        .transition().duration(200)
+                        .delay(function(d,i){ return i * 2 })
+                        .attr("r", 0)
+                    d3.selectAll(".index3 text")
+                        .attr('opacity',0)
                 } else if (realIndex == 8) {
                     var svg = d3.select(".container-1 #graph svg")
                     var olimp = document.getElementsByClassName('olimp')
@@ -550,7 +597,17 @@ a {
                         drawDots(width,1)
                         drawDots(width,2)
                     }
-                    drawDots(width,3)
+                    var dots = document.getElementsByClassName('circles_index3')
+                    if(dots.length == 0) {
+                        drawDots(width,3)
+                    } else {
+                        d3.selectAll(".circles_index3")
+                        .transition().duration(200)
+                        .delay(function(d,i){ return i * 2 })
+                        .attr("r", 4)
+                        d3.selectAll(".index3 text")
+                        .attr('opacity',1)
+                    }
                 } else if (realIndex == 9 || realIndex == 10) {
                     var svg = d3.select(".container-1 #graph svg")
                     svg.attr('height',500)
@@ -651,7 +708,7 @@ a {
                             .append('text')
                             .attr('id','graph_text')
                             .style('text-align','center')
-                            .attr('x',100)
+                            .attr('x',50)
                             .attr('y','20')
                         
                         var scale = 0.195
