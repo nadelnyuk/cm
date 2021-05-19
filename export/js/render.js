@@ -138,7 +138,7 @@ function drawDots(width,index){
     var peopleAmount = [616835,109112,50000]
     var data = []
     var position = makeDomain(0,amount.slice(index,index+1),1)
-    var cyValue = 10
+    var cyValue = 40
 
     var svg = d3.select(".container-1 #graph svg")
     var dots = document.getElementsByClassName('death_dots')
@@ -146,21 +146,27 @@ function drawDots(width,index){
     if (width < 600){
         var heightSVG = 1000
         svg.attr('height',650)
-        var maxValue = Math.round((100) / 14)
-        var cxValues = [25,50,90,130,150]
+        var maxValue = Math.round((100) / 13)
+        var cxValues = [25,55,100,145,155]
+        var xTextValues = [20,45,85,120,140]
     } else {
         //var heightSVG = (data[data.length-1].y*3);
         var heightSVG = 1200
         var maxValue = Math.round((100) / 10)
         var cxValues = [25,65,120,175,225]
+        var xTextValues = [25,65,120,155,195]
     }
     var cxValue = cxValues.slice(index,index+1)
     var cxValue_copy = $.extend( true, {}, cxValues.slice(index,index+1) );
     if(dots.length == 0) {
         var g = svg.append("g").attr('class','death_dots index'+String(index)).attr('width',width);
-    } else if(dots.length != 0 && index != 0) {
+    } else if (index == 0 && dots.length != 0) {
+        var g = svg.select('.index'+String(index)).attr('width',width)//.attr('transform','translate('+cxValue_copy[0]+',0)');
+    } else if (index != 0 && document.getElementsByClassName('index'+String(index)).length == 0) {
         var g = svg.append("g").attr('class','death_dots index'+String(index)).attr('width',width).attr('transform','translate('+cxValue_copy[0]+',0)');
-    } else {
+    } else if (document.getElementsByClassName('index'+String(index)).length != 0 && index != 0) {
+        var g = svg.select('.index'+String(index)).attr('width',width).attr('transform','translate('+cxValue_copy[0]+',0)');
+    }else {
         var g = d3.select('.death_dots');
         g.selectAll(".disappear5")
             .transition().duration(200)
@@ -170,9 +176,9 @@ function drawDots(width,index){
     var points_values = [
             {from:0,to:130,name:'Погибло в ООС',color:'#f44336',stroke:'#b71c1c'},
             {from:0,to:500,name:'Погибло от COVID',color:'#f44336',stroke:'#b71c1c'},
-            {from:0,to:494,name:'Эвакуировали из Припяти',color:'#f44336',stroke:'#b71c1c'},
-            {from:0,to:570,name:'Посетителей Книжного Арсенала в 2019',color:'#f44336',stroke:'#b71c1c'},
+            {from:0,to:494,name:'Жителей Припяти в 1986',color:'#f44336',stroke:'#b71c1c'},
             {from:0,to:700,name:'Вместимость Олимпийского',color:'#f44336',stroke:'#b71c1c'}
+            //{from:0,to:570,name:'Посетителей Книжного Арсенала в 2019',color:'#f44336',stroke:'#b71c1c'},
     ]
     var points = points_values.slice(index,index+1)
     
@@ -184,20 +190,50 @@ function drawDots(width,index){
             cxValue += 10//14
         }
         var point = points.filter(d=> i >= d.from && i < d.to)
-        /* if (index == 2) {
-            console.log(point)
-        } */
         
         data.push({x:cxValue,y:cyValue,color:point[0].color,stroke:point[0].stroke,name:point[0].name})
     })
+    function wrap(text, width) {
+        text.each(function () {
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, // ems
+                x = text.attr("x"),
+                y = text.attr("y"),
+                dy = 0, //parseFloat(text.attr("dy")),
+                tspan = text.text(null)
+                            .append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", dy + "em");
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan")
+                                .attr("x", x)
+                                .attr("y", y)
+                                .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                                .text(word);
+                }
+            }
+        });
+    }
     g.append("text")
-        .attr("x", cxValue_copy[0]-10) 
+        .attr("x", xTextValues.slice(index,index+1)) 
         .attr("y", 10)
         .attr("text-anchor", "start")
         .style("font-size", '12px')
         .style("font-weight", 'bold')
         .style("font-family", 'sans-serif')
-        .text(points[0].name);
+        .text(points[0].name)
+        .call(wrap,40);
 
     
     var x = d3.scaleLinear()
@@ -213,58 +249,36 @@ function drawDots(width,index){
             .attr("fill", function(d){ return d.color })
             .attr("stroke", function(d){ return d.stroke })
             .attr("id", function(d,i){ return 'c'+String(i) })
-            //.attr("class", function(d,i){ if (i>amount[1]) return 'disappear5'})
+            .attr("class", 'circles_index'+String(index))
             .attr("cx", function(d){ return x(d.x) })
             .attr("cy", function(d){ return y(d.y) })
             .transition().duration(200)
             .delay(function(d,i){ return i * 2 })
             .attr("r", 4)
-   /*  var legend = g.append("g")
-        .attr("font-family", "Georgia")
-        .attr("font-size", 10)
-        .selectAll("g")
-        .data(points)
-        .enter().append("g")
-        .attr("transform", function(d, i) { return "translate(0," + i * 12 + ")"; });
-    var color = d3.scaleOrdinal()
-        .domain(points.map(d=>d.name))
-        .range(points.map(d=>d.color))
-    var stroke = d3.scaleOrdinal()
-        .domain(points.map(d=>d.name))
-        .range(points.map(d=>d.stroke))
-    legend.append("circle")
-        .attr("cx", 25)
-        .attr("cy", heightSVG-60)
-        .attr("r", 4)
-        .attr("fill", function(d) {return color(d.name)})
-        .attr("stroke", function(d) {return stroke(d.name)});
-    legend.append("text")
-        .attr("x", 35)
-        .attr("y", heightSVG-60)
-        .attr("dy", "0.32em")
-        .text(function(d) { return d.name; }); */
-    /* var annotations = [{
+   
+    var annotations = [{
         note: {
-            title: 'Одна точка -- 500 смертей',
-            wrap: 190,
+            title: 'Одна точка — 100 смертей',
+            //wrap: 190,
             x: 20,
             align: "left"
         },
         color: 'black',
-        x: 50, y: y(30),
+        x: 0, y: y(70),
         dy: 0,
-        dx: 50
+        dx: 10
     }]
     const makeAnnotations = d3.annotation()
         .editMode(false)
         .notePadding(-7)
         .type(d3.annotationLabel)
         .annotations(annotations)
-    d3.select(".container-1 #graph svg .death_dots")
+        
+    d3.select(".container-1 #graph svg .death_dots.index1")
         .append("g")
         .style('font-size','14px')
         .style('font-family','sans-serif')
-        .call(makeAnnotations) */
+        .call(makeAnnotations)
     }
     function drawBarChart(w) {
         if (w < 400) {
@@ -402,7 +416,7 @@ function drawDots(width,index){
         }
         var values = data.map(d=>d.value)
         if (String(d3.max(values)).length == 5) {
-            var step = 10000
+            var step = 20000
         } else {
             var step = 100000
         }
