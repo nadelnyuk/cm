@@ -38,13 +38,14 @@ function drawMap(g,projection) {
 function getRadius(width,id) {
     if (width < 450 || id == 2) {var radiusMaxValue = 4} else {var radiusMaxValue = 8}
     if (id == 3) {
-        var values = export_json.filter(d => d.pop <= 50000).map(d=>d.pop)
+        //var values = export_json.filter(d => d.pop <= 50000).map(d=>d.pop)
+        var values = export_json.map(d=>d.pop)
     } else {
         var values = export_json.map(d => d.per1000)
     }
     return d3.scaleLinear()
         .domain([d3.min(values), d3.max(values)])
-        .range([1,radiusMaxValue]) 
+        .range([3,radiusMaxValue]) 
 }
 function drawCircles(projection,radiusSize,id,tooltipBee) {
     var svg = d3.select(".container-1 #graph svg")
@@ -134,7 +135,7 @@ function mapZooming(id,zoom) {
         .call(zoom.transform, transform(coordinates[0],coordinates[1],svgScale))
 }
 function drawDots(width,index){
-    var amount = [130,500,494,570,700]
+    var amount = [500,130,184,494,570]
     var peopleAmount = [616835,109112,50000]
     var data = []
     var position = makeDomain(0,amount.slice(index,index+1),1)
@@ -174,10 +175,12 @@ function drawDots(width,index){
             .attr("r", 4)
     }
     var points_values = [
-            {from:0,to:130,name:'Погибло в ООС',color:'#f44336',stroke:'#b71c1c'},
             {from:0,to:500,name:'Погибло от COVID',color:'#f44336',stroke:'#b71c1c'},
+            {from:0,to:130,name:'Погибло из-за войны с 2014',color:'#f44336',stroke:'#b71c1c'},
+            {from:0,to:184,name:'Студентов в КНУ им. Шевченко',color:'#f44336',stroke:'#b71c1c'},
             {from:0,to:494,name:'Жителей Припяти в 1986',color:'#f44336',stroke:'#b71c1c'},
-            {from:0,to:700,name:'Вместимость Олимпийского',color:'#f44336',stroke:'#b71c1c'}
+            {from:0,to:570,name:'Посетителей Книжного Арсенала в 2019',color:'#f44336',stroke:'#b71c1c'}
+            //{from:0,to:700,name:'Вместимость Олимпийского',color:'#f44336',stroke:'#b71c1c'}
             //{from:0,to:570,name:'Посетителей Книжного Арсенала в 2019',color:'#f44336',stroke:'#b71c1c'},
     ]
     var points = points_values.slice(index,index+1)
@@ -305,6 +308,23 @@ function drawDots(width,index){
 
         var svg = d3.select(".container-1 #graph svg")
         svg.attr('height',600)
+        svg.append("text")
+            .attr("x", (width / 2) ) 
+            .attr("y", 10)
+            .attr("text-anchor", "start")  
+            .attr("class", "bar_title")
+            .style("font-size", '12px')
+            .style("font-family", 'sans-serif')
+            .text('Причины смертей в Украине в 2020');
+        svg.append("text")
+            .attr("x", start_width-50) 
+            .attr("y", start_height)
+            .attr("text-anchor", "middle")  
+            .attr("class", "subtitle title")
+            .style("font-size", '10px')
+            .style("font-family", 'sans-serif')
+            .style("fill", "#9e9e9e")
+            .text('Данные: Госстат');
         var dots = document.getElementsByClassName('death_reason')
         if (dots.length == 0) {
             var g = svg.append("g").attr('class','death_reason');
@@ -383,15 +403,15 @@ function drawDots(width,index){
 
     }
     var winterData = [
-        {"reason":"Болезни сердца", "value": 71638},
-        {"reason":"Рак", "value": 11797},
-        {"reason":"COVID-19", "value": 6936},
-        {"reason":"Внешние причины", "value": 4634},
-        {"reason":"Болезни пищеварения", "value": 4137},
-        {"reason":"Болезни органов дыхания", "value": 3457},
-        {"reason":"Не определено", "value": 3343},
-        {"reason":"Инфекционные болезни", "value": 1030},
-        {"reason":"Другое", "value": 2136}
+        {"reason":"Болезни сердца", "value": 111259},
+        {"reason":"Рак", "value": 18363},
+        {"reason":"COVID-19", "value": 15040},
+        {"reason":"Внешние причины", "value": 7043},
+        {"reason":"Болезни пищеварения", "value": 6294},
+        {"reason":"Болезни органов дыхания", "value": 5713},
+        {"reason":"Не определено", "value": 5416},
+        {"reason":"Инфекционные болезни", "value": 1614},
+        {"reason":"Другое", "value": 3303}
     ]
     function updateBarChart(w,data) {
         if (w < 400) {
