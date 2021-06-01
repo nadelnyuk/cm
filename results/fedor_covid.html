@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        body {max-width: 800px; margin: 0 auto;}
+        .fancy_table{overflow-x: auto; margin-top: 20px; font-family: 'Arial'}
+    .fancy_table table {max-width: 800px;margin: 0 auto; border-collapse: collapse; font-size: 12px; width: 100%;table-layout: fixed;}
+    .fancy_table td {padding: 5px 20px 5px 0px; vertical-align: top; text-align: center;vertical-align: middle;}
+    .fancy_table tr:first-child {border-bottom: 2px solid black;font-weight: bold;text-align: center;}
+    .fancy_table .left {text-align: left; font-weight: bold;}
+    .fancy_table .chart {width: 50%; text-align: right;}
+    .fancy_table tr {font-size: 12px;}
+    .fancy_table tbody{display:block;overflow: auto }
+    .axisX text{
+        fill: #999;
+        }  
+    </style>
+</head>
+
+<body>
+    <h4>Темпы вакцинации по дням, данные СНБО</h4>
+    <div id="vax_day_chart" style="max-width: 600px; margin: 0 auto;"></div>
+    <h4>Количество выявленных заболевших COVID-19 за день, данные СНБО</h4>
+    <div id="confirmed_chart" style="max-width: 600px; margin: 0 auto;"></div>
+    <h4>Количество погибших от COVID-19 за день, данные СНБО</h4>
+    <div id="deaths_chart" style="max-width: 600px; margin: 0 auto;"></div>
+    <div class="fancy_table">
+        <table id="table"></table>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- <script src="fedor_data.js"></script> -->
+    <script src="https://raw.githubusercontent.com/nadelnyuk/cm/master/results/fedor_data.js"></script>
+    <script>
+        function numberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+const range = (start, stop, step = 1) =>
+        Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step)
+function makeDomain(min, max, step) {
+    return range(min, max, max/step)
+}
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+function getData(id){
+    if (window.innerWidth > 600) {
+        var requestURL = id
+    } else {
+        var requestURL = id.replace('https://health','https://m-health')
+    }
+    var time = d3.timeFormat("%H");
+    var today = new Date()
+    if (parseInt(time(today)) >= 0 && parseInt(time(today)) < 9 && id.includes('date')) {
+        var yesterday = new Date()
+        yesterday.setDate(yesterday.getDate() - 1) 
+        var value = $.ajax({ 
+            url: requestURL+todayDateFormat(yesterday), 
+            async: false
+        }).responseJSON;
+        return value;
+    } else if (id.includes('date') && parseInt(time(today)) >= 9){
+        var value = $.ajax({ 
+            url: requestURL+todayDateFormat(today), 
+            async: false
+        }).responseJSON;
+        return value;
+    } else {
+        var value = $.ajax({ 
+            url: requestURL, 
+            async: false
+        }).responseJSON;
+        return value;
+    }   
+}
+var locale = d3.timeFormatLocale({
+        "dateTime": "%A, %e %B %Y г. %X",
+        "date": "%d.%m.%Y",
+        "time": "%H:%M:%S",
+        "periods": ["AM", "PM"],
+        "days": ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
+        "shortDays": ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+        "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
+        "shortMonths": ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
+    });
+    var rnboLinks = {
+    'covid_timeline':"https://api-covid19.rnbo.gov.ua/charts/main-data?mode=ukraine",
+    'timelineVax':'https://health-security.rnbo.gov.ua/api/vaccination/process/chart?vaccines=&dose=1&distributionBy=vaccine&regionId='
+}
+var todayDateFormat = d3.timeFormat("%Y-%m-%d");
+var parseTodayDate = d3.timeParse("%Y-%m-%d");
+var dayMonth = locale.format("%d %B")
+var parseTime = d3.timeParse("%m/%d/%Y");
+function makeDailyStatistics(column) {
+    var days = []
+    covid_timeline[column].map(function(d,i) {
+        if (i < covid_timeline[column].length-1) {
+            days.push(covid_timeline[column][i+1]-covid_timeline[column][i])
+        }
+    })
+    return days
+}
+function makeBarChart(id,w) {
+
+            var formatMillisecond = locale.format(".%L"),
+                formatSecond = locale.format(":%S"),
+                formatMinute = locale.format("%I:%M"),
+                formatHour = locale.format("%I %p"),
+                formatDay = locale.format("%a %d"),
+                formatWeek = locale.format("%d %b"),
+                formatMonth = locale.format("%b %Y"),
+                formatYear = locale.format("%Y");
+    
+            function multiFormat(date) {
+                return (d3.timeSecond(date) < date ? formatMillisecond
+                    : d3.timeMinute(date) < date ? formatSecond
+                    : d3.timeHour(date) < date ? formatMinute
+                    : d3.timeDay(date) < date ? formatHour
+                    : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? formatDay : formatWeek)
+                    : d3.timeYear(date) < date ? formatMonth
+                    : formatYear)(date);
+            }
+            
+            if (id == 'confirmed') {
+                var x_date = covid_timeline.dates.map(d => parseTodayDate(d))
+                var json = makeDailyStatistics(id)
+                var plusMax = 1000
+                var color = '#e57373'
+                var tooltipText = ' заболевших за сутки</p>'
+                var importedTickValues = x_date.filter(function(d,i) {if (i%50 == 0) {return d}})
+            } else if (id=='deaths'){
+                var json = makeDailyStatistics(id)
+                var x_date = covid_timeline.dates.map(d => parseTodayDate(d))
+                var plusMax = 100
+                var color = '#455a64'
+                var tooltipText = ' погибших за сутки</p>'
+                var importedTickValues = x_date.filter(function(d,i) {if (i%50 == 0) {return d}})
+            } else if (id=='vax_day'){
+                var x_date = timelineVaxData.daily.dates.map(d => parseTodayDate(d))
+                var AstraZeneca = timelineVaxData.daily.quantity.AstraZeneca
+                var sinovac = timelineVaxData.daily.quantity['Sinovac Biotech']
+                var pfizer = timelineVaxData.daily.quantity['Pfizer-BioNTech']
+                var SarsCov2_nRVv3 = timelineVaxData.daily.quantity['SarsCov2_nRVv3']
+                var json = AstraZeneca.map(function(d,i) {
+                    return d + sinovac[i] + pfizer[i] + SarsCov2_nRVv3[i]
+                })
+                var plusMax = 1000
+                var color = '#43a047'
+                var tooltipText = ' вакцинированных за сутки</p>'
+                var ticklengthValue = x_date.length/9
+                var importedTickValues = x_date.filter(function(d,i) {if (i%20 == 0) {return d}})
+            }
+            if (w < 600) {
+                var start_width = w-10,
+                start_height = w/1.5;
+            } else {
+                var start_width = 600,
+                start_height = 400;
+            }  
+            var margin = {top: 10, right: 15, bottom: 40, left: 35},
+                width = start_width - margin.left - margin.right,
+                height = start_height - margin.top - margin.bottom;
+    
+            // append the svg object to the body of the page
+            d3.select("#"+id+"_chart").html('')
+            var svg = d3.select("#"+id+"_chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+    
+            var x = d3.scaleBand()
+                .range([ 0, width ])
+                .domain(x_date)
+                .padding(0.2);
+            svg.append("g")
+                .attr("transform", "translate(0," + (height) + ")")
+                .call(d3.axisBottom(x).tickValues(importedTickValues)
+                .tickFormat(locale.format("%d %b")))
+                .selectAll("text")
+            
+            var tooltipBee = d3.select("body")
+                .append("div")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden")
+                .style("padding", "14px")
+                .style("background-color", "white")
+                .style("border", "1px solid #f5f5f5")
+                .style("color", "black")
+                .style("border-radius", "6px")
+                .style("border-color", "black")
+                .style("font", "12px sans-serif")
+                .text("tooltip");
+    
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([0, d3.max(json)+plusMax])
+                .range([ height, 0]);
+            
+           
+            function make_y_gridlines() {		
+                return d3.axisLeft(y)
+                    .ticks(5)
+            }
+            svg.append("g")
+                .attr('class','grid')
+                .call(make_y_gridlines()
+                    .tickSize(-width)
+                    .ticks(5)
+                )
+            svg.selectAll('.grid line')
+                .style('stroke','#eeeeee')
+                .style('stroke-opacity','1')
+                .style('shape-rendering','crispEdges')
+            svg.selectAll('.domain')
+                .style('opacity','0')
+            
+            
+            svg.selectAll("mybar")
+            .data(json)
+            .enter()
+            .append("rect")
+                .attr("x", function(d,i) { return x(x_date[i]); })
+                .attr("y", function(d,i) { return y(json[i]); })
+                .attr("width", x.bandwidth())
+                .attr("height", function(d,i) { return height - y(json[i]); })
+                .attr('class','every_day')
+                .attr("fill", color)
+                .on("mouseover", function(d,i) {
+                    tooltipBee.html('<p>'+dayMonth(x_date[i])+':</p><p>'+numberWithSpaces(d)+tooltipText)
+                    tooltipBee.style("visibility", "visible")
+                })
+                .on("mousemove", function() {
+                    return tooltipBee.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+                })
+                .on("mouseout", function(d){
+                    return tooltipBee.style("visibility", "hidden");
+                })
+    
+        }
+
+function makeTable() {
+    d3.select("#table")
+        .append("tbody")
+        .html("<tr><td class='left'>Страна</td><td>Количество уколов</td><td>Количество вакцинированных</td><td>Количество вакцинированных на 100 жителей</td><td></td></tr>")
+        .selectAll('trd')
+        .data(countryInfo)
+        .enter()
+        .append("tr")
+        .html(function(d,i) {
+            return '<td class="left">' + d.rus + '</td>'+
+                    '<td>' + numberWithSpaces(d.total) + '</td>'+
+                    '<td>' + numberWithSpaces(d.people) + '</td>'+
+                    '<td>' + numberWithSpaces(d.per100) + '</td>'+
+                    '<td class="chart"><div id="'+d.country.replace(' ','')+'"></div></td>'
+        })
+}
+makeTable()
+var countries = countryInfo.map(d=>d.country)
+countries.forEach(function(country) {
+    makeAreaChart(country)
+})
+//makeAreaChart('Albania')
+function makeAreaChart(country){
+    var cell_width = d3.select('#'+country.replace(' ','')).node().offsetWidth
+    var margin = {top: 0, right: 4, bottom: 15, left: 5},
+        width = cell_width - margin.left - margin.right,
+        height = 70 - margin.top - margin.bottom;
+    
+    var data = vaxData.filter(d=>d.country == country)
+    var parseDate = d3.timeParse("%Y-%m-%d")
+    var data = data.map(function(d) {
+        return {date: parseDate(d.date), vac: d.vac};
+    });
+    var svg = d3.select("#"+country.replace(' ',''))
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+    var one = d3.extent(data, function(d) { return d.date; })[1]
+    var zero = parseDate('2020-12-03')
+    
+    var x = d3.scaleTime()
+        //.domain(d3.extent(data, function(d) { return d.date; }))
+        .domain(d3.extent([zero,one]))
+        .range([ 0, width ]);
+    if (country == 'Malta') {
+        svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .style("font-size", "8px")
+        .attr('class','axisX')
+        .call(d3.axisBottom(x).ticks(3).tickSize(4).tickFormat(locale.format("%b %Y")));
+    }
+    
+
+        // Add Y axis
+    var y = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d) { return +d.vac; })])
+        .range([ height, 0 ]);
+    function make_y_gridlines() {		
+        return d3.axisLeft(y)
+            .ticks(0)
+    }
+    svg.append("g")
+        .attr('class','grid yAxis')
+        .call(make_y_gridlines()
+            .tickSize(-width)
+            .ticks(3)
+        )
+    svg.selectAll('.grid line')
+        .style('stroke','#eeeeee')
+        .style('stroke-opacity','1')
+        .style('shape-rendering','crispEdges')
+    svg.selectAll('.domain')
+        .style('opacity','0')
+    svg.selectAll('.yAxis text')
+        .attr("transform", "translate(30,10)")
+        .style("font-size", "7px")
+        .attr('fill',function(d,i) {
+            var length = svg.selectAll('.yAxis text')['_groups'][0].length
+            if (length - i == 1) {
+                return '#999'
+            } else {
+                return 'none'
+            }
+            
+        })
+    
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "#cce5df")
+        .attr("stroke", "#43a047")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.area()
+            .x(function(d) { return x(d.date) })
+            .y0(y(0))
+            .y1(function(d) { return y(d.vac) })
+            )
+
+}
+
+var covid_timeline = getData(rnboLinks.covid_timeline);
+var timelineVaxData = getData(rnboLinks.timelineVax);
+makeBarChart('vax_day',window.innerWidth)
+makeBarChart('confirmed',window.innerWidth) 
+makeBarChart('deaths',window.innerWidth)
+
+    </script>
+</body>
+</html>
