@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        .results {max-width: 600px; margin: 0 auto;}
+        #myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#countries {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 400px;
+  overflow: scroll;
+overflow-x: hidden;
+}
+
+#countries li {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#countries li:hover:not(.header) {
+  background-color: #eee;
+  cursor: pointer;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="results">
+        <h3>Як їдете</h3>
+        <form id="typeForm">
+            <div>
+              <input type="radio" id="contactChoice1"
+               name="contact" value="0">
+              <label for="contactChoice1">Тимчасовий в'їзд</label>
+          
+              <input type="radio" id="contactChoice2"
+               name="contact" value="1">
+              <label for="contactChoice2">Транзит</label>
+            </div>
+          </form>
+        <h3>Які правила в'їзду</h3>
+
+        <input type="text" id="myInput" onkeyup="filterList()" placeholder="Введіть країну.." title="Type in a name">
+
+        <ul id="countries">
+            <li value="Туреччина">Туреччина</li>
+            <li value="Єгипет">Єгипет</li>
+            <li value="Іспанія">Іспанія</li>
+            <li value="Велика Британія">Велика Британія</li>
+            <li value="Німеччина">Німеччина</li>
+            <li value="Франція">Франція</li>
+        </ul>
+        <div id="country_info"></div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/liga-net/few-projects/d3.v4.min.js"></script>
+    
+    <script>
+        function numberWithSpaces(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        
+        function getValue(){
+            var value = $.ajax({ 
+            url: 'https://tripadvisor.mfa.gov.ua/index.php?rest_route=/wp/v2/pages/1973',
+            async: false
+            }).responseJSON.content.rendered;
+            value = $(value)[0]
+            value = value.getAttribute('data-mapdata')
+            value = JSON.parse(value)['levels'][0]['locations']
+            return value;
+        }
+
+        var data = getValue()
+        var exclude = ['Туреччина','Єгипет','Іспанія','Велика Британія','Німеччина','Франція',"Україна"]
+        data.forEach(function(result) {
+            if (exclude.includes(result.title) == false) {
+                $('#countries').append('<li value="'+result.title+'">'+result.title+'</li>')
+            }
+            
+        })
+
+        function filterList() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("countries");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+        $('#countries li').on('click',function(li){
+            $('#countries li').attr('checked',false)
+            $(this).attr('checked',true)
+            var country = li.currentTarget.attributes.value.value
+            var country_data = data.filter(d=>d.title == country)[0]
+            var date = country_data.update_date.split('-')
+            var input = $('input:checked')[0]
+            var inputName = input.nextElementSibling.textContent
+            var type = parseInt(input.value)
+            $('#country_info').html('')
+            $('#country_info').append('<h4>'+country+': '+inputName.toLowerCase()+'</h4>')
+            $('#country_info').append('<p><i>Останнє оновлення: '+date[2]+'.'+date[1]+'.'+date[0]+'</i></p>')
+            $('#country_info').append('<p>'+country_data.accordion_filled[type]+'</p>')
+        })
+        $('#typeForm input').on('click',function(li){
+            if ($('#country_info').html() != '') {
+                var country = $("li[checked='checked']" )[0].textContent
+                var country_data = data.filter(d=>d.title == country)[0]
+                var date = country_data.update_date.split('-')
+                var input = $('input:checked')[0]
+                var inputName = input.nextElementSibling.textContent
+                var type = parseInt(input.value)
+                $('#country_info').html('')
+                $('#country_info').append('<h4>'+country+': '+inputName.toLowerCase()+'</h4>')
+                $('#country_info').append('<p><i>Останнє оновлення: '+date[2]+'.'+date[1]+'.'+date[0]+'</i></p>')
+                $('#country_info').append('<p>'+country_data.accordion_filled[type]+'</p>')
+            }
+            
+        })
+    </script>
+</body>
+</html>
